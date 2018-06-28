@@ -1,0 +1,49 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "msbuild",
+            "args": [
+                // Ask msbuild to generate full paths for file names.
+                "/property:GenerateFullPaths=true",
+                "/t:build"
+            ],
+            "group": "build",
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "silent"
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label" : "Build Tests",
+            "type" : "shell",
+            "command" : "g++",
+            "args" : ["-std=c++98", "-g", "-Wall", "-Werror",
+                      "-I", "${workspaceFolder}/third_party/", "-I", "${workspaceFolder}/program1/include", "-I", "${workspaceFolder}/program1/src",
+                      "${workspaceFolder}/third_party/tests_main.o", 
+                      "${workspaceFolder}/program1/src/linked_list.cpp", 
+                      "${workspaceFolder}/program1/src/iterator.cpp", 
+                      "${workspaceFolder}/program1/tests/list_test.cpp", 
+                      "-o", "${workspaceFolder}/program1/obj/debug/run_tests"
+                      ],
+            "group" : {
+                "kind" : "build",
+                "isDefault" : true
+            }
+        },
+        {
+            "label" : "Build test_main",
+            "type" : "shell",
+            "command" : "g++",
+            "args" : ["-std=c++98", "-c", 
+                      "${workspaceFolder}/third_party/tests_main.cpp", 
+                      "-o", "${workspaceFolder}/third_party/tests_main.o", "-Wall"],
+        }
+    ]
+}
