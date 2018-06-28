@@ -96,10 +96,11 @@ class forward_iterator
     member of the sorted list class, it is safe to make it a friend so that
     we can acces the node member when desired.
     */
-    friend class Sorted_List<T>;
    
-  protected:
+  public:
     pointer node;
+
+    friend class Sorted_List<T>;
 
 };
 
