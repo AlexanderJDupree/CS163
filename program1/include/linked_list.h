@@ -12,7 +12,6 @@ Date: 06/27/2018
 #define LINKED_LIST_H
 
 #include <cstddef> // NULL
-#include "iterator.h"
 
 template <typename T>
 class Sorted_List
@@ -22,14 +21,18 @@ class Sorted_List
 
   public:
 
+  class forward_iterator;
+  class const_forward_iterator;
+
     /* Type definitions */
-    typedef T                       value_type;
-    typedef T*                      pointer;
-    typedef T&                      reference;
-    typedef const T&                const_reference;
-    typedef const T*                const_pointer;
-    typedef size_t                  size_type;
-    typedef forward_iterator<Node>  iterator;
+    typedef T                      value_type;
+    typedef T*                     pointer;
+    typedef T&                     reference;
+    typedef const T&               const_reference;
+    typedef const T*               const_pointer;
+    typedef size_t                 size_type;
+    typedef forward_iterator       iterator;
+    typedef const_forward_iterator const_iterator;
 
 
     ///@brief: Default constructor sets the head and tail pointers to NULL
@@ -45,6 +48,13 @@ class Sorted_List
     ~Sorted_List();
 
     /* Modifiers */
+
+    /**
+    @brief: adds a new node to the front of the list
+    @param: data is the value that will be copied onto the node
+    @return: void, if the list is empty a node is created and head and tail are
+             both pointed to it
+    */
     void push_front(const_reference data);
 
     /*
@@ -54,7 +64,7 @@ class Sorted_List
     @param: data is the value that will be copied onto the node
     @return: returns void, if the list is empty we call push_front
     */
-    void insert(iterator& position, const_reference data);
+    void insert(const_iterator& position, const_reference data);
 
     /*
     @brief: adds the data to a new node and places to the node into a sorted 
@@ -88,6 +98,7 @@ class Sorted_List
     @return: returns a forward_iterator constructed off the head pointer
     */
     iterator begin();
+    const_iterator begin() const;
 
     /*
     @brief: creates an iterator that points to one element past the end of the list
@@ -96,6 +107,7 @@ class Sorted_List
              from NULL. It is dangerous to dereference this iterator
     */
     iterator end();
+    const_iterator end() const;
 
   private:
     
@@ -145,6 +157,94 @@ class Sorted_List
     @return: true, does nothing if the list is empty.
     */
     void clear_list(Node* current);
+
+  public:
+
+    /* Iterator */
+    class forward_iterator
+    {
+      public:
+        /* Type definitions */
+        typedef typename Node::value_type      value_type;
+        typedef typename Node::reference       reference;
+        typedef typename Node::pointer         pointer;
+        typedef forward_iterator               self_type;
+
+        /* Constructors */
+
+        /// @brief: default constructor points node to NULL
+        forward_iterator();
+
+        /** 
+        @brief: value constructor points node to ptr's value
+        @param: ptr is a pointer to a data type T
+        */
+        forward_iterator(pointer ptr);
+
+        /* Operator Overloads */
+
+        /**
+        @brief: prefix increment operator modifies node to point the next node in 
+                a list
+        @return: Returns self reference so this operation can be chained with other
+                 methods
+        */
+        self_type& operator++(); // Prefix ++
+
+        /**
+        @brief: postfix increment operator makes a COPY of itself and then calls 
+                the prefix increment operator to modify it's state
+        @return: Returns a COPY of itself before incrementation
+        */
+        self_type& operator++(int); // Postfix ++
+
+        /**
+        @brief: * operator allows the user to inspect and mutate the data member of
+                node
+        @return: returns a read/write reference to the data member of a node
+        */
+        reference operator*();
+
+        /**
+        @brief: tests to see if each iterator is pointing to the same memory address
+        @param: rhs is an iterator to be used for comparison
+        @return: returns true of both rhs and this are pointing to the same address
+        */
+        bool operator==(const self_type& rhs) const;
+
+        /**
+        @brief: returns the logical not of the equality comparison
+        @param: rhs is an iterator to be used for comparison
+        */
+        bool operator!=(const self_type& rhs) const;
+
+        /* 
+        Because the iterator is designed to abstract a private 
+        member of the sorted list class, it is safe to make it a friend so that
+        we can acces the node member when desired.
+        */
+       
+      private:
+        pointer node;
+
+        friend class Sorted_List<T>;
+    };
+
+    class const_forward_iterator : public forward_iterator
+    {
+       public:
+        /* Type definitions */
+        typedef typename Node::const_reference const_reference;
+        typedef typename Node::const_pointer   const_pointer;
+        typedef const_forward_iterator         self_type;
+
+        /**
+        @brief: for const qualified iterators, the * operator allows the user to 
+                inspect and/or copy the value of the data member
+        @return: returns a read only reference to the data member of a node
+        */
+        const_reference operator*() const;
+    };
 };
 
 /*

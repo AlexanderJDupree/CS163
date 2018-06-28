@@ -40,7 +40,7 @@ void Sorted_List<T>::push_front(const_reference data)
 }
 
 template <typename T>
-void Sorted_List<T>::insert(iterator& position, const_reference data)
+void Sorted_List<T>::insert(const_iterator& position, const_reference data)
 {
     if(empty())
     {
@@ -99,9 +99,21 @@ typename Sorted_List<T>::iterator Sorted_List<T>::begin()
 }
 
 template <typename T>
+typename Sorted_List<T>::const_iterator Sorted_List<T>::begin() const
+{
+    return const_iterator(head);
+}
+
+template <typename T>
 typename Sorted_List<T>::iterator Sorted_List<T>::end()
 {
     return iterator(NULL);
+}
+
+template <typename T>
+typename Sorted_List<T>::const_iterator Sorted_List<T>::end() const
+{
+    return const_iterator(NULL);
 }
 
 /* Private Functions */
@@ -120,4 +132,66 @@ void Sorted_List<T>::clear_list(Node* current)
 
     return;
 }
+
+/*******************************************************************************
+ITERATOR CLASS
+*******************************************************************************/
+
+template <typename T>
+Sorted_List<T>::iterator::forward_iterator() : node(NULL) {}
+
+template <typename T>
+Sorted_List<T>::iterator::forward_iterator(pointer ptr) : node(ptr) {}
+
+/* Operator Overloads */
+template <typename T>
+typename Sorted_List<T>::iterator& 
+Sorted_List<T>::forward_iterator::operator++()
+{
+    // reassign node member to point to the next element in the container
+    node = node->next;
+    return *this;
+}
+
+template <typename T>
+typename Sorted_List<T>::iterator& 
+Sorted_List<T>::iterator::operator++(int)
+{
+    // Create a copy to satisfy postfix incrementation requirements
+    self_type copy = self_type(*this);
+    ++(*this);
+    return copy;
+}
+
+template <typename T>
+typename Sorted_List<T>::iterator::reference
+Sorted_List<T>::iterator::operator*()
+{
+    return node->data;
+}
+
+template <typename T>
+bool Sorted_List<T>::iterator::operator==(const self_type& rhs) const
+{
+    // Compare memory addresses, NOT the value of the data member
+    return node == rhs.node;
+}
+
+template <typename T>
+bool Sorted_List<T>::iterator::operator!=(const self_type& rhs) const
+{
+    // return the logical NOT of the equality comparison
+    return !(*this == rhs);
+}
+
+/* CONST_ITERATOR */
+
+template <typename T>
+typename Sorted_List<T>::const_iterator::const_reference 
+Sorted_List<T>::const_iterator::operator*() const
+{
+    return this->node->data;
+}
+
+
 #endif //LINKED_LIST_CPP

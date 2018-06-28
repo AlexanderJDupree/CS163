@@ -65,9 +65,8 @@ TEST_CASE("Using insert to modify the list", "[list], [modifiers], [insert]")
     {
         Sorted_List<char> list;
         
-        Sorted_List<char>::iterator it = list.begin();
 
-        list.insert(it, 'A');
+        list.insert(list.begin(), 'A');
 
         bool assert = *list.begin() == 'A';
         REQUIRE(assert);
