@@ -35,7 +35,10 @@ class Sorted_List
     typedef const_forward_iterator const_iterator;
 
 
-    ///@brief: Default constructor sets the head and tail pointers to NULL
+    /**
+    @brief: Default constructor is called whenever this object is instantiated
+    The container will be EMPTY by default
+    */
     Sorted_List();
 
     /** 
@@ -44,33 +47,35 @@ class Sorted_List
     //List(const List<T>& list);
 
    
-    ///@brief: Destructor calls the clear function to delete each node in the list
+    /**
+    @brief: Destructor is called explicitly with delete or when the object
+    goes out of scope. Frees up all memory associated with the list
+    */
     ~Sorted_List();
 
     /* Modifiers */
 
     /**
-    @brief: adds a new node to the front of the list
-    @param: data is the value that will be copied onto the node
-    @return: void, if the list is empty a node is created and head and tail are
-             both pointed to it
+    @brief: adds an element to the front of the list
+    @param: data is the value that will be copied onto the list
     */
     void push_front(const_reference data);
 
     /*
-    @brief: inserts a new node AFTER the passed in position argument
-    @param: postion is an iterator to the postion previous to the desired 
+    @brief: inserts a new element into the list AFTER the specified position
+    @param: postion is an iterator to the postion PREVIOUS to the desired 
             insertion point
-    @param: data is the value that will be copied onto the node
+    @param: data is the value that will be copied onto the list
     @return: returns void, if the list is empty we call push_front
     */
     void insert(const_iterator& position, const_reference data);
 
     /*
-    @brief: adds the data to a new node and places to the node into a sorted 
-            position on the list.
-    @param: data is a READ only reference to the original data and is copied to
-            the data member of node.
+    @brief: inserts the data into a position in the list that will keep the
+            list in a sorted state
+            NEEDS TO add UNIQUE items only!
+    @param: data is a READ only reference to the original data and is copied to 
+            the list
     @return: true if the insertion was successful.
     */
     bool add(const_reference data);
@@ -95,16 +100,16 @@ class Sorted_List
 
     /* 
     @brief: creates an iterator that points to the first element of the list
-    @return: returns a forward_iterator constructed off the head pointer
+    @return: returns a forward_iterator to the begining of the list
     */
     iterator begin();
     const_iterator begin() const;
 
     /*
-    @brief: creates an iterator that points to one element past the end of the list
-            dereferencing an end iterator causes undefined behavior
-    @return: becuase tail always points to NULL, we return an iterator constructed
-             from NULL. It is dangerous to dereference this iterator
+    @brief: creates an iterator that points to one element past the end of the 
+            list dereferencing an end iterator causes undefined behavior
+    @return: returns a forward iterator that points to NULL, do not dereference 
+             or attempt to increment it
     */
     iterator end();
     const_iterator end() const;
@@ -154,9 +159,20 @@ class Sorted_List
            current.
 
     @param: current is a pointer to the current node in the list
-    @return: true, does nothing if the list is empty.
+    @return: does nothing if the list is empty.
     */
     void clear_list(Node* current);
+
+    /*
+    @brief: Travels down the list using the '<' operator to compare the data to 
+            each node in the list. Stops when we find a larger element is found
+            and the iterators are modified to reflect that position
+    @param: data is the desired data to be added to the list, pos is the 
+            position that reflects the position previous to the larger element
+    @return: true if a position is found AND the data is unique
+    */
+    bool find_position(const_reference data, const_iterator& pos, 
+                                             const_iterator& prev);
 
   public:
 
@@ -164,6 +180,7 @@ class Sorted_List
     class forward_iterator
     {
       public:
+
         /* Type definitions */
         typedef typename Node::value_type      value_type;
         typedef typename Node::reference       reference;
@@ -172,14 +189,8 @@ class Sorted_List
 
         /* Constructors */
 
-        /// @brief: default constructor points node to NULL
+        /// @brief: default constructor points the iterator to NULL
         forward_iterator();
-
-        /** 
-        @brief: value constructor points node to ptr's value
-        @param: ptr is a pointer to a data type T
-        */
-        forward_iterator(pointer ptr);
 
         /* Operator Overloads */
 
@@ -225,9 +236,16 @@ class Sorted_List
         */
        
       private:
-        pointer node;
 
-        friend class Sorted_List<T>;
+        /** 
+        @brief: value constructor points the iterator to the passed in ptr,this
+                constructor is private so that the client CANNOT instantiate an
+                iterator that points to an arbitrary block of memory
+        @param: ptr is a pointer to a data type T
+        */
+        forward_iterator(pointer ptr);
+
+        pointer node;
     };
 
     class const_forward_iterator : public forward_iterator

@@ -23,6 +23,29 @@ Sorted_List<T>::~Sorted_List()
 }
 
 /* Modifiers */
+
+template <typename T>
+bool Sorted_List<T>::add(const_reference data)
+{
+    if (empty())
+    {
+        push_front(data);
+        return true;
+    }
+
+    // Find the index to insert into
+    const_iterator position = begin();
+
+    if(find_position(data, begin(), position))
+    {
+        insert(position, data);
+        return true;
+    }
+
+    return false;
+    
+}
+
 template <typename T>
 void Sorted_List<T>::push_front(const_reference data)
 {
@@ -60,7 +83,7 @@ void Sorted_List<T>::insert(const_iterator& position, const_reference data)
     // Point the previous node to the new node
     position.node->next = new_node;
 
-    // Edge case, if the tail is was the previous node, point tail to the new node
+    // Edge case, if the tail is was the previous node, point tail to new node
     if (tail->next == new_node)
     {
         tail = new_node;
@@ -77,6 +100,7 @@ void Sorted_List<T>::clear()
         return;
     }
 
+    // clear_list is a recursive function that deletes each node of the list
     clear_list(head);
 }
 
@@ -127,10 +151,28 @@ void Sorted_List<T>::clear_list(Node* current)
         clear_list(current->next);
     }
 
-    // Deletes the current node as the stack uniwnds
+    // Deletes the current node as the stack unwinds
     delete current;
 
     return;
+}
+
+template <typename T>
+bool Sorted_List<T>::find_position(const_reference data, const_iterator& pos, 
+                                                         const_iterator& prev)
+{
+    if (data == *pos)
+    {
+        return false;
+    }
+    if (data < *pos)
+    {
+        return true;
+    }
+
+    prev = pos;
+
+    return find_position(data, ++pos, prev);
 }
 
 /*******************************************************************************
