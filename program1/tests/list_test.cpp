@@ -20,6 +20,21 @@ TEST_CASE("Constructing Sorted_List objects", "[list], [constructors]")
 
         REQUIRE(list.empty());
     }
+    SECTION("Copy construction")
+    {
+        Sorted_List<int> origin;
+        origin.add(1);
+        origin.add(3);
+        origin.add(2);
+
+        Sorted_List<int> copy(origin);
+
+        bool assert = origin == copy;
+        REQUIRE(assert);
+
+        assert = copy.size() == 3;
+        REQUIRE(assert);
+    }
 }
 
 TEST_CASE("Using clear to erase the list", "[list], [clear], [destructor]")
@@ -32,43 +47,104 @@ TEST_CASE("Using clear to erase the list", "[list], [clear], [destructor]")
 
         REQUIRE(list.empty());
     }
+    SECTION("A populated list")
+    {
+        Sorted_List<char> list;
+
+        list.add('a');
+        list.add('b');
+        list.add('c');
+
+        list.clear();
+
+        REQUIRE(list.empty());
+    }
 
 }
 
-TEST_CASE("Using push_front to modify the list", "[list], [modifiers], [push_front]")
+TEST_CASE("Using add to insert elements into sorted order", "[list], [modifiers], [add]")
 {
     SECTION("An empty list")
     {
         Sorted_List<int> list;
 
-        list.push_front(3);
-        list.push_front(2);
-        list.push_front(1);
+        REQUIRE(list.add(5));
+        REQUIRE(list.add(4));
+        REQUIRE(list.add(8));
+        REQUIRE(list.add(6));
 
-        int i = 1;
-        for(Sorted_List<int>::iterator it = list.begin(); it != list.end(); ++it)
+        REQUIRE(list.add(5) == false);
+
+        int nums[] = {4, 5, 6, 8};
+        int i = 0;
+
+        for (Sorted_List<int>::const_iterator it = list.begin(); it != list.end(); ++it)
         {
-            /* 
-            C++ 98 compliant version of catch framework has issues evaluating
-            dereferenced iterators, so we create our own evaluator for the assertions
-            */
-            bool assert = *it == i++;
+            bool assert = *it == nums[i++];
             REQUIRE(assert);
         }
     }
 }
 
-
-TEST_CASE("Using insert to modify the list", "[list], [modifiers], [insert]")
+TEST_CASE("Using swap to reassign data", "[list], [swap]")
 {
-    SECTION("An empty list")
+    SECTION("An empty list and a populated list")
     {
-        Sorted_List<char> list;
-        
+        Sorted_List<int> old;
 
-        list.insert(list.begin(), 'A');
+        old.add(3);
+        old.add(1);
+        old.add(2);
 
-        bool assert = *list.begin() == 'A';
+        Sorted_List<int> list;
+
+        Sorted_List<int>::swap(list, old);
+
+        int i = 1;
+        for (Sorted_List<int>::const_iterator it = list.begin(); it != list.end(); ++it)
+        {
+            bool assert = *it == i++;
+            REQUIRE(assert);
+        }
+    }
+    SECTION("two empty lists")
+    {
+        Sorted_List<int> old;
+        Sorted_List<int> list;
+
+        Sorted_List<int>::swap(list, old);
+
+        bool assert = old == list;
+        REQUIRE(assert);
+    }
+
+}
+
+TEST_CASE("Using the copy-assignment operator", "[list], [operators], [copy-assignment]")
+{
+    SECTION("An empty list and a populated list")
+    {
+        Sorted_List<int> old;
+
+        old.add(3);
+        old.add(1);
+        old.add(2);
+
+        Sorted_List<int> list;
+
+        list = old;
+
+        bool assert = old == list;
+        REQUIRE(assert);
+    }
+    SECTION("two empty lists")
+    {
+        Sorted_List<int> old;
+        Sorted_List<int> list;
+
+        old = list;
+
+        bool assert = old == list;
         REQUIRE(assert);
     }
 }

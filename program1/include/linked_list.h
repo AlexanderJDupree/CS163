@@ -16,13 +16,10 @@ Date: 06/27/2018
 template <typename T>
 class Sorted_List
 {
-  // Forward Declaration
-  struct Node;
-
   public:
 
-  class forward_iterator;
-  class const_forward_iterator;
+    // forward declaration
+    class const_forward_iterator;
 
     /* Type definitions */
     typedef T                      value_type;
@@ -31,88 +28,52 @@ class Sorted_List
     typedef const T&               const_reference;
     typedef const T*               const_pointer;
     typedef size_t                 size_type;
-    typedef forward_iterator       iterator;
     typedef const_forward_iterator const_iterator;
+    typedef Sorted_List<T>         self_type;
 
-
-    /**
-    @brief: Default constructor is called whenever this object is instantiated
-    The container will be EMPTY by default
-    */
+    // Instantiates an EMPTY list
     Sorted_List();
 
-    /** 
-      Copy Constructor
-    */
-    //List(const List<T>& list);
-
+    // Copies each element in the original list onto this list
+    Sorted_List(const Sorted_List<T>& origin);
    
-    /**
-    @brief: Destructor is called explicitly with delete or when the object
-    goes out of scope. Frees up all memory associated with the list
-    */
+    // Uses clear() to delete each element in the list
     ~Sorted_List();
-
-    /* Modifiers */
-
-    /**
-    @brief: adds an element to the front of the list
-    @param: data is the value that will be copied onto the list
-    */
-    void push_front(const_reference data);
-
-    /*
-    @brief: inserts a new element into the list AFTER the specified position
-    @param: postion is an iterator to the postion PREVIOUS to the desired 
-            insertion point
-    @param: data is the value that will be copied onto the list
-    @return: returns void, if the list is empty we call push_front
-    */
-    void insert(const_iterator& position, const_reference data);
-
-    /*
-    @brief: inserts the data into a position in the list that will keep the
-            list in a sorted state
-            NEEDS TO add UNIQUE items only!
-    @param: data is a READ only reference to the original data and is copied to 
-            the list
-    @return: true if the insertion was successful.
-    */
+    
+    // Inserts UNIQUE data into a position in the list that will keep the list 
+    // in a SORTED state
     bool add(const_reference data);
 
-    /*
-    @brief: clear is a wrapper method for clear_list. It calls clear_list if
-             the list is NOT empty.
-    @return: void, does nothing if the list is empty. 
-    */
+    // wrapper method for clear_list, if the list is empty does nothing
     void clear();
 
-    /* Capacity Functions */
-
-    /*
-    @brief: Tests if the container is empty.
-
-    @return: True if the container is empty.
-    */
+    // returns true if the list is empty
     bool empty() const;
 
-    /* Iterators */
+    // returns the number of elements in the list
+    size_type size() const;
 
-    /* 
-    @brief: creates an iterator that points to the first element of the list
-    @return: returns a forward_iterator to the begining of the list
-    */
-    iterator begin();
+    /* Iterators */
+    // returns a read only iterator to the first element in the list
     const_iterator begin() const;
 
-    /*
-    @brief: creates an iterator that points to one element past the end of the 
-            list dereferencing an end iterator causes undefined behavior
-    @return: returns a forward iterator that points to NULL, do not dereference 
-             or attempt to increment it
-    */
-    iterator end();
+    // returns an iterator to one-past the last element in the list. 
+    // dereferencing end() iterators causes undefined behavior
     const_iterator end() const;
+
+    /* Operator Overloads */
+    // Compares sizes, then comapres each element of the list for equality
+    bool operator==(const self_type& rhs);
+
+    // returns the logical NOT of the equality comparison
+    bool operator!=(const self_type& rhs);
+
+    // creates a copy of the origin, then swaps ownership with the copy
+    self_type& operator=(const self_type& origin);
+
+    // Swaps pointers to each other's resources. effectively reassigning 
+    // ownership.
+    static void swap(self_type& new_list, self_type& old_list);
 
   private:
     
@@ -128,140 +89,102 @@ class Sorted_List
         typedef T&          reference;
         typedef const T&    const_reference;
         typedef Node        self_type;
-        typedef Node*       pointer;
-        typedef const Node* const_pointer;
+        typedef T*          pointer;
+        typedef const T*    const_pointer;
+
+        
+        // Default contructor points next to NULL and initializes data to it's 
+        // default construction
+        Node() : data(value_type()), next(NULL) {}
+
+        // Value constructor points next to NULL and initializes data to the 
+        // parameter
+        Node(const_reference value) : data(value), next(NULL) {}
 
         value_type data;
         Node* next;
 
-        /*
-        @brief: default constructor initializes the default constructor for
-                value_type and points next to NULL
-        */
-        Node() : data(value_type()), next(NULL) {}
-
-        /* 
-        @brief: value constructor copies parameter into the data member and 
-                points next to NULL
-        @param: value is a READ only reference used to initialize the data member
-        */
-        Node(const_reference value) : data(value), next(NULL) {}
     };
 
     Node* head;
     Node* tail;
 
+    size_type _size; // Keeps track of the number of elements in the list
+
     /* Private Functions */
 
-    /*
-    @brief: recursively calls itself until the end of the list is reached, while
-           call stack unwinds clear_list deletes the node associated with 
-           current.
+    // Recursive function that calls itself until it reaches the end of the list
+    // then while the stack unwinds it deletes each node
+    void clear_list(Node*& current);
 
-    @param: current is a pointer to the current node in the list
-    @return: does nothing if the list is empty.
-    */
-    void clear_list(Node* current);
 
-    /*
-    @brief: Travels down the list using the '<' operator to compare the data to 
-            each node in the list. Stops when we find a larger element is found
-            and the iterators are modified to reflect that position
-    @param: data is the desired data to be added to the list, pos is the 
-            position that reflects the position previous to the larger element
-    @return: true if a position is found AND the data is unique
-    */
-    bool find_position(const_reference data, const_iterator& pos, 
-                                             const_iterator& prev);
+    // Recursively travel the list until data compares '<' than the next element
+    // Inserts into that position
+    bool insert(Node* current, const_reference data);
+
+     
+    // Adds an element to the front of the list
+    void push_front(const_reference data);
+
+    // Adds an element to the back of the list
+    void push_back(const_reference data);
+
 
   public:
 
-    /* Iterator */
-    class forward_iterator
+    /*
+    @class: const_forward_iterator
+    
+    @brief: The const_forward_iterator is a read-only abstraction of the node 
+            pointer. The const_forward_iterator provides methods for inspecting
+            data, and incrementation. This iterator type does not support 
+            decrementation or random access
+
+            Because the iterator does not manage any resources and it's only 
+            member is a pointer, we allow the use of the DEFAULT destructor, 
+            copy constructor, and copy-assignment operator.
+    */
+    class const_forward_iterator
     {
       public:
 
         /* Type definitions */
         typedef typename Node::value_type      value_type;
-        typedef typename Node::reference       reference;
-        typedef typename Node::pointer         pointer;
-        typedef forward_iterator               self_type;
+        typedef typename Node::const_reference const_reference;
+        typedef Node*                          pointer;
+        typedef const_forward_iterator         self_type;
 
         /* Constructors */
 
-        /// @brief: default constructor points the iterator to NULL
-        forward_iterator();
+        // default constructor points the iterator to NULL
+        const_forward_iterator() : node(NULL) {}
+
+        // Value constructor initializers the pointer to point to the passed in
+        // parameter
+        const_forward_iterator(pointer ptr) : node(ptr) {}
 
         /* Operator Overloads */
 
-        /**
-        @brief: prefix increment operator modifies node to point the next node in 
-                a list
-        @return: Returns self reference so this operation can be chained with other
-                 methods
-        */
+        // prefix increment points the iterator to the next element in the list
         self_type& operator++(); // Prefix ++
 
-        /**
-        @brief: postfix increment operator makes a COPY of itself and then calls 
-                the prefix increment operator to modify it's state
-        @return: Returns a COPY of itself before incrementation
-        */
+        // postfix increment makes a COPY of the iterator, calls the prefix 
+        // increment, and returns the COPY
         self_type& operator++(int); // Postfix ++
 
-        /**
-        @brief: * operator allows the user to inspect and mutate the data member of
-                node
-        @return: returns a read/write reference to the data member of a node
-        */
-        reference operator*();
+        // dereference operator allows a READ only inspection of the data member
+        const_reference operator*() const;
 
-        /**
-        @brief: tests to see if each iterator is pointing to the same memory address
-        @param: rhs is an iterator to be used for comparison
-        @return: returns true of both rhs and this are pointing to the same address
-        */
+        // returns true if each iterator is pointing to the same address in
+        // memory
         bool operator==(const self_type& rhs) const;
 
-        /**
-        @brief: returns the logical not of the equality comparison
-        @param: rhs is an iterator to be used for comparison
-        */
+        // returns the logical not of the equality operator
         bool operator!=(const self_type& rhs) const;
-
-        /* 
-        Because the iterator is designed to abstract a private 
-        member of the sorted list class, it is safe to make it a friend so that
-        we can acces the node member when desired.
-        */
-       
+      
       private:
 
-        /** 
-        @brief: value constructor points the iterator to the passed in ptr,this
-                constructor is private so that the client CANNOT instantiate an
-                iterator that points to an arbitrary block of memory
-        @param: ptr is a pointer to a data type T
-        */
-        forward_iterator(pointer ptr);
-
         pointer node;
-    };
-
-    class const_forward_iterator : public forward_iterator
-    {
-       public:
-        /* Type definitions */
-        typedef typename Node::const_reference const_reference;
-        typedef typename Node::const_pointer   const_pointer;
-        typedef const_forward_iterator         self_type;
-
-        /**
-        @brief: for const qualified iterators, the * operator allows the user to 
-                inspect and/or copy the value of the data member
-        @return: returns a read only reference to the data member of a node
-        */
-        const_reference operator*() const;
     };
 };
 
