@@ -5,8 +5,11 @@ CFLAGS := -std=c++98 -Wall -I ../third_party/ -I include -I src
 TESTS_SRC := ../third_party/tests_main.cpp
 TESTS_MAIN := ../third_party/tests_main.o
 
-obj/debug/runTests: obj/linked_list.o obj/list_test.o $(TESTS_MAIN)
-	$(CC) $(CFLAGS) obj/linked_list.o obj/list_test.o $(TESTS_MAIN) -o obj/debug/runTests
+obj/debug/runTests: obj/linked_list.o obj/list_test.o obj/project.o $(TESTS_MAIN)
+	$(CC) $(CFLAGS) obj/linked_list.o obj/list_test.o obj/project.o $(TESTS_MAIN) -o obj/debug/runTests
+
+obj/project.o: src/project.cpp
+	$(CC) $(CFLAGS) -c src/project.cpp -o obj/project.o
 
 obj/list_test.o: tests/list_test.cpp
 	$(CC) $(CFLAGS) -c tests/list_test.cpp -o obj/list_test.o
