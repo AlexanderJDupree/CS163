@@ -218,7 +218,7 @@ typename Sorted_List<T>::self_type& Sorted_List<T>::operator=(const self_type& o
     // Swap ownership of resources with the copy
     swap(*this, copy);
 
-    // As the copy goes out of scope is destructs with the old data with it
+    // As the copy goes out of scope it destructs with the old data
     return *this;
 }
 

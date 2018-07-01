@@ -1,5 +1,5 @@
 /*
-File: linked_list.h
+File: project.h
 
 Description:
 
@@ -13,10 +13,11 @@ Date: 06/27/2018
 
 #include <cstddef>
 #include <vector>
+#include "sstring.h"
 
-struct pair 
+struct pair // TODO add constructors 
 {
-    typedef const char* string;
+    typedef SString string;
     
     string key;
     string value;
@@ -25,15 +26,37 @@ struct pair
 class Project
 {
   public:
-    typedef const char *      string;
-    typedef std::vector<pair> Attributes;
-
+    typedef Project                    self_type;
+    typedef SString                    string;
+    typedef std::vector<pair>          Attributes;
+    typedef Attributes::iterator       iterator;
+    typedef Attributes::const_iterator const_iterator;
 
     Project();
+
+    Project(Attributes args);
 
     Project(const Project& project);
 
     ~Project();
+
+    iterator begin();
+    const_iterator begin() const;
+
+    iterator end();
+    const_iterator end() const;
+    // get attribute
+    // get all attributes
+
+    friend std::ostream& operator << (std::ostream& os, const self_type& project);
+
+    bool operator == (const Project& project);
+    bool operator != (const Project& project);
+    bool operator < (const Project& project);
+    bool operator > (const Project& project);
+
+    bool operator = (const Project& project);
+    
 
   private:
     
