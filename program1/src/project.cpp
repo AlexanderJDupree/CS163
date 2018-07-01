@@ -45,3 +45,23 @@ std::ostream& operator << (std::ostream& os, const Project& project)
     }
     return os;
 }
+
+bool Project::operator==(const Project& rhs) const
+{
+    return attributes == rhs.attributes;
+}
+
+bool Project::operator != (const Project& rhs) const
+{
+    return !(*this == rhs);
+}
+
+bool Project::operator < (const Project& rhs) const
+{
+    return attributes < rhs.attributes;
+}
+
+bool Project::operator > (const Project& rhs) const
+{
+    return !(*this < rhs);
+}

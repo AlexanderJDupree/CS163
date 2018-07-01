@@ -15,9 +15,20 @@ Date: 06/27/2018
 #include <vector>
 #include "sstring.h"
 
-struct pair // TODO add constructors 
+struct pair
 {
     typedef SString string;
+
+    pair(string key, string value) : key(key), value(value) {}
+
+    bool operator == (const pair& rhs) const
+    {
+      return key == rhs.key && value == rhs.value;
+    }
+    bool operator < (const pair& rhs) const
+    {
+      return key == rhs.key && value < rhs.value;
+    }
     
     string key;
     string value;
@@ -28,7 +39,8 @@ class Project
   public:
     typedef Project                    self_type;
     typedef SString                    string;
-    typedef std::vector<pair>          Attributes;
+    typedef pair                       field;
+    typedef std::vector<field>         Attributes;
     typedef Attributes::iterator       iterator;
     typedef Attributes::const_iterator const_iterator;
 
@@ -45,17 +57,18 @@ class Project
 
     iterator end();
     const_iterator end() const;
+
     // get attribute
     // get all attributes
 
     friend std::ostream& operator << (std::ostream& os, const self_type& project);
 
-    bool operator == (const Project& project);
-    bool operator != (const Project& project);
-    bool operator < (const Project& project);
-    bool operator > (const Project& project);
+    bool operator == (const Project& rhs) const;
+    bool operator != (const Project& rhs) const;
+    bool operator < (const Project& rhs) const;
+    bool operator > (const Project& rhs) const;
 
-    bool operator = (const Project& project);
+    bool operator = (const Project& rhs);
     
 
   private:

@@ -79,6 +79,7 @@ class SString
     // Makes a copy of str, swaps resource ownership with the copy,
     // copy destructs with the old data when it goes out of scope
     self_type& operator=(const SString& str);
+    self_type& operator=(const_pointer str);
 
     friend std::ostream& operator<<(std::ostream& os, const self_type& str);
 

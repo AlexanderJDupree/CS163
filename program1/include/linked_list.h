@@ -63,10 +63,10 @@ class Sorted_List
 
     /* Operator Overloads */
     // Compares sizes, then comapres each element of the list for equality
-    bool operator==(const self_type& rhs);
+    bool operator==(const self_type& rhs) const;
 
     // returns the logical NOT of the equality comparison
-    bool operator!=(const self_type& rhs);
+    bool operator!=(const self_type& rhs) const;
 
     // creates a copy of the origin, then swaps ownership with the copy
     self_type& operator=(const self_type& origin);

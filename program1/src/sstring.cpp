@@ -127,6 +127,11 @@ SString::self_type& SString::operator=(const SString& str)
     return *this;
 }
 
+SString::self_type& SString::operator=(const_pointer str)
+{
+    return *this = SString(str);
+}
+
 std::ostream& operator << (std::ostream& os, const SString& str)
 {
     os << str._data;

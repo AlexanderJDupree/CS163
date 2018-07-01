@@ -179,7 +179,7 @@ typename Sorted_List<T>::const_iterator Sorted_List<T>::end() const
 
 /* Operator Overloads */
 template <typename T>
-bool Sorted_List<T>::operator==(const self_type& rhs)
+bool Sorted_List<T>::operator==(const self_type& rhs) const
 {
     if (rhs.size() != size())
     {
@@ -203,7 +203,7 @@ bool Sorted_List<T>::operator==(const self_type& rhs)
 }
 
 template <typename T>
-bool Sorted_List<T>::operator!=(const self_type& rhs)
+bool Sorted_List<T>::operator!=(const self_type& rhs) const
 {
     return !(*this == rhs);
 }
