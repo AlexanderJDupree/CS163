@@ -63,10 +63,10 @@ class Sorted_List
 
     /* Operator Overloads */
     // Compares sizes, then comapres each element of the list for equality
-    bool operator==(const self_type& rhs);
+    bool operator==(const self_type& rhs) const;
 
     // returns the logical NOT of the equality comparison
-    bool operator!=(const self_type& rhs);
+    bool operator!=(const self_type& rhs) const;
 
     // creates a copy of the origin, then swaps ownership with the copy
     self_type& operator=(const self_type& origin);
@@ -151,7 +151,7 @@ class Sorted_List
         /* Type definitions */
         typedef typename Node::value_type      value_type;
         typedef typename Node::const_reference const_reference;
-        typedef Node*                          pointer;
+        typedef typename Node::const_pointer   const_pointer;
         typedef const_forward_iterator         self_type;
 
         /* Constructors */
@@ -161,7 +161,7 @@ class Sorted_List
 
         // Value constructor initializers the pointer to point to the passed in
         // parameter
-        const_forward_iterator(pointer ptr) : node(ptr) {}
+        const_forward_iterator(Node* ptr) : node(ptr) {}
 
         /* Operator Overloads */
 
@@ -175,6 +175,9 @@ class Sorted_List
         // dereference operator allows a READ only inspection of the data member
         const_reference operator*() const;
 
+        // arrow operator allows returns a READ only reference to the data member
+        const_pointer operator->() const;
+
         // returns true if each iterator is pointing to the same address in
         // memory
         bool operator==(const self_type& rhs) const;
@@ -184,7 +187,7 @@ class Sorted_List
       
       private:
 
-        pointer node;
+        Node* node;
     };
 };
 

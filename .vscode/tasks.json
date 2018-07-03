@@ -28,6 +28,8 @@
                       "-I", "${workspaceFolder}/third_party/", "-I", "${workspaceFolder}/program1/include", "-I", "${workspaceFolder}/program1/src",
                       "${workspaceFolder}/third_party/tests_main.o", 
                       "${workspaceFolder}/program1/src/linked_list.cpp", 
+                      "${workspaceFolder}/program1/src/category.cpp", 
+                      "${workspaceFolder}/program1/src/project.cpp", 
                       "${workspaceFolder}/program1/tests/list_test.cpp", 
                       "-o", "${workspaceFolder}/program1/obj/debug/run_tests"
                       ],

@@ -179,7 +179,7 @@ typename Sorted_List<T>::const_iterator Sorted_List<T>::end() const
 
 /* Operator Overloads */
 template <typename T>
-bool Sorted_List<T>::operator==(const self_type& rhs)
+bool Sorted_List<T>::operator==(const self_type& rhs) const
 {
     if (rhs.size() != size())
     {
@@ -203,7 +203,7 @@ bool Sorted_List<T>::operator==(const self_type& rhs)
 }
 
 template <typename T>
-bool Sorted_List<T>::operator!=(const self_type& rhs)
+bool Sorted_List<T>::operator!=(const self_type& rhs) const
 {
     return !(*this == rhs);
 }
@@ -218,7 +218,7 @@ typename Sorted_List<T>::self_type& Sorted_List<T>::operator=(const self_type& o
     // Swap ownership of resources with the copy
     swap(*this, copy);
 
-    // As the copy goes out of scope is destructs with the old data with it
+    // As the copy goes out of scope it destructs with the old data
     return *this;
 }
 
@@ -277,5 +277,13 @@ Sorted_List<T>::const_iterator::operator*() const
 {
     return node->data;
 }
+
+template <typename T>
+typename Sorted_List<T>::const_iterator::const_pointer
+Sorted_List<T>::const_iterator::operator->() const
+{
+    return &node->data;
+}
+
 
 #endif //LINKED_LIST_CPP
