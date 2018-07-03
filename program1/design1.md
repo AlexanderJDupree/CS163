@@ -26,6 +26,7 @@ As for as the client-side programmer, he/she should only have knowledge of how t
 With this design consideration in mind, the data will flow simliar to this
 
 ![Imgur](https://i.imgur.com/pLgBIYe.png)
+
 - The user interacts with the interface generating _requests_ to add/remove/display a *category* of work or to add/remove/display a *project* within a *category*. 
 - The interface validates, cleans, and packages the user's input into a format the *database* will accept. 
 - The *database* will execute the _request_ by performing one of the following actions:
@@ -47,7 +48,7 @@ The *sorted list* is the primary data structure for this program. The *sorted_li
 The most imporant feature of the *sorted_list* structure is that it is fully-templated. This feature is to accomadate the requisite to create a _LLL_ that holds *category* objects, and have each *category* hold a _LLL_ of *projects*. Because of this requisite there seemed to be two options:
 1. Write the _LLL_ container to support a *project* _ADT_ and then duplicate that code; replacing any reference to a *project* _ADT_ with a *category* _ADT_. 
 
-    or
+or
 
 2. write the code once as a template and be done with it. 
 
@@ -67,6 +68,7 @@ The following is a summary of the *sorted_list* public interface:
 
 ### *Project*
 The *Project* _ADT_ stores attribute data relating to a specific *category* of work. For example:
+
 - If an Assignment *category* was created then its fields could be:
     1. Name
     2. Due Date
