@@ -1,7 +1,7 @@
 # File: makefile
 # Description: Basic makefile for automated buidls
 CC := g++
-CFLAGS := -std=c++98 -Wall -I ../third_party/ -I include -I src
+CFLAGS := -std=c++98 -Wall -g -I ../third_party/ -I include -I src
 TESTS_SRC := ../third_party/tests_main.cpp
 TESTS_MAIN := ../third_party/tests_main.o
 

@@ -47,6 +47,9 @@ TEST_CASE("Constructing strings", "[SString], [constructos]")
 
         bool assert = origin == copy;
         REQUIRE(assert);
+
+        assert = copy.length() == 11;
+        REQUIRE(assert);
     }
 
 }
@@ -78,6 +81,28 @@ TEST_CASE("Using copy-assignent operator for SString", "[SString], [operators], 
 
         bool assert = (copy = origin) == origin;
 
+        REQUIRE(assert);
+    }
+
+}
+
+TEST_CASE("Using comparison operators", "[SString], [operator]")
+{
+    SECTION("different strings")
+    {
+        SString aardvark("aardvark");
+        SString apple("apple");
+
+        bool assert = aardvark < apple;
+
+        REQUIRE(assert);
+    }
+    SECTION("compare inequality")
+    {
+        SString due("Due");
+        SString data("Data Structure");
+
+        bool assert = due != data;
         REQUIRE(assert);
     }
 }

@@ -40,13 +40,13 @@ TEST_CASE("Adding projects to the category", "[category], [modifier]")
 
         for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
         {
-            attributes[*it] =  "Value 1";
+            attributes.push_back("Value 1");
         }
 
         REQUIRE(assignments.add_project(attributes));
  
     }
-    /*SECTION("Adding duplicate projects")
+    SECTION("Adding duplicate projects")
     {
         SString keys[] = { "Name", "Due", "Data Structure" };
         Category::Fields fields(keys, keys + 3);
@@ -58,7 +58,7 @@ TEST_CASE("Adding projects to the category", "[category], [modifier]")
 
         for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
         {
-            attributes[*it] =  "Value 1";
+            attributes.push_back("Value 1");
         }
 
         REQUIRE(assignments.add_project(attributes));
@@ -67,6 +67,46 @@ TEST_CASE("Adding projects to the category", "[category], [modifier]")
     }
     SECTION("Adding multiple projects")
     {
-        
-    }*/
+        SString keys[] = { "Name", "Due Date", "Data Structure" };
+        Category::Fields fields(keys, keys + 3);
+
+        Category assignments("assignments", fields);
+
+        Project::Attributes attributes;
+        Category::Fields::const_iterator it;
+
+        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
+        {
+            attributes.push_back("Value 1");
+        }
+
+        REQUIRE(assignments.add_project(attributes));
+
+
+        attributes = Project::Attributes();
+        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
+        {
+            attributes.push_back("Value 2");
+        }
+
+
+        REQUIRE(assignments.add_project(attributes));
+ 
+        attributes = Project::Attributes();
+        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
+        {
+            attributes.push_back("Value 3");
+        }
+
+
+        REQUIRE(assignments.add_project(attributes));
+  
+        attributes = Project::Attributes();
+        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
+        {
+            attributes.push_back("Value 4");
+        }
+
+        REQUIRE(assignments.add_project(attributes));
+    }
 } 

@@ -22,7 +22,10 @@ SString::SString(const_pointer str, size_type size)
 SString::SString(const self_type& origin)
     : _capacity(origin._capacity), _length(0), _data(new char[_capacity])
 {
-    _length = copy(origin._data);
+    if (origin._length != 0)
+    {
+        _length = copy(origin._data);
+    }
 }
 
 SString::~SString()
@@ -74,6 +77,58 @@ bool SString::empty() const
     return _length == 0;
 }
 
+bool SString::compare_equal(const_pointer str) const
+{
+    // Strings are unintialized, cant compare
+    if (catch_null_exception(str) || catch_null_exception(_data))
+    {
+        return false;
+    }
+
+    size_type i = 0;
+    // Loop through each character until a null terminator is encountered OR
+    // The characters to not match
+    for (; _data[i] != '\0' && str[i] != '\0' && _data[i] == str[i]; ++i);
+
+    // The only way for each string to be equal is if each character matched
+    // And the strings are the same length
+    return i == _length && str[i] == '\0';
+}
+
+bool SString::compare_equal(const self_type& str) const
+{
+    if (_length != str._length)
+    {
+        return false;
+    }
+    if (_length == 0 && str._length == 0)
+    {
+        return true;
+    }
+
+    return compare_equal(str._data);
+}
+
+bool SString::compare_less_than(const_pointer str) const
+{   
+    // Strings are unintialized, cant compare
+    if (catch_null_exception(str) || catch_null_exception(_data))
+    {
+        return false;
+    }
+
+    size_type i = 0;
+    for(; _data[i] != '\0' && str[i] != '\0' && _data[i]; ++i)
+    {
+        if (_data[i] < str[i])
+        {
+            return true;
+        }
+    }
+
+    return _length < i;
+}
+
 SString::iterator SString::begin()
 {
     return _data;
@@ -114,6 +169,19 @@ void SString::validate_pointer(const_pointer str)
     throw std::invalid_argument("char pointer points to null");
 }
 
+bool SString::catch_null_exception(const_pointer str)
+{
+    try
+    {
+        validate_pointer(str);
+        return false;
+    }
+    catch(const std::invalid_argument& err)
+    {
+        return true;
+    }
+}
+
 /* Operator Overloads */
 SString::self_type& SString::operator=(const SString& str)
 {
@@ -140,7 +208,7 @@ std::ostream& operator << (std::ostream& os, const SString& str)
 
 bool operator==(const SString& lhs, const char* rhs)
 {
-    return std::strcmp(lhs._data, rhs) == 0;
+    return lhs.compare_equal(rhs);
 }
 bool operator==(const char* lhs, const SString& rhs)
 {
@@ -148,7 +216,7 @@ bool operator==(const char* lhs, const SString& rhs)
 }
 bool operator==(const SString& lhs, const SString& rhs)
 {
-    return lhs == rhs._data;
+    return lhs.compare_equal(rhs);
 }
 bool operator!=(const SString& lhs, const char* rhs)
 {
@@ -164,7 +232,7 @@ bool operator!=(const SString& lhs, const SString& rhs)
 }
 bool operator< (const SString& lhs, const char* rhs)
 {
-    return std::strcmp(lhs._data, rhs) < 0;
+    return lhs.compare_less_than(rhs);
 }
 bool operator< (const char* lhs, const SString& rhs)
 {

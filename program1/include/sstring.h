@@ -62,6 +62,16 @@ class SString
     // Tests if the string is empty;
     bool empty() const;
 
+    // Compares each character in each string returning false on any inequality
+    bool compare_equal(const_pointer str) const;
+
+    // Compares string length first, then compares the cstring
+    bool compare_equal(const self_type& str) const;
+
+    // Compares each character in each string returning true if str has a greater
+    // character
+    bool compare_less_than(const_pointer str) const;
+
     /* Iterators */
     // returns a random-access iterator to the beginning of the string
     iterator begin();
@@ -109,6 +119,7 @@ class SString
     pointer _data; // pointer the start of the cstring array
 
     static void validate_pointer(const_pointer);
+    static bool catch_null_exception(const_pointer);
 
 };
 

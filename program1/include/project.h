@@ -11,7 +11,7 @@ Date: 06/27/2018
 #ifndef PROJECT_H
 #define PROJECT_H
 
-#include <map>
+#include <vector>
 #include "sstring.h"
 
 class Project
@@ -19,7 +19,7 @@ class Project
   public:
     typedef Project                    self_type;
     typedef SString                    string;
-    typedef std::map<string, string>   Attributes;
+    typedef std::vector<string>        Attributes;
 
     Project();
 
@@ -31,8 +31,6 @@ class Project
 
     const string& name() const;
 
-    friend std::ostream& operator << (std::ostream& os, const self_type& project);
-
     bool operator == (const Project& rhs) const;
     bool operator != (const Project& rhs) const;
     bool operator < (const Project& rhs) const;
@@ -43,8 +41,6 @@ class Project
   private:
 
     Attributes _attributes;
-   
-    string _name;
 };
 
 #endif // PROJECT_H
