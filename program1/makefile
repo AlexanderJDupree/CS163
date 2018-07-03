@@ -2,6 +2,9 @@
 # Description: Basic makefile for automated buidls
 CC := g++
 CFLAGS := -std=c++98 -Wall -g -I ../third_party/ -I include -I src
+SRC_DIR := src/
+OBJ_DIR := obj/
+TARGET := obj/debug/runTests
 TESTS_SRC := ../third_party/tests_main.cpp
 TESTS_MAIN := ../third_party/tests_main.o
 
@@ -40,3 +43,10 @@ obj/linked_list.o: src/linked_list.cpp
 
 TESTS_MAIN: $(TESTS_SRC)
 	$(CC) $(CFLAGS) -c $(TESTS_SRC) -o $(TESTS_MAIN)
+
+.PHONEY: clean
+
+clean:
+	rm $(OBJ_DIR)/*.o
+	rm $(TARGET)
+	rm $(TESTS_MAIN)
