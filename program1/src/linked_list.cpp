@@ -278,4 +278,12 @@ Sorted_List<T>::const_iterator::operator*() const
     return node->data;
 }
 
+template <typename T>
+typename Sorted_List<T>::const_iterator::const_pointer
+Sorted_List<T>::const_iterator::operator->() const
+{
+    return &node->data;
+}
+
+
 #endif //LINKED_LIST_CPP

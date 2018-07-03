@@ -11,26 +11,41 @@ Date: 06/27/2018
 #ifndef CATEGORY_H
 #define CATEGORY_H
 
+#include <vector>
 #include "linked_list.h"
 #include "project.h"
+
 
 class Category
 {
   public:
-    typedef const char*          string;
-    typedef Category             self_type;
-    typedef Sorted_List<Project> Projects;
+    typedef SString                  string;
+    typedef Category                 self_type;
+    typedef Sorted_List<Project>     Projects;
+    typedef std::vector<string>      Fields;
+    typedef Projects::const_iterator const_iterator;
+    typedef Projects::size_type      size_type;
 
-    Category();
+    Category(const string& name, const Fields& fields);
 
     Category(const Category& category);
 
-    ~Category();
+    ~Category() {}
 
-    // Add a project
-    // find a project
-    // get a project
+    const string& name();
 
+    const Fields& fields();
+
+    bool add_project(Project::Attributes attributes);
+
+    const_iterator find_project(const string& name);
+
+    const_iterator begin() const;
+    const_iterator end() const;
+
+    size_type size() const;
+
+    bool operator == (const self_type& rhs);
     bool operator != (const self_type& rhs);
     bool operator < (const self_type& rhs);
     bool operator > (const self_type& rhs);
@@ -41,9 +56,11 @@ class Category
 
   private:
 
-    string name; // The name of this category
+    string _name; // The name of this category
 
-    Projects projects; // The projects belonging to this category
+    Fields _fields; // The valid field data for each project
+
+    Projects _projects; // The projects belonging to this category
 
 };
 

@@ -29,7 +29,7 @@ class Interface
 
     typedef std::vector<menu_item*> Menu;
 
-    Interface() {}
+    Interface();
 
     Interface(Menu& options);
 

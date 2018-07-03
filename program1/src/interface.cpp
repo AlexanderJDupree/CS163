@@ -10,6 +10,8 @@ Date: 06/27/2018
 
 #include "interface.h"
 
+Interface::Interface() : options(Menu()) {}
+
 Interface::Interface(Menu& options) : options(options) {}
 
 void Interface::build_menu(Menu& options)

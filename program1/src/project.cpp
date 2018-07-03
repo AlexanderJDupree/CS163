@@ -10,45 +10,44 @@ Date: 06/27/2018
 
 #include "project.h"
 
-Project::Project() : attributes(Attributes()) {}
+Project::Project() 
+    : _attributes(Attributes()), _name("") {}
 
-Project::Project(Attributes args) : attributes(args) {}
+Project::Project(const Attributes& args)
+    : _attributes(args) 
+{
+    Attributes::const_iterator it;
+    if((it = args.find("Name")) == args.end())
+    {
+        throw std::invalid_argument("Name identifier not found");
+    }
+
+    _name = it->second;
+}
+
+Project::Project(const Project& project)
+    : _attributes(project._attributes) {}
 
 Project::~Project() {}
 
-Project::iterator Project::begin()
+const Project::string& Project::name() const
 {
-    return attributes.begin();
-}
-
-Project::const_iterator Project::begin() const
-{
-    return attributes.begin();
-}
-
-Project::iterator Project::end()
-{
-    return attributes.end();
-}
-
-Project::const_iterator Project::end() const
-{
-    return attributes.end();
+    return _name;
 }
 
 std::ostream& operator << (std::ostream& os, const Project& project)
 {
-    Project::const_iterator it;
-    for (it = project.begin(); it != project.end(); ++it)
+    Project::Attributes::const_iterator it;
+    for(it = project._attributes.begin(); it != project._attributes.end(); ++it)
     {
-        os << it->key << ":\t" << it->value << std::endl;
+        os << it->first << ":\t" << it->second << std::endl;
     }
     return os;
 }
 
-bool Project::operator==(const Project& rhs) const
+bool Project::operator == (const Project& rhs) const
 {
-    return attributes == rhs.attributes;
+    return _name == rhs._name;
 }
 
 bool Project::operator != (const Project& rhs) const
@@ -58,7 +57,7 @@ bool Project::operator != (const Project& rhs) const
 
 bool Project::operator < (const Project& rhs) const
 {
-    return attributes < rhs.attributes;
+    return _name < rhs._name;
 }
 
 bool Project::operator > (const Project& rhs) const

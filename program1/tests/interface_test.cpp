@@ -45,21 +45,16 @@ TEST_CASE("Building a menu", "[interface], [menu]")
     {
         Interface UI;
 
-        UI.display_menu();
+       // UI.display_menu();
     }
     SECTION("Building and displaying a menu")
     {
-        option_1 opt;
-        option_2 opt2;
-        option_3 opt3;
-        Interface::Menu menu;
-
-        menu.push_back(&opt);
-        menu.push_back(&opt2);
-        menu.push_back(&opt3);
+        menu_item* menus[] = {new option_1(), new option_2(), new option_3()};
+        Interface::Menu menu(menus, menus + 3);
 
         Interface UI(menu);
 
-        UI.display_menu();
+        //UI.display_menu();
+
     }
 }
