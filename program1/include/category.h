@@ -28,6 +28,10 @@ class Category
 
     Category(const string& name, const Fields& fields);
 
+    template <class InputIterator>
+    Category(const string& name, InputIterator begin, InputIterator end)
+        : _name(name), _fields(Fields(begin, end)), _projects(Projects()) {}
+
     Category(const Category& category);
 
     ~Category() {}
@@ -36,7 +40,7 @@ class Category
 
     const Fields& fields();
 
-    bool add_project(Project::Attributes attributes);
+    bool add_project(Fields attributes);
 
     const_iterator find_project(const string& name);
 

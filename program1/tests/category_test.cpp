@@ -35,13 +35,7 @@ TEST_CASE("Adding projects to the category", "[category], [modifier]")
 
         Category assignments("assignments", fields);
 
-        Project::Attributes attributes;
-        Category::Fields::const_iterator it;
-
-        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
-        {
-            attributes.push_back("Value 1");
-        }
+        Category::Fields attributes(3, "Value 1");
 
         REQUIRE(assignments.add_project(attributes));
  
@@ -53,13 +47,7 @@ TEST_CASE("Adding projects to the category", "[category], [modifier]")
 
         Category assignments("assignments", fields);
 
-        Project::Attributes attributes;
-        Category::Fields::const_iterator it;
-
-        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
-        {
-            attributes.push_back("Value 1");
-        }
+        Category::Fields attributes(3, "Value 1");
 
         REQUIRE(assignments.add_project(attributes));
 
@@ -72,41 +60,45 @@ TEST_CASE("Adding projects to the category", "[category], [modifier]")
 
         Category assignments("assignments", fields);
 
-        Project::Attributes attributes;
-        Category::Fields::const_iterator it;
 
-        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
-        {
-            attributes.push_back("Value 1");
-        }
+        Category::Fields attributes(3, "Value 1");
 
         REQUIRE(assignments.add_project(attributes));
 
 
-        attributes = Project::Attributes();
-        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
-        {
-            attributes.push_back("Value 2");
-        }
-
+        attributes = Category::Fields(3, "Value 2");
 
         REQUIRE(assignments.add_project(attributes));
  
-        attributes = Project::Attributes();
-        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
-        {
-            attributes.push_back("Value 3");
-        }
 
+        attributes = Category::Fields(3, "Value 3");
 
         REQUIRE(assignments.add_project(attributes));
-  
-        attributes = Project::Attributes();
-        for(it = assignments.fields().begin(); it != assignments.fields().end(); ++it)
-        {
-            attributes.push_back("Value 4");
-        }
+
+
+        attributes = Category::Fields(3, "Value 4");
 
         REQUIRE(assignments.add_project(attributes));
     }
+    SECTION("Adding invalid project attributes")
+    {
+        SString keys[] = { "Name", "Due Date", "Data Structure" };
+        Category::Fields fields(keys, keys + 3);
+
+        Category assignments("assignments", fields);
+
+        Category::Fields attributes;
+
+        REQUIRE(!assignments.add_project(attributes));
+    }
 } 
+
+TEST_CASE("Finding projects", "[category], [find]")
+{
+    SECTION("A populated category")
+    {
+        SString fields[] = { "Name", "Due Date", "Data Structure" };
+        Category labs("labs", fields, fields + 3);
+
+    }
+}

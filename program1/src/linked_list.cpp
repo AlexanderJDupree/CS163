@@ -15,7 +15,19 @@ Date: 06/27/2018
 #include "linked_list.h"
 
 template <typename T>
-Sorted_List<T>::Sorted_List() : head(NULL), tail(NULL), _size(0) {}
+Sorted_List<T>::Sorted_List() 
+    : head(NULL), tail(NULL), _size(0) {}
+
+template <typename T>
+template <class InputIterator>
+Sorted_List<T>::Sorted_List(InputIterator begin, InputIterator end) 
+    : head(NULL), tail(NULL), _size(0)
+{
+    for(; begin != end; ++begin)
+    {
+        push_back(*begin);
+    }
+}
 
 template <typename T>
 Sorted_List<T>::Sorted_List(const Sorted_List<T>& origin) 
@@ -35,9 +47,8 @@ Sorted_List<T>::~Sorted_List()
 }
 
 /* Modifiers */
-
 template <typename T>
-bool Sorted_List<T>::add(const_reference data)
+bool Sorted_List<T>::add_unique(const_reference data)
 {
     if(empty() || data < head->data)
     {
@@ -51,7 +62,7 @@ bool Sorted_List<T>::add(const_reference data)
 template <typename T>
 bool Sorted_List<T>::insert(Node* current, const_reference data)
 {
-    // return is we've looked at every node or data is duplicated
+    // return if we've looked at every node or data is duplicated
     if (current->data == data)
     {
         return false;

@@ -23,9 +23,14 @@ const Category::Fields& Category::fields()
     return _fields;
 }
 
-bool Category::add_project(Project::Attributes attributes)
+bool Category::add_project(Fields attributes)
 {
-    return _projects.add(Project(attributes));
+    if (attributes.size() != _fields.size())
+    {
+        return false;
+    }
+
+    return _projects.add_unique(Project(attributes));
 }
 
 Category::const_iterator Category::find_project(const string& name)

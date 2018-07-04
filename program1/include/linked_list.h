@@ -34,15 +34,25 @@ class Sorted_List
     // Instantiates an EMPTY list
     Sorted_List();
 
+    // Ranged based constructor
+    template <class InputIterator>
+    Sorted_List(InputIterator begin, InputIterator end);
+
     // Copies each element in the original list onto this list
     Sorted_List(const Sorted_List<T>& origin);
    
     // Uses clear() to delete each element in the list
     ~Sorted_List();
-    
+     
+    // Adds an element to the front of the list
+    void push_front(const_reference data);
+
+    // Adds an element to the back of the list
+    void push_back(const_reference data);
+
     // Inserts UNIQUE data into a position in the list that will keep the list 
     // in a SORTED state
-    bool add(const_reference data);
+    bool add_unique(const_reference data); 
 
     // wrapper method for clear_list, if the list is empty does nothing
     void clear();
@@ -122,15 +132,7 @@ class Sorted_List
     // Inserts into that position
     bool insert(Node* current, const_reference data);
 
-     
-    // Adds an element to the front of the list
-    void push_front(const_reference data);
-
-    // Adds an element to the back of the list
-    void push_back(const_reference data);
-
-
-  public:
+    public:
 
     /*
     @class: const_forward_iterator
