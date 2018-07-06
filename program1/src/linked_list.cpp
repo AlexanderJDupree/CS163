@@ -137,6 +137,7 @@ void Sorted_List<T>::clear()
 
     // clear_list is a recursive function that deletes each node of the list
     clear_list(head);
+    _size = 0;
     return;
 }
 
