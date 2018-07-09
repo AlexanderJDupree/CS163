@@ -12,22 +12,22 @@ Date: 06/27/2018
 #include <catch.hpp>
 #include "linked_list.h"
 
-TEST_CASE("Constructing Sorted_List objects", "[list], [constructors]")
+TEST_CASE("Constructing linear_linked_list objects", "[list], [constructors]")
 {
     SECTION("Default construction")
     {
-        Sorted_List<int> list;
+        linear_linked_list<int> list;
 
         REQUIRE(list.empty());
     }
     SECTION("Copy construction")
     {
-        Sorted_List<int> origin;
-        origin.add(1);
-        origin.add(3);
-        origin.add(2);
+        linear_linked_list<int> origin;
+        origin.add_unique(1);
+        origin.add_unique(3);
+        origin.add_unique(2);
 
-        Sorted_List<int> copy(origin);
+        linear_linked_list<int> copy(origin);
 
         bool assert = origin == copy;
         REQUIRE(assert);
@@ -35,13 +35,43 @@ TEST_CASE("Constructing Sorted_List objects", "[list], [constructors]")
         assert = copy.size() == 3;
         REQUIRE(assert);
     }
+    SECTION("Range based construction on a populated array")
+    {
+        int nums[] = {1, 2, 3, 4, 5};
+
+        linear_linked_list<int> list(nums, nums + 5);
+
+        linear_linked_list<int>::const_iterator it;
+        int i = 0;
+        for(it = list.begin(); it != list.end(); ++it)
+        {
+            bool assert = *it == nums[i++];
+            REQUIRE(assert);
+        }
+    }
+    SECTION("Range base construction on an empty array")
+    {
+        int nums[3];
+
+        linear_linked_list<int> list(nums, nums + 3);
+
+        linear_linked_list<int>::const_iterator it;
+
+        int i = 0;
+
+        for(it = list.begin(); it != list.end(); ++it)
+        {
+            bool assert = *it == nums[i++];
+            REQUIRE(assert);
+        }
+    }
 }
 
 TEST_CASE("Using clear to erase the list", "[list], [clear], [destructor]")
 {
     SECTION("An empty list")
     {
-        Sorted_List<char> list;
+        linear_linked_list<char> list;
 
         list.clear();
 
@@ -49,11 +79,11 @@ TEST_CASE("Using clear to erase the list", "[list], [clear], [destructor]")
     }
     SECTION("A populated list")
     {
-        Sorted_List<char> list;
+        linear_linked_list<char> list;
 
-        list.add('a');
-        list.add('b');
-        list.add('c');
+        list.add_unique('a');
+        list.add_unique('b');
+        list.add_unique('c');
 
         list.clear();
 
@@ -66,19 +96,19 @@ TEST_CASE("Using add to insert elements into sorted order", "[list], [modifiers]
 {
     SECTION("An empty list")
     {
-        Sorted_List<int> list;
+        linear_linked_list<int> list;
 
-        REQUIRE(list.add(5));
-        REQUIRE(list.add(4));
-        REQUIRE(list.add(8));
-        REQUIRE(list.add(6));
+        REQUIRE(list.add_unique(5));
+        REQUIRE(list.add_unique(4));
+        REQUIRE(list.add_unique(8));
+        REQUIRE(list.add_unique(6));
 
-        REQUIRE(list.add(5) == false);
+        REQUIRE(list.add_unique(5) == false);
 
         int nums[] = {4, 5, 6, 8};
         int i = 0;
 
-        for (Sorted_List<int>::const_iterator it = list.begin(); it != list.end(); ++it)
+        for (linear_linked_list<int>::const_iterator it = list.begin(); it != list.end(); ++it)
         {
             bool assert = *it == nums[i++];
             REQUIRE(assert);
@@ -90,18 +120,18 @@ TEST_CASE("Using swap to reassign data", "[list], [swap]")
 {
     SECTION("An empty list and a populated list")
     {
-        Sorted_List<int> old;
+        linear_linked_list<int> old;
 
-        old.add(3);
-        old.add(1);
-        old.add(2);
+        old.add_unique(3);
+        old.add_unique(1);
+        old.add_unique(2);
 
-        Sorted_List<int> list;
+        linear_linked_list<int> list;
 
-        Sorted_List<int>::swap(list, old);
+        linear_linked_list<int>::swap(list, old);
 
         int i = 1;
-        for (Sorted_List<int>::const_iterator it = list.begin(); it != list.end(); ++it)
+        for (linear_linked_list<int>::const_iterator it = list.begin(); it != list.end(); ++it)
         {
             bool assert = *it == i++;
             REQUIRE(assert);
@@ -109,10 +139,10 @@ TEST_CASE("Using swap to reassign data", "[list], [swap]")
     }
     SECTION("two empty lists")
     {
-        Sorted_List<int> old;
-        Sorted_List<int> list;
+        linear_linked_list<int> old;
+        linear_linked_list<int> list;
 
-        Sorted_List<int>::swap(list, old);
+        linear_linked_list<int>::swap(list, old);
 
         bool assert = old == list;
         REQUIRE(assert);
@@ -124,13 +154,13 @@ TEST_CASE("Using the copy-assignment operator", "[list], [operators], [copy-assi
 {
     SECTION("An empty list and a populated list")
     {
-        Sorted_List<int> old;
+        linear_linked_list<int> old;
 
-        old.add(3);
-        old.add(1);
-        old.add(2);
+        old.add_unique(3);
+        old.add_unique(1);
+        old.add_unique(2);
 
-        Sorted_List<int> list;
+        linear_linked_list<int> list;
 
         list = old;
 
@@ -139,8 +169,8 @@ TEST_CASE("Using the copy-assignment operator", "[list], [operators], [copy-assi
     }
     SECTION("two empty lists")
     {
-        Sorted_List<int> old;
-        Sorted_List<int> list;
+        linear_linked_list<int> old;
+        linear_linked_list<int> list;
 
         old = list;
 

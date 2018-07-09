@@ -14,7 +14,7 @@ Date: 06/27/2018
 #include <cstddef> // NULL
 
 template <typename T>
-class Sorted_List
+class linear_linked_list
 {
   public:
 
@@ -29,20 +29,20 @@ class Sorted_List
     typedef const T*               const_pointer;
     typedef size_t                 size_type;
     typedef const_forward_iterator const_iterator;
-    typedef Sorted_List<T>         self_type;
+    typedef linear_linked_list<T>  self_type;
 
     // Instantiates an EMPTY list
-    Sorted_List();
+    linear_linked_list();
 
     // Ranged based constructor
     template <class InputIterator>
-    Sorted_List(InputIterator begin, InputIterator end);
+    linear_linked_list(InputIterator begin, InputIterator end);
 
     // Copies each element in the original list onto this list
-    Sorted_List(const Sorted_List<T>& origin);
+    linear_linked_list(const self_type& origin);
    
     // Uses clear() to delete each element in the list
-    ~Sorted_List();
+    ~linear_linked_list();
      
     // Adds an element to the front of the list
     void push_front(const_reference data);

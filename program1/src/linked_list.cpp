@@ -15,12 +15,12 @@ Date: 06/27/2018
 #include "linked_list.h"
 
 template <typename T>
-Sorted_List<T>::Sorted_List() 
+linear_linked_list<T>::linear_linked_list() 
     : head(NULL), tail(NULL), _size(0) {}
 
 template <typename T>
 template <class InputIterator>
-Sorted_List<T>::Sorted_List(InputIterator begin, InputIterator end) 
+linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end) 
     : head(NULL), tail(NULL), _size(0)
 {
     for(; begin != end; ++begin)
@@ -30,10 +30,10 @@ Sorted_List<T>::Sorted_List(InputIterator begin, InputIterator end)
 }
 
 template <typename T>
-Sorted_List<T>::Sorted_List(const Sorted_List<T>& origin) 
+linear_linked_list<T>::linear_linked_list(const self_type& origin) 
     : head(NULL), tail(NULL), _size(0)
 {
-    Sorted_List<T>::const_iterator it;
+    const_iterator it;
     for (it = origin.begin(); it != origin.end(); ++it)
     {
         push_back(*it);
@@ -41,14 +41,14 @@ Sorted_List<T>::Sorted_List(const Sorted_List<T>& origin)
 }
 
 template <typename T>
-Sorted_List<T>::~Sorted_List()
+linear_linked_list<T>::~linear_linked_list()
 {
     clear();
 }
 
 /* Modifiers */
 template <typename T>
-bool Sorted_List<T>::add_unique(const_reference data)
+bool linear_linked_list<T>::add_unique(const_reference data)
 {
     if(empty() || data < head->data)
     {
@@ -60,7 +60,7 @@ bool Sorted_List<T>::add_unique(const_reference data)
 }
 
 template <typename T>
-bool Sorted_List<T>::insert(Node* current, const_reference data)
+bool linear_linked_list<T>::insert(Node* current, const_reference data)
 {
     // return if we've looked at every node or data is duplicated
     if (current->data == data)
@@ -92,7 +92,7 @@ bool Sorted_List<T>::insert(Node* current, const_reference data)
 }
 
 template <typename T>
-void Sorted_List<T>::push_front(const_reference data)
+void linear_linked_list<T>::push_front(const_reference data)
 {
     Node* temp = new Node(data);
 
@@ -110,7 +110,7 @@ void Sorted_List<T>::push_front(const_reference data)
 }
 
 template <typename T>
-void Sorted_List<T>::push_back(const_reference data)
+void linear_linked_list<T>::push_back(const_reference data)
 {
     if(empty())
     {
@@ -128,7 +128,7 @@ void Sorted_List<T>::push_back(const_reference data)
 }
 
 template <typename T>
-void Sorted_List<T>::clear()
+void linear_linked_list<T>::clear()
 {
     if(empty())
     {
@@ -142,7 +142,7 @@ void Sorted_List<T>::clear()
 }
 
 template <typename T>
-void Sorted_List<T>::clear_list(Node*& current)
+void linear_linked_list<T>::clear_list(Node*& current)
 {
     // While the current node pointer is not at the end of the list
     if (current != tail)
@@ -160,7 +160,7 @@ void Sorted_List<T>::clear_list(Node*& current)
 
 /* Capacity Functions */
 template <typename T>
-bool Sorted_List<T>::empty() const
+bool linear_linked_list<T>::empty() const
 {
     /*
     Because head is only NULL, or 0, when the list is empty we can return the 
@@ -171,35 +171,35 @@ bool Sorted_List<T>::empty() const
 }
 
 template <typename T>
-typename Sorted_List<T>::size_type Sorted_List<T>::size() const
+typename linear_linked_list<T>::size_type linear_linked_list<T>::size() const
 {
     return _size;
 }
 
 /* ITERATORS */
 template <typename T>
-typename Sorted_List<T>::const_iterator Sorted_List<T>::begin() const
+typename linear_linked_list<T>::const_iterator linear_linked_list<T>::begin() const
 {
     return const_iterator(head);
 }
 
 template <typename T>
-typename Sorted_List<T>::const_iterator Sorted_List<T>::end() const
+typename linear_linked_list<T>::const_iterator linear_linked_list<T>::end() const
 {
     return const_iterator(NULL);
 }
 
 /* Operator Overloads */
 template <typename T>
-bool Sorted_List<T>::operator==(const self_type& rhs) const
+bool linear_linked_list<T>::operator==(const self_type& rhs) const
 {
     if (rhs.size() != size())
     {
         return false;
     }
 
-    Sorted_List<T>::const_iterator left = begin();
-    Sorted_List<T>::const_iterator right = rhs.begin();
+    const_iterator left = begin();
+    const_iterator right = rhs.begin();
 
     while(left != end())
     {
@@ -215,17 +215,18 @@ bool Sorted_List<T>::operator==(const self_type& rhs) const
 }
 
 template <typename T>
-bool Sorted_List<T>::operator!=(const self_type& rhs) const
+bool linear_linked_list<T>::operator!=(const self_type& rhs) const
 {
     return !(*this == rhs);
 }
 
 template <typename T>
-typename Sorted_List<T>::self_type& Sorted_List<T>::operator=(const self_type& origin)
+typename linear_linked_list<T>::self_type& 
+linear_linked_list<T>::operator=(const self_type& origin)
 {
     // Create a copy of the list, if an exception is thrown then the state of 
     // original list and our list is unchanged
-    Sorted_List<T> copy(origin);
+    linear_linked_list<T> copy(origin);
 
     // Swap ownership of resources with the copy
     swap(*this, copy);
@@ -235,7 +236,7 @@ typename Sorted_List<T>::self_type& Sorted_List<T>::operator=(const self_type& o
 }
 
 template <typename T>
-void Sorted_List<T>::swap(self_type& new_list, self_type& old_list)
+void linear_linked_list<T>::swap(self_type& new_list, self_type& old_list)
 {
     using std::swap;
 
@@ -251,8 +252,8 @@ ITERATOR CLASS
 
 /* Operator Overloads */
 template <typename T>
-typename Sorted_List<T>::const_iterator& 
-Sorted_List<T>::const_iterator::operator++()
+typename linear_linked_list<T>::const_iterator& 
+linear_linked_list<T>::const_iterator::operator++()
 {
     // reassign node member to point to the next element in the container
     node = node->next;
@@ -260,8 +261,8 @@ Sorted_List<T>::const_iterator::operator++()
 }
 
 template <typename T>
-typename Sorted_List<T>::const_iterator& 
-Sorted_List<T>::const_iterator::operator++(int)
+typename linear_linked_list<T>::const_iterator& 
+linear_linked_list<T>::const_iterator::operator++(int)
 {
     // Create a copy to satisfy postfix incrementation requirements
     self_type copy = self_type(*this);
@@ -270,32 +271,31 @@ Sorted_List<T>::const_iterator::operator++(int)
 }
 
 template <typename T>
-bool Sorted_List<T>::const_iterator::operator==(const self_type& rhs) const
+bool linear_linked_list<T>::const_iterator::operator==(const self_type& rhs) const
 {
     // Compare memory addresses, NOT the value of the data member
     return node == rhs.node;
 }
 
 template <typename T>
-bool Sorted_List<T>::const_iterator::operator!=(const self_type& rhs) const
+bool linear_linked_list<T>::const_iterator::operator!=(const self_type& rhs) const
 {
     // return the logical NOT of the equality comparison
     return !(*this == rhs);
 }
 
 template <typename T>
-typename Sorted_List<T>::const_iterator::const_reference 
-Sorted_List<T>::const_iterator::operator*() const
+typename linear_linked_list<T>::const_iterator::const_reference 
+linear_linked_list<T>::const_iterator::operator*() const
 {
     return node->data;
 }
 
 template <typename T>
-typename Sorted_List<T>::const_iterator::const_pointer
-Sorted_List<T>::const_iterator::operator->() const
+typename linear_linked_list<T>::const_iterator::const_pointer
+linear_linked_list<T>::const_iterator::operator->() const
 {
     return &node->data;
 }
-
 
 #endif //LINKED_LIST_CPP

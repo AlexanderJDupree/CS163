@@ -19,12 +19,12 @@ Date: 06/27/2018
 class Category
 {
   public:
-    typedef SString                  string;
-    typedef Category                 self_type;
-    typedef Sorted_List<Project>     Projects;
-    typedef std::vector<string>      Fields;
-    typedef Projects::const_iterator const_iterator;
-    typedef Projects::size_type      size_type;
+    typedef SString                     string;
+    typedef Category                    self_type;
+    typedef linear_linked_list<Project> Projects;
+    typedef std::vector<string>         Fields;
+    typedef Projects::const_iterator    const_iterator;
+    typedef Projects::size_type         size_type;
 
     Category(const string& name, const Fields& fields);
 
