@@ -50,6 +50,9 @@ class linear_linked_list
     // Adds an element to the back of the list
     void push_back(const_reference data);
 
+    // Removes the element at the front of the list
+    void pop_front();
+
     // Inserts UNIQUE data into a position in the list that will keep the list 
     // in a SORTED state
     bool add_unique(const_reference data); 
@@ -59,6 +62,10 @@ class linear_linked_list
 
     // returns true if the list is empty
     bool empty() const;
+
+    // Removes the first item fullfilling the predicate functor
+    template <class Predicate>
+    bool remove_if(Predicate pred);
 
     // returns the number of elements in the list
     size_type size() const;
@@ -131,6 +138,11 @@ class linear_linked_list
     // Recursively travel the list until data compares '<' than the next element
     // Inserts into that position
     bool insert(Node* current, const_reference data);
+
+    // Recursively travels the list removing the first element fullfiling the
+    // Predicate functor
+    template <class Predicate>
+    bool remove_if(Predicate pred, Node* current);
 
     public:
 

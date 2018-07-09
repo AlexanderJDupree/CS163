@@ -30,7 +30,7 @@ bool Category::add_project(Fields attributes)
         return false;
     }
 
-    return _projects.add_unique(Project(attributes));
+    return true;
 }
 
 Category::const_iterator Category::find_project(const string& name)
@@ -38,7 +38,7 @@ Category::const_iterator Category::find_project(const string& name)
     const_iterator it;
     for (it = _projects.begin(); it != _projects.end(); ++it)
     {
-        if (it->name() == name)
+        if (it->identifier() == name)
         {
             return it;
         }

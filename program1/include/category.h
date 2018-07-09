@@ -11,7 +11,6 @@ Date: 06/27/2018
 #ifndef CATEGORY_H
 #define CATEGORY_H
 
-#include <vector>
 #include "linked_list.h"
 #include "project.h"
 
@@ -22,7 +21,7 @@ class Category
     typedef SString                     string;
     typedef Category                    self_type;
     typedef linear_linked_list<Project> Projects;
-    typedef std::vector<string>         Fields;
+    typedef linear_linked_list<string>  Fields;
     typedef Projects::const_iterator    const_iterator;
     typedef Projects::size_type         size_type;
 

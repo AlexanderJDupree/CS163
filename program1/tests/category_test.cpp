@@ -12,6 +12,7 @@ Date: 06/27/2018
 #include <catch.hpp>
 #include "category.h"
 
+
 TEST_CASE("Constructing categories", "[category], [constructors]")
 {
     SECTION("Default construction")
@@ -25,7 +26,7 @@ TEST_CASE("Constructing categories", "[category], [constructors]")
         REQUIRE(assert);
     }
 } 
-
+/*
 TEST_CASE("Adding projects to the category", "[category], [modifier]")
 {
     SECTION("Adding one project")
@@ -102,3 +103,4 @@ TEST_CASE("Finding projects", "[category], [find]")
 
     }
 }
+*/

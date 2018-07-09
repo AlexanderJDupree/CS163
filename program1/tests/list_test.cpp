@@ -178,3 +178,65 @@ TEST_CASE("Using the copy-assignment operator", "[list], [operators], [copy-assi
         REQUIRE(assert);
     }
 }
+
+struct remove_seven
+{
+    bool operator() (const int& value)
+    {
+        return value == 7;
+    }
+};
+
+TEST_CASE("Using functors to remove a specific element", "[list], [operations]")
+{
+    SECTION("remove_if with a value constructed functor")
+    {
+        remove_seven functor;
+
+        int nums[] = { 1, 2, 3, 4, 7, 5, 6 };
+
+        linear_linked_list<int> list(nums, nums + 7);
+
+        REQUIRE(list.remove_if(functor));
+
+        int i = 0;
+        linear_linked_list<int>::const_iterator it;
+        for (it = list.begin(); it != list.end(); ++it)
+        {
+            bool assert = *it == ++i;
+            REQUIRE(assert);
+        }
+    }
+    SECTION("remove_if with the element as the head")
+    {
+        int nums[] = { 7, 1, 2, 3, 4, 5, 6 };
+
+        linear_linked_list<int> list(nums, nums + 7);
+
+        REQUIRE(list.remove_if(remove_seven()));
+
+        int i = 0;
+        linear_linked_list<int>::const_iterator it;
+        for (it = list.begin(); it != list.end(); ++it)
+        {
+            bool assert = *it == ++i;
+            REQUIRE(assert);
+        }
+    }
+    SECTION("remove_if with the element as the tail")
+    {
+        int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
+
+        linear_linked_list<int> list(nums, nums + 7);
+
+        REQUIRE(list.remove_if(remove_seven()));
+
+        int i = 0;
+        linear_linked_list<int>::const_iterator it;
+        for (it = list.begin(); it != list.end(); ++it)
+        {
+            bool assert = *it == ++i;
+            REQUIRE(assert);
+        }
+    }
+}

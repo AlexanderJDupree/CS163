@@ -11,7 +11,7 @@ Date: 06/27/2018
 #ifndef LINKED_LIST_CPP
 #define LINKED_LIST_CPP
 
-#include <iostream>
+#include <iostream> // DEBUG PURPOSES
 #include "linked_list.h"
 
 template <typename T>
@@ -128,6 +128,30 @@ void linear_linked_list<T>::push_back(const_reference data)
 }
 
 template <typename T>
+void linear_linked_list<T>::pop_front()
+{
+    if (empty())
+    {
+        return;
+    }
+
+    Node* temp = head->next;
+
+    // Edge case, there is only one element in the list
+    if (tail == head)
+    {
+        tail = temp;
+    }
+
+    delete head;
+
+    head = temp;
+
+    return;
+    
+}
+
+template <typename T>
 void linear_linked_list<T>::clear()
 {
     if(empty())
@@ -168,6 +192,53 @@ bool linear_linked_list<T>::empty() const
     */
 
     return !(head);
+}
+
+template <typename T>
+template <class Predicate>
+bool linear_linked_list<T>::remove_if(Predicate pred)
+{
+    if (empty())
+    {
+        return false;
+    }
+
+    if(pred(head->data))
+    {
+        pop_front();
+        return true;
+    }
+
+    return remove_if(pred, head);
+}
+
+template <typename T>
+template <class Predicate>
+bool linear_linked_list<T>::remove_if(Predicate pred, Node* current)
+{
+    // Base case: no element in the list fulfills the predicate
+    if(current == tail)
+    {
+        return false;
+    }
+
+    // Predicate fulfilled, remove next element
+    if(pred(current->next->data))
+    {
+        Node* temp = current->next;
+        current->next = temp->next;
+
+        if (tail == temp)
+        {
+            tail = current;
+        }
+
+        delete temp;
+
+        return true;
+    }
+
+    return remove_if(pred, current->next);
 }
 
 template <typename T>

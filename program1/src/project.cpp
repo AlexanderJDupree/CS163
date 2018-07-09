@@ -11,24 +11,21 @@ Date: 06/27/2018
 #include "project.h"
 
 Project::Project() 
-    : _attributes(Attributes()) {}
-
-Project::Project(const Attributes& args)
-    : _attributes(args) {}
+    : _attributes(Attributes()), _identifier("") {}
 
 Project::Project(const Project& src)
-    : _attributes(src._attributes) {}
+    : _attributes(src._attributes), _identifier(src._identifier) {}
 
 Project::~Project() {}
 
-const Project::string& Project::name() const
+const Project::string& Project::identifier() const
 {
-    return _attributes[0];
+    return _identifier;
 }
 
 bool Project::operator == (const Project& rhs) const
 {
-    return _attributes[0] == rhs._attributes[0];
+    return _identifier == rhs._identifier;
 }
 
 bool Project::operator != (const Project& rhs) const
@@ -38,7 +35,7 @@ bool Project::operator != (const Project& rhs) const
 
 bool Project::operator < (const Project& rhs) const
 {
-    return _attributes[0] < rhs._attributes[0];
+    return _identifier < rhs._identifier;
 }
 
 bool Project::operator > (const Project& rhs) const
