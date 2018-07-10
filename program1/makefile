@@ -2,51 +2,38 @@
 # Description: Basic makefile for automated buidls
 CC := g++
 CFLAGS := -std=c++98 -Wall -g -I ../third_party/ -I include -I src
-SRC_DIR := src/
-OBJ_DIR := obj/
-TARGET := obj/debug/runTests
-TESTS_SRC := ../third_party/tests_main.cpp
+INCLUDE := -I ../third_party/ -I include -I src
+
+SRC_DIR := src
+OBJ_DIR := obj
+SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+
+TEST_DIR := tests
+TEST_OBJ := tests/obj
+TEST_SRCS := $(wildcard $(TEST_DIR)/*.cpp)
+TEST_OBJS := $(patsubst $(TEST_DIR)/%.cpp,$(TEST_OBJ)/%.o,$(TEST_SRCS))
+RUN_TESTS := tests/obj/debug/run_tests
+
 TESTS_MAIN := ../third_party/tests_main.o
+THIRD_PARTY := ../third_party/tests_main.cpp
 
-obj/debug/runTests: obj/linked_list.o obj/list_test.o obj/sstring_test.o obj/project_test.o obj/interface_test.o obj/category_test.o obj/project.o obj/category.o obj/sstring.o obj/interface.o $(TESTS_MAIN)
-	$(CC) $(CFLAGS) obj/linked_list.o obj/list_test.o obj/sstring_test.o obj/project_test.o obj/interface_test.o obj/category_test.o obj/project.o obj/category.o obj/sstring.o obj/interface.o $(TESTS_MAIN) -o obj/debug/runTests
+RUN_TESTS: $(TEST_OBJS) $(OBJ_FILES) $(TESTS_MAIN)
+	$(CC) $(CFLAGS) -c -o $@ $^
 
-obj/category_test.o : tests/category_test.cpp
-	$(CC) $(CFLAGS) -c tests/category_test.cpp -o obj/category_test.o
+$(TEST_OBJ)/%.o: $(TEST_DIR)/%.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-obj/interface_test.o: tests/interface_test.cpp
-	$(CC) $(CFLAGS) -c tests/interface_test.cpp -o obj/interface_test.o
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-obj/project_test.o: tests/project_test.cpp
-	$(CC) $(CFLAGS) -c tests/project_test.cpp -o obj/project_test.o
-
-obj/sstring_test.o: tests/sstring_test.cpp
-	$(CC) $(CFLAGS) -c tests/sstring_test.cpp -o obj/sstring_test.o
-
-obj/interface.o: src/interface.cpp
-	$(CC) $(CFLAGS) -c src/interface.cpp -o obj/interface.o
-
-obj/sstring.o: src/sstring.cpp
-	$(CC) $(CFLAGS) -c src/sstring.cpp -o obj/sstring.o
-
-obj/category.o: src/category.cpp
-	$(CC) $(CFLAGS) -c src/category.cpp -o obj/category.o
-
-obj/project.o: src/project.cpp
-	$(CC) $(CFLAGS) -c src/project.cpp -o obj/project.o
-
-obj/list_test.o: tests/list_test.cpp
-	$(CC) $(CFLAGS) -c tests/list_test.cpp -o obj/list_test.o
-
-obj/linked_list.o: src/linked_list.cpp
-	$(CC) $(CFLAGS) -c src/linked_list.cpp -o obj/linked_list.o
-
-TESTS_MAIN: $(TESTS_SRC)
-	$(CC) $(CFLAGS) -c $(TESTS_SRC) -o $(TESTS_MAIN)
+TESTS_MAIN: $(THIRD_PARTY)
+	$(CC) $(CFLAGS) -c $(THIRD_PARTY) -o $(TESTS_MAIN)
 
 .PHONEY: clean
 
 clean:
 	rm $(OBJ_DIR)/*.o
-	rm $(TARGET)
+	rm $(TEST_OBJ)/*.o
 	rm $(TESTS_MAIN)
+	rm $(RUN_TESTS)

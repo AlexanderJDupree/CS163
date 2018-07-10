@@ -147,6 +147,8 @@ void linear_linked_list<T>::pop_front()
 
     head = temp;
 
+    --_size;
+
     return;
     
 }
@@ -235,6 +237,8 @@ bool linear_linked_list<T>::remove_if(Predicate pred, Node* current)
 
         delete temp;
 
+        --_size;
+
         return true;
     }
 
@@ -248,14 +252,31 @@ typename linear_linked_list<T>::size_type linear_linked_list<T>::size() const
 }
 
 /* ITERATORS */
+
 template <typename T>
-typename linear_linked_list<T>::const_iterator linear_linked_list<T>::begin() const
+typename linear_linked_list<T>::iterator
+linear_linked_list<T>::begin()
+{
+    return iterator(head);
+}
+
+template <typename T>
+typename linear_linked_list<T>::const_iterator 
+linear_linked_list<T>::begin() const
 {
     return const_iterator(head);
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator linear_linked_list<T>::end() const
+typename linear_linked_list<T>::iterator
+linear_linked_list<T>::end()
+{
+    return iterator(NULL);
+}
+
+template <typename T>
+typename linear_linked_list<T>::const_iterator 
+linear_linked_list<T>::end() const
 {
     return const_iterator(NULL);
 }
@@ -317,6 +338,7 @@ void linear_linked_list<T>::swap(self_type& new_list, self_type& old_list)
     swap(new_list._size, old_list._size);
     return;
 }
+
 /*******************************************************************************
 ITERATOR CLASS
 *******************************************************************************/
@@ -367,6 +389,20 @@ typename linear_linked_list<T>::const_iterator::const_pointer
 linear_linked_list<T>::const_iterator::operator->() const
 {
     return &node->data;
+}
+
+template <typename T>
+typename linear_linked_list<T>::iterator::reference
+linear_linked_list<T>::iterator::operator*() 
+{
+    return this->node->data;
+}
+
+template <typename T>
+typename linear_linked_list<T>::iterator::pointer
+linear_linked_list<T>::iterator::operator->()
+{
+    return &this->node->data;
 }
 
 #endif //LINKED_LIST_CPP

@@ -17,27 +17,24 @@ Date: 06/27/2018
 class Project
 {
   public:
-    typedef Project                    self_type;
-    typedef SString                    string;
-    typedef linear_linked_list<string> Attributes;
+
+    typedef Project self_type;
+    typedef SString string;
 
     Project();
 
-    template <class InputIterator>
-    Project(const string& identifier, InputIterator begin, InputIterator end)
-      : _attributes(begin, end), _identifier(identifier) {}
+    Project(const string attributes[]);
 
     Project(const Project& project);
 
     ~Project();
 
-    const string& identifier() const;
+    const string& name() const;
 
-
-    bool operator == (const Project& rhs) const;
-    bool operator != (const Project& rhs) const;
-    bool operator < (const Project& rhs) const;
-    bool operator > (const Project& rhs) const;
+    bool operator == (const self_type& rhs) const;
+    bool operator != (const self_type& rhs) const;
+    bool operator < (const self_type& rhs) const;
+    bool operator > (const self_type& rhs) const;
 
     // TODO
     bool operator = (const Project& rhs);
@@ -46,9 +43,12 @@ class Project
 
   private:
 
-    Attributes _attributes;
+    string _name;
+    string _due_date;
+    string _due_time;
+    string _late_date;
+    string _data_structure;
 
-    string _identifier;
 };
 
 #endif // PROJECT_H

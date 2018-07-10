@@ -20,7 +20,7 @@ TEST_CASE("Constructing strings", "[SString], [constructos]")
 
         REQUIRE(string.empty());
 
-        bool assert = string.capacity() == 100;
+        bool assert = string.capacity() == 50;
         REQUIRE(assert);
     }
     SECTION("C-String construction")
@@ -30,7 +30,7 @@ TEST_CASE("Constructing strings", "[SString], [constructos]")
         bool assert = string == "Hello";
         REQUIRE(assert);
 
-        assert = string.capacity() == 100;
+        assert = string.capacity() == 50;
         REQUIRE(assert);
     }
     SECTION("C-string construction with inadequate buffer")

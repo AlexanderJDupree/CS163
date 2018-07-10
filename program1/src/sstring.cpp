@@ -159,6 +159,17 @@ void SString::swap(SString& new_string, SString& old_string)
     return;
 }
 
+SString SString::lower() const
+{
+    SString copy(*this);
+
+    for (iterator it = copy.begin(); it != copy.end(); ++it)
+    {
+        *it = std::tolower(*it);
+    }
+    return copy;
+}
+
 void SString::validate_pointer(const_pointer str)
 {
     if (str) 
@@ -197,7 +208,14 @@ SString::self_type& SString::operator=(const SString& str)
 
 SString::self_type& SString::operator=(const_pointer str)
 {
-    return *this = SString(str);
+    // Utilize the copy constructo to create a copy of the string
+    SString copy(str);
+
+    // Swap ownership of resrouces with the copy
+    swap(*this, copy);
+
+    // As the copy goes out of scope it destructs with the old data
+    return *this;
 }
 
 std::ostream& operator << (std::ostream& os, const SString& str)

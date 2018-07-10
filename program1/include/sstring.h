@@ -29,14 +29,14 @@ class SString
 
     /* Constructors */
 
-    // Default constructor sets the buffer size of short string to 100 chars,
+    // Default constructor sets the buffer size of short string to 50 chars,
     // throws std::bad_alloc if size is not a positive integer
-    SString(size_type size = 100);
+    SString(size_type size = 50);
 
     // C-string consructor initializes a string to the value of the c-string
     // If str is larger than the buffer, only n characters from str will be 
     // copied
-    SString(const_pointer str, size_type size = 100);
+    SString(const_pointer str, size_type size = 50);
 
     // Copy constructo copies each character from origins buffer onto it's 
     // buffer.
@@ -83,6 +83,9 @@ class SString
 
     // Swaps ownership of resources
     static void swap(SString& new_string, SString& old_string);
+
+    // Returns a copy of the string as all lower cased characters
+    self_type lower() const;
 
     /* Operator Overloads */
 

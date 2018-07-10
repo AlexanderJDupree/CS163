@@ -10,35 +10,47 @@ Date: 06/27/2018
 
 #include "category.h"
 
-Category::Category(const string& name, const Fields& fields) 
-    : _name(name), _fields(fields), _projects(Projects()) {}
+Category::Category()
+    : _name(""), _projects(Projects()) {}
 
-const Category::string& Category::name()
+Category::Category(const char* name) 
+    : _name(name), _projects(Projects()) {}
+
+Category::Category(const Category& origin)
+    : _name(origin._name), _projects(origin._projects) {}
+
+const Category::string& Category::name() const
 {
     return _name;
 }
 
-const Category::Fields& Category::fields()
+bool Category::add_project(const Project& project)
 {
-    return _fields;
+    return _projects.add_unique(project);
 }
 
-bool Category::add_project(Fields attributes)
+bool Category::remove_project(const char* name)
 {
-    if (attributes.size() != _fields.size())
+    remove_functor functor = { name };
+
+    return _projects.remove_if(functor);
+}
+
+void Category::display_projects()
+{
+    for (const_iterator it = _projects.begin(); it != _projects.end(); ++it)
     {
-        return false;
+        std::cout << *it << std::endl;
     }
-
-    return true;
+    return;
 }
 
-Category::const_iterator Category::find_project(const string& name)
+Category::const_iterator Category::find_project(const char* name)
 {
     const_iterator it;
     for (it = _projects.begin(); it != _projects.end(); ++it)
     {
-        if (it->identifier() == name)
+        if (it->name() == name)
         {
             return it;
         }
@@ -59,4 +71,31 @@ Category::const_iterator Category::end() const
 Category::size_type Category::size() const
 {
     return _projects.size();
+}
+
+bool Category::operator == (const self_type& rhs) const
+{
+    return _name == rhs._name;
+}
+
+bool Category::operator != (const self_type& rhs) const
+{
+    return !(*this == rhs);
+}
+
+bool Category::operator < (const self_type& rhs) const
+{
+    return _name < rhs._name;
+}
+
+bool Category::operator > (const self_type& rhs) const
+{
+    return !(*this < rhs);
+}
+
+std::ostream& operator << (std::ostream& os, const Category& category)
+{
+    os << "Category: " << category.name() << '\n'
+       << "No. of Projects: " << category.size() << '\n';
+    return os;
 }

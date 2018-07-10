@@ -17,8 +17,9 @@ TEST_CASE("Constructing project object", "[project], [constructors]")
     SECTION("Default construction")
     {
         Project project;
-        
 
+        bool assert = project.name() == "";
+        REQUIRE(assert);
     }
     SECTION("Value construction with an array")
     {
@@ -26,8 +27,11 @@ TEST_CASE("Constructing project object", "[project], [constructors]")
                                  "due date", 
                                  "late date",
                                  "due time", 
-                                  "data structure" };
+                                 "data structure" };
         
-        Project project(*attributes, attributes + 1, attributes + 5);
+        Project project(attributes);
+
+        bool assert = project.name() == "assignment 1";
+        REQUIRE(assert);
     }
 }

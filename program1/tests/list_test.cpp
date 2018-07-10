@@ -239,4 +239,27 @@ TEST_CASE("Using functors to remove a specific element", "[list], [operations]")
             REQUIRE(assert);
         }
     }
+    SECTION("remove_if with no matching element")
+    {
+        int nums[] = { 1, 2, 3, 4, 5, 6 };
+
+        linear_linked_list<int> list(nums, nums + 6);
+
+        REQUIRE(!list.remove_if(remove_seven()));
+    }
+}
+
+TEST_CASE("Using mutable iterators to modify data", "[list], [iterators]")
+{
+    int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
+
+    linear_linked_list<int> list(nums, nums + 7);
+
+    int i = 1;
+    for (linear_linked_list<int>::iterator it = list.begin(); it != list.end(); ++it)
+    {
+        ++(*it);
+        bool assert = *it = ++i;
+        REQUIRE(assert);
+    }
 }

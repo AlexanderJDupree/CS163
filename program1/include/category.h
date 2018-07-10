@@ -21,49 +21,78 @@ class Category
     typedef SString                     string;
     typedef Category                    self_type;
     typedef linear_linked_list<Project> Projects;
-    typedef linear_linked_list<string>  Fields;
     typedef Projects::const_iterator    const_iterator;
     typedef Projects::size_type         size_type;
 
-    Category(const string& name, const Fields& fields);
+    // Calls Projects and Strings default constructor
+    Category();
 
-    template <class InputIterator>
-    Category(const string& name, InputIterator begin, InputIterator end)
-        : _name(name), _fields(Fields(begin, end)), _projects(Projects()) {}
+    // Calls projects default constructor, initialzes name member
+    Category(const char* name);
 
-    Category(const Category& category);
+    // Copy constructor
+    Category(const Category& origin);
 
+    // Default constructor is sued as the string and Projects structures handle
+    // their destruction.
     ~Category() {}
 
-    const string& name();
+    // Returns the name of this category
+    const string& name() const;
 
-    const Fields& fields();
+    // Adds a project to its collection, returns true if the addition was 
+    // successfull
+    bool add_project(const Project& project);
 
-    bool add_project(Fields attributes);
+    // Removes the first project matching the name target
+    bool remove_project(const char* name);
 
-    const_iterator find_project(const string& name);
+    // Displays each project in its collection to the console
+    void display_projects();
 
+    // Returns an iterator to the project matching the name argument
+    const_iterator find_project(const char* name);
+
+    // Returns an iterator to the first project in the category
     const_iterator begin() const;
+
+    // Returns an iterator to one past the last project in the category
     const_iterator end() const;
 
+    // Returns the number of projects currently in the category
     size_type size() const;
 
-    bool operator == (const self_type& rhs);
-    bool operator != (const self_type& rhs);
-    bool operator < (const self_type& rhs);
-    bool operator > (const self_type& rhs);
+    // Comparison operators use the name member as the comparator
+    bool operator == (const self_type& rhs) const;
+    bool operator != (const self_type& rhs) const;
+    bool operator < (const self_type& rhs) const;
+    bool operator > (const self_type& rhs) const;
 
+    // Prints the category to the console
+    friend std::ostream& operator << (std::ostream& os, const Category& category);
+
+    // TODO
     bool operator = (const self_type& origin);
 
+    // TODO
     static void swap(self_type& new_category, self_type& old_category);
 
   private:
 
     string _name; // The name of this category
 
-    Fields _fields; // The valid field data for each project
-
     Projects _projects; // The projects belonging to this category
+
+    // Predicate fullfilling functor object that compares name strings
+    struct remove_functor
+    {
+        const char* target;
+
+        bool operator()(const Project& project)
+        {
+            return project.name() == target;
+        }
+    };
 
 };
 

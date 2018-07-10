@@ -20,6 +20,7 @@ class linear_linked_list
 
     // forward declaration
     class const_forward_iterator;
+    class forward_iterator;
 
     /* Type definitions */
     typedef T                      value_type;
@@ -28,6 +29,7 @@ class linear_linked_list
     typedef const T&               const_reference;
     typedef const T*               const_pointer;
     typedef size_t                 size_type;
+    typedef forward_iterator       iterator;
     typedef const_forward_iterator const_iterator;
     typedef linear_linked_list<T>  self_type;
 
@@ -67,13 +69,20 @@ class linear_linked_list
     template <class Predicate>
     bool remove_if(Predicate pred);
 
+    // Finds the first item fullfilling the predicate functor
+
     // returns the number of elements in the list
     size_type size() const;
 
     /* Iterators */
+
+    // returns a read/write iterator to the first element in the list
+    iterator begin();
+
     // returns a read only iterator to the first element in the list
     const_iterator begin() const;
 
+    iterator end();
     // returns an iterator to one-past the last element in the list. 
     // dereferencing end() iterators causes undefined behavior
     const_iterator end() const;
@@ -199,9 +208,38 @@ class linear_linked_list
         // returns the logical not of the equality operator
         bool operator!=(const self_type& rhs) const;
       
-      private:
+      protected:
 
         Node* node;
+    };
+    /*
+    @class: forward_iterator
+    
+    @brief: The forward_iterator is a read/write abstraction of the node 
+            pointer. The forward_iterator inherits all methods from the 
+            const_forward_iterator but overrides the reference operators
+            to allow the client to mutate data
+    */
+    class forward_iterator : public const_forward_iterator
+    {
+      public:
+
+        /* Type definitions */
+        typedef typename Node::value_type   value_type;
+        typedef typename Node::reference    reference;
+        typedef typename Node::pointer      pointer;
+        typedef forward_iterator            self_type;
+
+        forward_iterator() : const_forward_iterator() {}
+
+        forward_iterator(Node* ptr) : const_forward_iterator(ptr) {}
+
+        // Dereference operator allows a read/write access to data member
+        reference operator*();
+
+        // Arrow operator allows a read/write reference to data member
+        pointer operator->();
+
     };
 };
 

@@ -17,80 +17,78 @@ TEST_CASE("Constructing categories", "[category], [constructors]")
 {
     SECTION("Default construction")
     {
-        SString keys[] = { "Name", "Due", "Data Structure" };
-        Category::Fields fields(keys, keys + 3);
-
-        Category assignments("assignments", fields);
+        Category assignments;
 
         bool assert = assignments.size() == 0;
         REQUIRE(assert);
     }
+    SECTION("Value construction")
+    {
+        Category readings("Readings");
+
+        bool assert = readings.name() == "Readings";
+        REQUIRE(assert);
+    }
 } 
-/*
+
 TEST_CASE("Adding projects to the category", "[category], [modifier]")
 {
     SECTION("Adding one project")
     {
-        SString keys[] = { "Name", "Due", "Data Structure" };
-        Category::Fields fields(keys, keys + 3);
+        SString attributes[] = { "reading 1", "july 4th", "9:00",
+                                 "july 5th", "arrays" };
 
-        Category assignments("assignments", fields);
+        Project project(attributes);
 
-        Category::Fields attributes(3, "Value 1");
+        Category category("Readings");
 
-        REQUIRE(assignments.add_project(attributes));
- 
+        REQUIRE(category.add_project(project));
     }
+
     SECTION("Adding duplicate projects")
     {
-        SString keys[] = { "Name", "Due", "Data Structure" };
-        Category::Fields fields(keys, keys + 3);
+        SString attributes[] = { "reading 1", "july 4th", "9:00",
+                                 "july 5th", "arrays" };
 
-        Category assignments("assignments", fields);
+        Project project(attributes);
 
-        Category::Fields attributes(3, "Value 1");
+        Category category("Readings");
 
-        REQUIRE(assignments.add_project(attributes));
+        REQUIRE(category.add_project(project));
 
-        REQUIRE(!assignments.add_project(attributes));
+        REQUIRE(!category.add_project(project));
     }
     SECTION("Adding multiple projects")
     {
-        SString keys[] = { "Name", "Due Date", "Data Structure" };
-        Category::Fields fields(keys, keys + 3);
+        SString attributes[5];
+        Category category("categories");
+        
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 1";
+        }
 
-        Category assignments("assignments", fields);
-
-
-        Category::Fields attributes(3, "Value 1");
-
-        REQUIRE(assignments.add_project(attributes));
-
-
-        attributes = Category::Fields(3, "Value 2");
-
-        REQUIRE(assignments.add_project(attributes));
+        Project project1(attributes);
  
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 2";
+        }
 
-        attributes = Category::Fields(3, "Value 3");
+        Project project2(attributes);
+ 
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 3";
+        }
 
-        REQUIRE(assignments.add_project(attributes));
+        Project project3(attributes);
 
+        REQUIRE(category.add_project(project3));
+        REQUIRE(category.add_project(project2));
+        REQUIRE(category.add_project(project1));
 
-        attributes = Category::Fields(3, "Value 4");
-
-        REQUIRE(assignments.add_project(attributes));
-    }
-    SECTION("Adding invalid project attributes")
-    {
-        SString keys[] = { "Name", "Due Date", "Data Structure" };
-        Category::Fields fields(keys, keys + 3);
-
-        Category assignments("assignments", fields);
-
-        Category::Fields attributes;
-
-        REQUIRE(!assignments.add_project(attributes));
+        //category.display_projects();
     }
 } 
 
@@ -98,9 +96,86 @@ TEST_CASE("Finding projects", "[category], [find]")
 {
     SECTION("A populated category")
     {
-        SString fields[] = { "Name", "Due Date", "Data Structure" };
-        Category labs("labs", fields, fields + 3);
+        SString attributes[5];
+        Category category("categories");
+        
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 1";
+        }
 
+        Project project1(attributes);
+ 
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 2";
+        }
+
+        Project project2(attributes);
+ 
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 3";
+        }
+
+        Project project3(attributes);
+
+        REQUIRE(category.add_project(project3));
+        REQUIRE(category.add_project(project2));
+        REQUIRE(category.add_project(project1));
+
+        bool assert = category.find_project("Value 1")->name() == "Value 1";
+        REQUIRE(assert);
+    }
+    SECTION("An empty category")
+    {
+        Category category("stuff");
+        bool assert = category.find_project("reading 1") == category.end();
+        REQUIRE(assert);
     }
 }
-*/
+
+TEST_CASE("Removing a projct", "[category], [remove]")
+{
+    SECTION("A populated category")
+    {
+        SString attributes[5];
+        Category category("categories");
+        
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 1";
+        }
+
+        Project project1(attributes);
+ 
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 2";
+        }
+
+        Project project2(attributes);
+ 
+        for (unsigned i = 0; i < 5; ++i)
+        {
+            attributes[i] = "Value 3";
+        }
+
+        Project project3(attributes);
+
+        REQUIRE(category.add_project(project3));
+        REQUIRE(category.add_project(project2));
+        REQUIRE(category.add_project(project1));
+
+        REQUIRE(category.remove_project("Value 3"));
+
+        //category.display_projects();
+
+    }
+    SECTION("An empty category")
+    {
+        Category category("Stuff");
+
+        REQUIRE(!category.remove_project("Value 1"));
+    }
+}
