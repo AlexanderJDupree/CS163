@@ -12,7 +12,6 @@ Date: 06/27/2018
 #include <catch.hpp>
 #include "category.h"
 
-
 TEST_CASE("Constructing categories", "[category], [constructors]")
 {
     SECTION("Default construction")

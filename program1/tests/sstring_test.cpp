@@ -83,7 +83,6 @@ TEST_CASE("Using copy-assignent operator for SString", "[SString], [operators], 
 
         REQUIRE(assert);
     }
-
 }
 
 TEST_CASE("Using comparison operators", "[SString], [operator]")
@@ -103,6 +102,22 @@ TEST_CASE("Using comparison operators", "[SString], [operator]")
         SString data("Data Structure");
 
         bool assert = due != data;
+        REQUIRE(assert);
+    }
+    SECTION("Compare equality of null terminated default strings")
+    {
+        SString lhs("");
+        SString rhs("");
+
+        bool assert = lhs == rhs;
+        REQUIRE(assert);
+    }
+    SECTION("Compare equality of default strings")
+    {
+        SString lhs;
+        SString rhs;
+
+        bool assert = lhs == rhs;
         REQUIRE(assert);
     }
 }

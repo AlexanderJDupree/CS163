@@ -20,41 +20,52 @@ void require_true()
 
 struct option_1 : public menu_item
 {
-    const SString option() const { return "option 1"; }
+    const char* option() const { return "option 1"; }
 
     void action() { return require_true(); }
 };
 
 struct option_2 : public menu_item
 {
-    const SString option() const { return "option 2"; }
+    const char* option() const { return "option 2"; }
 
     void action() { return require_true(); }
 };
 
 struct option_3 : public menu_item
 {
-    const SString option() const { return "option 3"; }
+    const char* option() const { return "option 3"; }
 
     void action() { return require_true(); }
 };
 
 TEST_CASE("Building a menu", "[interface], [menu]")
 {
-    SECTION("Displaying an empty menu")
-    {
-        Interface UI;
-
-       // UI.display_menu();
-    }
     SECTION("Building and displaying a menu")
     {
-        menu_item* menus[] = {new option_1(), new option_2(), new option_3()};
-        Interface::Menu menu(menus, menus + 3);
+        option_1 opt1;
+        option_2 opt2;
+        option_3 opt3;
 
-        Interface UI(menu);
+        menu_item* menu[] = { &opt1, &opt2, &opt3 };
 
-        //UI.display_menu();
+        Interface UI(menu, 3);
 
+        UI.display_menu();
     }
+}
+
+TEST_CASE("evaluating actions", "[interface], [run_action]")
+{
+        option_1 opt1;
+        option_2 opt2;
+        option_3 opt3;
+
+        menu_item* menu[] = { &opt1, &opt2, &opt3 };
+
+        Interface UI(menu, 3);
+
+        UI.display_menu();
+
+        UI.run_action(Interface::get_input("\n> ") - 1);
 }

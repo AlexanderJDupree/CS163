@@ -11,36 +11,38 @@ Date: 06/27/2018
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include <limits>
 #include <iostream>
-#include <vector>
-#include "sstring.h"
 
 class menu_item
 {
   public:
     virtual ~menu_item() {}
-    virtual const SString option() const = 0;
+    virtual const char* option() const = 0;
     virtual void action() = 0;
 };
 
 class Interface
 {
   public:
+    typedef menu_item** menu;
 
-    typedef std::vector<menu_item*> Menu;
-
-    Interface();
-
-    Interface(Menu& options);
-
-    void build_menu(Menu& options);
+    Interface(menu options, unsigned size);
 
     void display_menu();
 
+    void run_action(unsigned index);
+
+    static unsigned get_input(const char* prompt);
+
+
   private:
 
-    Menu options;
+    menu _options;
 
+    unsigned _size;
+
+    static void reset_input_stream();
 };
 
 #endif // INTERFACE_H

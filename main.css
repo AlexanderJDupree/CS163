@@ -1,0 +1,86 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-kerning: auto;
+}
+html {
+  font-size: 8pt;
+  line-height: 1.4;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+}
+body {
+  padding: 1em;
+  margin: 0 auto;
+  max-width: 800px;
+}
+code,
+pre,
+blockquote {
+  padding: .2em;
+  background: rgba(0,0,0,.1);
+}
+code,
+pre {
+  font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 .5em 0;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+[class*=float-] {
+  margin: 0 auto 1em auto;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  clear: both;
+}
+@media (min-width: 600px) {
+  h1 { font-size: 200%; }
+  h2 { font-size: 150%; }
+  h3 { font-size: 120%; }
+  h4 { font-size: 100%; }
+  h5 { font-size: 90%; }
+  h6 { font-size: 80%; }
+  [class*=float-] {
+    max-width: 40%;
+  }
+  .float-left {
+    float: left;
+    margin: 0 1em .5em 0;
+  }
+  .float-right {
+    float: right;
+    margin: 0 0 .5em 1em;
+  }
+}
+/* Center tables for demo */
+table {
+  margin: 0 auto;
+}
+
+/* Default Table Style */
+table {
+  color: #333;
+  background: white;
+  border: 1px solid grey;
+  font-size: 8pt;
+  border-collapse: collapse;
+}
+table thead th,
+table tfoot th {
+  color: #777;
+  background: rgba(0,0,0,.1);
+}
+table caption {
+  padding:.25em;
+}
+table th,
+table td {
+  padding: .25em;
+  border: 1px solid lightgrey;
+}
