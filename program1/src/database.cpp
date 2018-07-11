@@ -5,6 +5,10 @@ Description: Implementation file for the Database ADT.
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

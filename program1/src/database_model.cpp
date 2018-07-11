@@ -7,6 +7,10 @@ Description: Implementation file for the database_model class. Because the menu
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

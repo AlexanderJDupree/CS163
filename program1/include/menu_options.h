@@ -16,6 +16,10 @@ Description: menu_options contains the concrete definition of the menu_item
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 
 */

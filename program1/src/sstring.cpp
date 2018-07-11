@@ -7,6 +7,10 @@ Description: Implementation file for the SString class. Defines methods for
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 06/27/2018
 */
 

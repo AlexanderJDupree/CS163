@@ -5,6 +5,10 @@ Description: Unit tests for the Category ADT
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

@@ -12,6 +12,10 @@ Description: Category ADT is a wrapper class for data structure. Category
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

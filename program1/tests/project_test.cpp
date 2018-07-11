@@ -5,6 +5,10 @@ Description: Unit tests for the Project ADT
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 06/27/2018
 */
 

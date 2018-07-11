@@ -21,6 +21,10 @@ Description: SString (short string) acts as an immutable char buffer. The primar
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

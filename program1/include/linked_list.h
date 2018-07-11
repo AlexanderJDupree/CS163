@@ -25,6 +25,10 @@ Description: linear_linked_list is a data structure that stores data onto a node
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 06/27/2018
 */
 

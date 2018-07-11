@@ -25,6 +25,10 @@ Description: Interface class acts as the command line interface manager for any
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

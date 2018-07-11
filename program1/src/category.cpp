@@ -7,6 +7,10 @@ Description: Definition for Category ADT's methods. Because Category is a
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

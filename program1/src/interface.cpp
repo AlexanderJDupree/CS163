@@ -5,6 +5,10 @@ Description: Implementation file for the Interface class
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 06/27/2018
 */
 

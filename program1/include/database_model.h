@@ -16,6 +16,10 @@ Description: database_model is the menu_item factory for the Interface class.
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 

@@ -8,6 +8,10 @@ Description: Database ADT acts as a wrapper class for a container data structure
 
 Author: Alexander DuPree
 
+Class: CS163
+
+Assignment: program1
+
 Date: 07/11/2018
 */
 
