@@ -67,5 +67,6 @@ TEST_CASE("evaluating actions", "[interface], [run_action]")
 
         UI.display_menu();
 
-        UI.run_action(Interface::get_input("\n> ") - 1);
+        unsigned input = 0;
+        UI.run_action(Interface::get_input("\n> ", input) - 1);
 }

@@ -14,10 +14,12 @@ Date: 06/27/2018
 #include <iostream> // DEBUG PURPOSES
 #include "linked_list.h"
 
+// default constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list() 
     : head(NULL), tail(NULL), _size(0) {}
 
+// ranged based constructor
 template <typename T>
 template <class InputIterator>
 linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end) 
@@ -29,6 +31,7 @@ linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end
     }
 }
 
+// Copy constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list(const self_type& origin) 
     : head(NULL), tail(NULL), _size(0)
@@ -40,6 +43,7 @@ linear_linked_list<T>::linear_linked_list(const self_type& origin)
     }
 }
 
+// Destructor
 template <typename T>
 linear_linked_list<T>::~linear_linked_list()
 {

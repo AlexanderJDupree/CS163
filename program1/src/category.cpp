@@ -1,5 +1,5 @@
 /*
-File: project.cpp
+File: category.cpp
 
 Description:
 
@@ -13,7 +13,7 @@ Date: 06/27/2018
 Category::Category()
     : _name(""), _projects(Projects()) {}
 
-Category::Category(const char* name) 
+Category::Category(const string& name) 
     : _name(name), _projects(Projects()) {}
 
 Category::Category(const Category& origin)
@@ -29,7 +29,7 @@ bool Category::add_project(const Project& project)
     return _projects.add_unique(project);
 }
 
-bool Category::remove_project(const char* name)
+bool Category::remove_project(const string& name)
 {
     remove_functor functor = { name };
 
@@ -45,7 +45,7 @@ void Category::display_projects()
     return;
 }
 
-Category::const_iterator Category::find_project(const char* name)
+Category::const_iterator Category::find_project(const string& name)
 {
     const_iterator it;
     for (it = _projects.begin(); it != _projects.end(); ++it)

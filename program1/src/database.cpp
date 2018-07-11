@@ -13,12 +13,12 @@ Date: 06/27/2018
 Database::Database()
     : _categories(Categories()) {}
 
-bool Database::add_category(const char* name)
+bool Database::add_category(const string& name)
 {
     return _categories.add_unique(Category(name));
 }
 
-bool Database::remove_category(const char* name)
+bool Database::remove_category(const string& name)
 {
     // Create a functor object that compares to the name target
     remove_functor functor = { name };
@@ -26,10 +26,11 @@ bool Database::remove_category(const char* name)
     return _categories.remove_if(functor);
 }
 
-void Database::display_categories()
+void Database::display_categories() const
 {
     Categories::const_iterator it;
 
+    std::cout << std::endl;
     for(it = _categories.begin(); it != _categories.end(); ++it)
     {
         std::cout << *it << std::endl;
@@ -37,7 +38,7 @@ void Database::display_categories()
     return;
 }
 
-bool Database::add_project(const char* name, const Project& project)
+bool Database::add_project(const string& name, const Project& project)
 {
 
     Categories::iterator it = find_category(name);
@@ -50,7 +51,7 @@ bool Database::add_project(const char* name, const Project& project)
     return it->add_project(project);
 }
 
-bool Database::remove_project(const char* category, const char* project)
+bool Database::remove_project(const string& category, const string& project)
 {
     Categories::iterator it = find_category(category);
     if(it == _categories.end())
@@ -62,7 +63,7 @@ bool Database::remove_project(const char* category, const char* project)
     return it->remove_project(project);
 }
 
-bool Database::display_projects(const char* category)
+bool Database::display_projects(const string& category)
 {
     Categories::iterator it = find_category(category);
     if(it == _categories.end())
@@ -76,7 +77,7 @@ bool Database::display_projects(const char* category)
     return true;
 }
 
-Database::Categories::iterator Database::find_category(const char* name)
+Database::Categories::iterator Database::find_category(const string& name)
 {
     Categories::iterator it;
     for(it = _categories.begin(); it != _categories.end(); ++it)

@@ -28,7 +28,7 @@ class Category
     Category();
 
     // Calls projects default constructor, initialzes name member
-    Category(const char* name);
+    Category(const string& name);
 
     // Copy constructor
     Category(const Category& origin);
@@ -45,13 +45,13 @@ class Category
     bool add_project(const Project& project);
 
     // Removes the first project matching the name target
-    bool remove_project(const char* name);
+    bool remove_project(const string& name);
 
     // Displays each project in its collection to the console
     void display_projects();
 
     // Returns an iterator to the project matching the name argument
-    const_iterator find_project(const char* name);
+    const_iterator find_project(const string& name);
 
     // Returns an iterator to the first project in the category
     const_iterator begin() const;
@@ -86,7 +86,7 @@ class Category
     // Predicate fullfilling functor object that compares name strings
     struct remove_functor
     {
-        const char* target;
+        const string& target;
 
         bool operator()(const Project& project)
         {

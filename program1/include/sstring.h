@@ -12,7 +12,7 @@ Date: 06/27/2018
 #define STRING_H
 
 #include <cstring>
-#include <ostream>
+#include <iostream>
 
 class SString 
 {
@@ -73,6 +73,7 @@ class SString
     bool compare_less_than(const_pointer str) const;
 
     /* Iterators */
+
     // returns a random-access iterator to the beginning of the string
     iterator begin();
     const_iterator begin() const;
@@ -95,6 +96,7 @@ class SString
     self_type& operator=(const_pointer str);
 
     friend std::ostream& operator<<(std::ostream& os, const self_type& str);
+    friend std::istream& operator>>(std::istream& is, self_type& str);
 
     // Comparison operators uses std::strcmp to compare for equality
     friend bool operator==(const self_type& lhs, const_pointer rhs);

@@ -77,56 +77,21 @@ bool SString::empty() const
     return _length == 0;
 }
 
-bool SString::compare_equal(const_pointer str) const
-{
-    // Strings are unintialized, cant compare
-    if (catch_null_exception(str) || catch_null_exception(_data))
-    {
-        return false;
-    }
-
-    size_type i = 0;
-    // Loop through each character until a null terminator is encountered OR
-    // The characters to not match
-    for (; _data[i] != '\0' && str[i] != '\0' && _data[i] == str[i]; ++i);
-
-    // The only way for each string to be equal is if each character matched
-    // And the strings are the same length
-    return i == _length && str[i] == '\0';
-}
-
 bool SString::compare_equal(const self_type& str) const
 {
+    // Strings are different sizes, they are not the same
     if (_length != str._length)
     {
         return false;
     }
+    // Strings are both empty, they are the same
     if (_length == 0 && str._length == 0)
     {
         return true;
     }
 
-    return compare_equal(str._data);
-}
-
-bool SString::compare_less_than(const_pointer str) const
-{   
-    // Strings are unintialized, cant compare
-    if (catch_null_exception(str) || catch_null_exception(_data))
-    {
-        return false;
-    }
-
-    size_type i = 0;
-    for(; _data[i] != '\0' && str[i] != '\0' && _data[i]; ++i)
-    {
-        if (_data[i] < str[i])
-        {
-            return true;
-        }
-    }
-
-    return _length < i;
+    // Iterate through each string and compare characters
+    return *this == str._data;
 }
 
 SString::iterator SString::begin()
@@ -196,10 +161,10 @@ bool SString::catch_null_exception(const_pointer str)
 /* Operator Overloads */
 SString::self_type& SString::operator=(const SString& str)
 {
-    // Utilize the copy constructo to create a copy of the string
+    // Utilize the copy constructor to create a copy of the string
     SString copy(str);
 
-    // Swap ownership of resrouces with the copy
+    // Swap ownership of resources with the copy
     swap(*this, copy);
 
     // As the copy goes out of scope it destructs with the old data
@@ -208,13 +173,20 @@ SString::self_type& SString::operator=(const SString& str)
 
 SString::self_type& SString::operator=(const_pointer str)
 {
-    // Utilize the copy constructo to create a copy of the string
-    SString copy(str);
+    validate_pointer(str);
 
-    // Swap ownership of resrouces with the copy
-    swap(*this, copy);
+    // _data is initialized, we must delete it first
+    if(!catch_null_exception(_data))
+    {
+        delete [] _data;
+    }
 
-    // As the copy goes out of scope it destructs with the old data
+    // Create new buffer
+    _data = new char[_capacity];
+
+    // copy contents
+    _length = copy(str);
+
     return *this;
 }
 
@@ -224,9 +196,25 @@ std::ostream& operator << (std::ostream& os, const SString& str)
     return os;
 }
 
+std::istream& operator >> (std::istream& is, SString& str)
+{
+    // Temporary buffer is created so that is stream extraction fails, the 
+    // strings state is not changed
+    char* buffer = new char[str._capacity];
+
+    is.get(buffer, str._capacity);
+
+    // We use the assignment operator to handle the buffer copy
+    str = buffer;
+
+    delete [] buffer;
+
+    return is;
+}
+
 bool operator==(const SString& lhs, const char* rhs)
 {
-    return lhs.compare_equal(rhs);
+    return std::strcmp(lhs._data, rhs) == 0;
 }
 bool operator==(const char* lhs, const SString& rhs)
 {
@@ -250,7 +238,7 @@ bool operator!=(const SString& lhs, const SString& rhs)
 }
 bool operator< (const SString& lhs, const char* rhs)
 {
-    return lhs.compare_less_than(rhs);
+    return std::strcmp(lhs._data, rhs) < 0;
 }
 bool operator< (const char* lhs, const SString& rhs)
 {

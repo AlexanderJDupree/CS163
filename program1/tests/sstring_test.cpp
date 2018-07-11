@@ -96,6 +96,16 @@ TEST_CASE("Using comparison operators", "[SString], [operator]")
 
         REQUIRE(assert);
     }
+    SECTION("less than with multiple strings")
+    {
+        SString w1("bar");
+        SString w2("bat");
+        SString w3("bara");
+        SString w4("okay");
+
+        bool assert = w1 < w2 && w1 < w3 && w2 > w3 && w3 < w4;
+        REQUIRE(assert);
+    }
     SECTION("compare inequality")
     {
         SString due("Due");

@@ -26,21 +26,6 @@ void Interface::display_menu()
     return;
 }
 
-unsigned Interface::get_input(const char* prompt)
-{
-    unsigned input = 0;
-
-    std::cout << prompt;
-    std::cin >> input;
-
-    if (std::cin.fail())
-    {
-        reset_input_stream();
-    }
-
-    return input;
-}
-
 void Interface::run_action(unsigned index)
 {
     if (index >= _size || index < 0)

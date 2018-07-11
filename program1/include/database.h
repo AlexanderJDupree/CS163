@@ -25,22 +25,22 @@ class Database
       Database();
 
       // Adds a category to a database
-      bool add_category(const char* name);
+      bool add_category(const string& name);
 
       // Removes the first category matching the name
-      bool remove_category(const char* name);
+      bool remove_category(const string& name);
 
       // Displays each category to the console
-      void display_categories();
+      void display_categories() const;
 
       // Add a project to a specified category
-      bool add_project(const char* name, const Project& project);
+      bool add_project(const string& name, const Project& project);
 
       // Removes a project from a specified category
-      bool remove_project(const char* category, const char* project);
+      bool remove_project(const string& category, const string& project);
 
       // Displays all projects in a specified category
-      bool display_projects(const char* category);
+      bool display_projects(const string& category);
 
       // Returns the number of categories in the database
       size_type size() const;
@@ -54,7 +54,7 @@ class Database
 
       struct remove_functor
       {
-          const char* target;
+          const string& target;
 
           bool operator()(const Category& category)
           {
@@ -63,7 +63,7 @@ class Database
       };
 
       // Returns read/write iterator to the category matching the name parameter
-      Categories::iterator find_category(const char* name);
+      Categories::iterator find_category(const string& name);
 };
 
 #endif // DATABASE_H

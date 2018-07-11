@@ -33,7 +33,8 @@ class Interface
 
     void run_action(unsigned index);
 
-    static unsigned get_input(const char* prompt);
+    template <typename T>
+    static T& get_input(const char* prompt, T& out_param);
 
 
   private:
@@ -44,5 +45,16 @@ class Interface
 
     static void reset_input_stream();
 };
+
+template <typename T>
+T& Interface::get_input(const char* prompt, T& out_param)
+{
+    std::cout << prompt;
+    std::cin >> out_param;
+
+    reset_input_stream();
+
+    return out_param;
+}
 
 #endif // INTERFACE_H
