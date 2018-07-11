@@ -1,7 +1,27 @@
 /*
 File: linked_list.h
 
-Description:
+Description: linear_linked_list is a data structure that stores data onto a node
+             as well as the address for the next element in the container.
+
+             This implementation for the linear linked list is a fully templated
+             class. This allows the linear_linked_list to be instantiated to 
+             store any data types. 
+
+             By default the linear linked list COPIES the data onto the node. 
+             This requires that the data object have a copy constructor defined
+             or can be shallow copied with the default constructor.
+
+             This linear linked list implemented with a add_unique method that
+             will add UNIQUE elements into the container in a sorted state. 
+             This operation requires the use of the '<' and the '==' operator to
+             be defined as well. 
+
+             To access data or traverse the list, this linear linked list makes 
+             use of forward iterators. The forward iterator cannot be decremented.
+             The end iterator represents the element one-past the end of the
+             list which is a null pointer. dereferencing end iterators causes 
+             undifined behavior.
 
 Author: Alexander DuPree
 
@@ -12,6 +32,7 @@ Date: 06/27/2018
 #define LINKED_LIST_H
 
 #include <cstddef> // NULL
+#include <algorithm> // std::swap
 
 template <typename T>
 class linear_linked_list
@@ -68,8 +89,6 @@ class linear_linked_list
     // Removes the first item fullfilling the predicate functor
     template <class Predicate>
     bool remove_if(Predicate pred);
-
-    // Finds the first item fullfilling the predicate functor
 
     // returns the number of elements in the list
     size_type size() const;

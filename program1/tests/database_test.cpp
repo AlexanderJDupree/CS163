@@ -1,11 +1,11 @@
 /*
-File: project_test.cpp
+File: database_test.cpp
 
-Description:
+Description: Unit tests for the database ADT
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #include <iostream>
@@ -49,8 +49,8 @@ TEST_CASE("Removing categories", "[database], [modifiers], [remove_category]")
     {
         Database database;
 
-        REQUIRE(database.add_category("cat 1"));
-        REQUIRE(database.add_category("cat 2"));
+        database.add_category("cat 1");
+        database.add_category("cat 2");
 
         REQUIRE(database.remove_category("cat 2"));
 
@@ -73,13 +73,16 @@ TEST_CASE("Adding/Removing projects to categories", "[database], [modifiers], [a
         Project project(attributes);
 
 
-        REQUIRE(database.add_category("cat 1"));
-        REQUIRE(database.add_category("cat 2"));
+        database.add_category("cat 1");
+        database.add_category("cat 2");
 
-        REQUIRE(database.add_project("cat 2", project));
-        REQUIRE(database.add_project("cat 2", Project()));
+        database.add_project("cat 2", project);
+        database.add_project("cat 2", Project());
 
-        database.display_projects("cat 2");
+        bool assert = database.size() == 2;
+        REQUIRE(assert);
+
+        //database.display_projects("cat 2");
 
     }
     SECTION("Adding duplicate projects")
@@ -94,15 +97,13 @@ TEST_CASE("Adding/Removing projects to categories", "[database], [modifiers], [a
         Project project(attributes);
 
 
-        REQUIRE(database.add_category("cat 1"));
-        REQUIRE(database.add_category("cat 2"));
+        database.add_category("cat 1");
+        database.add_category("cat 2");
 
-        REQUIRE(database.add_project("cat 2", project));
-        REQUIRE(!database.add_project("cat 2", project));
+        database.add_project("cat 2", project);
+        REQUIRE_THROWS(database.add_project("cat 2", project));
 
         //database.display_categories();
-
-        REQUIRE(database.remove_project("cat 2", "assignment 1"));
     }
     SECTION("Adding projects to an empty database")
     {
@@ -110,7 +111,7 @@ TEST_CASE("Adding/Removing projects to categories", "[database], [modifiers], [a
 
         Project project;
 
-        REQUIRE(!database.add_project("hey", project));
+        REQUIRE_THROWS(database.add_project("hey", project));
     }
 }
 

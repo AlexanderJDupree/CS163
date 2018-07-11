@@ -1,7 +1,9 @@
 /*
 File: string.cpp
 
-Description:
+Description: Implementation file for the SString class. Defines methods for 
+             construction, copy assignment, comparison, inspection, and 
+             iteration for the underlying char array. 
 
 Author: Alexander DuPree
 

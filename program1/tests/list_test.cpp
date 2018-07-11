@@ -1,11 +1,11 @@
 /*
 File: list_test.cpp
 
-Description:
+Description: Unit tests for the linear_linked_list data structure
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #include <iostream>

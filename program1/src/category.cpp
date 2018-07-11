@@ -1,21 +1,26 @@
 /*
 File: category.cpp
 
-Description:
+Description: Definition for Category ADT's methods. Because Category is a 
+             wrapper class, most functions are dependent on the Projects 
+             containers implementation.
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #include "category.h"
 
+// Default constructor
 Category::Category()
     : _name(""), _projects(Projects()) {}
 
+// Value constructor
 Category::Category(const string& name) 
     : _name(name), _projects(Projects()) {}
 
+// Copy constructor
 Category::Category(const Category& origin)
     : _name(origin._name), _projects(origin._projects) {}
 
@@ -31,6 +36,7 @@ bool Category::add_project(const Project& project)
 
 bool Category::remove_project(const string& name)
 {
+    // Instantiate a functor with a named state
     remove_functor functor = { name };
 
     return _projects.remove_if(functor);

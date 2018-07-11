@@ -1,17 +1,18 @@
 /*
 File: linked_list.cpp
 
-Description:
+Description: Implementation for templated linear_linked_list class. Defines
+             methods for modifiers, capacity checks, and iteration of the 
+             linear_linked_list data structure.
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #ifndef LINKED_LIST_CPP
 #define LINKED_LIST_CPP
 
-#include <iostream> // DEBUG PURPOSES
 #include "linked_list.h"
 
 // default constructor
@@ -188,12 +189,11 @@ void linear_linked_list<T>::clear_list(Node*& current)
     return;
 }
 
-/* Capacity Functions */
 template <typename T>
 bool linear_linked_list<T>::empty() const
 {
     /*
-    Because head is only NULL, or 0, when the list is empty we can return the 
+    Because head is only NULL when the list is empty we can return the 
     logical NOT of head. This returns true iff head is NULL.
     */
 
@@ -289,6 +289,7 @@ linear_linked_list<T>::end() const
 template <typename T>
 bool linear_linked_list<T>::operator==(const self_type& rhs) const
 {
+    // Compare sizes first
     if (rhs.size() != size())
     {
         return false;
@@ -297,8 +298,9 @@ bool linear_linked_list<T>::operator==(const self_type& rhs) const
     const_iterator left = begin();
     const_iterator right = rhs.begin();
 
-    while(left != end())
+    while(left != end() && right != rhs.end())
     {
+        // If any element does not match then return false
         if (*left != *right)
         {
             return false;
@@ -307,7 +309,7 @@ bool linear_linked_list<T>::operator==(const self_type& rhs) const
         ++right;
     }
 
-    return true;
+    return left == end() && right == end();
 }
 
 template <typename T>

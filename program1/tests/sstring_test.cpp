@@ -1,7 +1,7 @@
 /*
 File: sstring_test.cpp
 
-Description:
+Description: Unit tests for the SString class
 
 Author: Alexander DuPree
 

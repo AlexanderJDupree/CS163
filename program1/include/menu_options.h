@@ -1,25 +1,74 @@
 /*
-File: main.cpp
+File: menu_options.h
 
-Description:
+Description: menu_options contains the concrete definition of the menu_item
+             abstract base class. each database_item holds a pointer to a 
+             database object but does not manage the objects resources. 
+
+             The database_item primary responsibility is to execute a specific
+             action with the database and report on the fail/success of that 
+             action
+
+             The database_item does uses the default destructor as it does not
+             manage any resources, the Database pointer is deleted when it goes
+             out of scope. The Database itself is handled by the database_model 
+             object.
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
+
 */
+
+#ifndef MENU_OPTIONS_H
+#define MENU_OPTIONS_H
 
 #include "database.h"
 #include "interface.h"
 
-class database_item : public menu_item
+struct database_item : public menu_item
 {
   public:
-    Database* database;
 
+    // Each database_item requires a database to be linked with and cannot be
+    // instantiated without a pointer to a valid database
     database_item(Database* database) : database(database) {}
+
+  protected:
+
+    Database* database;
 };
 
-struct display_projects: public database_item
+struct remove_project : public database_item
+{
+    remove_project(Database* database) : database_item(database) {}
+
+    const char* option() const { return "Remove a Project in a Category"; }
+
+    void action()
+    {
+        SString category;
+        Interface::get_input("\nEnter the name of the category: ", category);
+
+        SString project;
+        Interface::get_input("\nEnter the name of the project: ", project);
+
+        try
+        {
+
+            database->remove_project(category, project);
+            std::cout << "\n\t'" << project << "' was removed from '" 
+                      << category << "' category.\n";
+        }
+        catch(const database_error& err)
+        {
+            std::cout << "\n\tFailed to remove '" << project << "': " 
+                      << err.what() << '\n';
+        }
+    }
+};
+
+struct display_projects : public database_item
 {
     display_projects(Database* database) : database_item(database) {}
 
@@ -30,9 +79,13 @@ struct display_projects: public database_item
         SString category;
         Interface::get_input("\nEnter the name of the category: ", category);
 
-        if(!database->display_projects(category))
+        try
         {
-            std::cout << "\n\t'" << category << "' does not exist.\n";
+            database->display_projects(category);
+        }
+        catch(const database_error& err)
+        {
+            std::cout << "\n\t'" << category << "': " << err.what() << '\n';
         }
     }
 };
@@ -42,6 +95,12 @@ struct add_project : public database_item
 
     add_project(Database* database) : database_item(database) {}
 
+    /*
+    The Project data type is a static class that holds 5 attributes.
+    Becuase these attribtues are known, the name of the fields and the number of
+    fields is hard coded. In the future if the Project ADT is changed, this 
+    menu_item must change as well. 
+    */
     static const int FIELDS = 5;
 
     static const char* FIELD_NAMES[FIELDS];
@@ -61,19 +120,21 @@ struct add_project : public database_item
             Interface::get_input(FIELD_NAMES[i], attributes[i]);
         }
 
-        if(database->add_project(category, Project(attributes)))
+        try
         {
+            database->add_project(category, Project(attributes));
+
             std::cout << "\n\t'" << attributes[0] << "' was added to the '"
                       << category << "' category.\n";
         }
-        else
+        catch(const database_error& err)
         {
-            std::cout << "\n\tFailed to add '" << attributes[0] << "' to the '"
-                      << category << "' category.\n";
+            std::cout << "\n\tFailed to add '" << attributes[0] << "': "
+                      << err.what() << '\n';
         }
     }
-
 };
+
 struct remove_category : public database_item
 {
     remove_category(Database* database) : database_item(database) {}
@@ -131,52 +192,4 @@ struct display_categories : public database_item
     }
 };
 
-struct database_model : public menu_model
-{
-
-    static const unsigned SIZE = 5;
-
-    Database database;
-
-    unsigned size() const 
-    {
-        return SIZE;
-    }
-
-    void build(menu_item**& menu)
-    {
-        build_database();
-
-        menu = new menu_item*[SIZE];
-
-        menu[0] = new add_category(&database);
-        menu[1] = new display_categories(&database);
-        menu[2] = new remove_category(&database);
-        menu[3] = new display_projects(&database);
-        menu[4] = new add_project(&database);
-    }
-
-    void build_database()
-    {
-        const int SIZE = 3;
-        const char* categories[SIZE] = { "assignments",
-                                         "readings",
-                                         "labs" };
-
-        for(unsigned i = 0; i < SIZE; ++i)
-        {
-            if(!database.add_category(categories[i]))
-            {
-                return; // TODO throw exception
-            }
-        }
-        return; // TODO throw exception
-    }
-};
-
-/* Static variable definitions */
-const char* add_project::FIELD_NAMES[FIELDS] = { "Name: ", "Due Date: ",
-                                                 "Due Time: ", "Late Date: ",
-                                                 "Data Structure: " };
-
-
+#endif // MENU_OPTIONS_H

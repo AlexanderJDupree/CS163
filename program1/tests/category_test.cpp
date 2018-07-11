@@ -1,11 +1,11 @@
 /*
-File: project_test.cpp
+File: category_test.cpp
 
-Description:
+Description: Unit tests for the Category ADT
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #include <iostream>
@@ -178,3 +178,4 @@ TEST_CASE("Removing a projct", "[category], [remove]")
         REQUIRE(!category.remove_project("Value 1"));
     }
 }
+

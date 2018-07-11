@@ -1,7 +1,7 @@
 /*
-File: interface.h
+File: interface.cpp
 
-Description:
+Description: Implementation file for the Interface class
 
 Author: Alexander DuPree
 
@@ -10,28 +10,43 @@ Date: 06/27/2018
 
 #include "interface.h"
 
-Interface::Interface(menu_model* model)
-    : _model(model), OPTION_COUNT(_model->size()), _options(NULL) {}
+// Default constructor calls the factory build method to instantiate the correct
+// model for the menu
+Interface::Interface(model_factory* factory)
+    : _model(factory->build_model()), _option_count(_model->size()), 
+      _options(NULL) {}
 
 Interface::~Interface()
 {
-    if (_options)
+    clear_menu();
+
+    delete _model;
+}
+
+void Interface::clear_menu()
+{
+    // The _options member is an array of menu_item pointers and requires an 
+    // iterative delete cycle to prevent memory leaks
+    for (unsigned i = 0; i < _option_count; ++i)
     {
-        for (unsigned i = 0; i < OPTION_COUNT; ++i)
-        {
-            delete _options[i];
-            _options[i] = NULL;
-        }
+        delete _options[i];
+        _options[i] = NULL;
     }
 
     delete [] _options;
+
     _options = NULL;
-    
 }
 
 void Interface::build()
 {
-    // TODO this is unnesscary
+    // We want to clear the menu before we build a new one
+    if (_options)
+    {
+        clear_menu();
+    }
+
+    // Ensure the model has been instantiated
     if (_model)
     {
         _model->build(_options);
@@ -41,9 +56,11 @@ void Interface::build()
 
 void Interface::display_menu() const
 {
+    // Loops through each menu option and calls the option() method to print 
+    // the menu in a formatted fashion.
     std::cout << "=========================================================\n";
     int count = 1;
-    for (unsigned i = 0; i < OPTION_COUNT; ++i)
+    for (unsigned i = 0; i < _option_count; ++i)
     {
         std::cout << "\n  " << count++ << ".\t" 
                   << _options[i]->option() << std::endl;
@@ -55,16 +72,15 @@ void Interface::display_menu() const
 
 void Interface::run_action(unsigned index)
 {
-    if (--index == OPTION_COUNT)
+    if (--index == _option_count)
     {
         _exit.action();
         return;
     }
 
-    // TODO The OR condition shouldn't be necessary, investigate further
-    if (index > OPTION_COUNT || index < 0)
+    if (index > _option_count)
     {
-        // TODO throw exception
+        display_error("\n\tInvalid selection, please try again.\n");
         return;
     }
 
@@ -82,6 +98,12 @@ void Interface::run()
         run_action(Interface::get_input("\n>", input));
     }
 
+    return;
+}
+
+void Interface::display_error(const char* message)
+{
+    std::cout << message << std::endl;
     return;
 }
 

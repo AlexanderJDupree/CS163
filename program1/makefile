@@ -1,8 +1,10 @@
 # File: makefile
-# Description: Basic makefile for automated buidls
+# Description: Basic makefile for automated builds
+# Author: Alexander DuPree
+
 CC := g++
-CFLAGS := -std=c++98 -Wall -g -I ../third_party/ -I include -I src
-INCLUDE := -I ../third_party/ -I include -I src
+CFLAGS := -std=c++98 -Wall -Werror -g 
+INCLUDE := -I third_party/ -I include -I src
 
 SRC_DIR := src
 OBJ_DIR := obj
@@ -17,23 +19,23 @@ TEST_SRCS := $(wildcard $(TEST_DIR)/*.cpp)
 TEST_OBJS := $(patsubst $(TEST_DIR)/%.cpp,$(TEST_OBJ)/%.o,$(TEST_SRCS))
 tests := tests/obj/debug/run_tests
 
-TESTS_MAIN := ../third_party/tests_main.o
-THIRD_PARTY := ../third_party/tests_main.cpp
+TESTS_MAIN := third_party/tests_main.o
+THIRD_PARTY := third_party/tests_main.cpp
 
 TARGET: $(OBJ_FILES) $(APPLICATION)
-	$(CC) $(CFLAGS) -o $(TARGET) $^
+	$(CC) $(CFLAGS) $(INCLUDE) -o $(TARGET) $^
 
 tests: $(TEST_OBJS) $(OBJ_FILES) $(TESTS_MAIN)
-	$(CC) $(CFLAGS) -o $(tests) $^
+	$(CC) $(CFLAGS) $(INCLUDE) -o $(tests) $^
 
 $(TEST_OBJ)/%.o: $(TEST_DIR)/%.cpp
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 
 TESTS_MAIN: $(THIRD_PARTY)
-	$(CC) $(CFLAGS) -c $(THIRD_PARTY) -o $(TESTS_MAIN)
+	$(CC) $(CFLAGS) $(INCLUDE) -c $(THIRD_PARTY) -o $(TESTS_MAIN)
 
 .PHONEY: clean
 

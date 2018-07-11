@@ -1,11 +1,27 @@
 /*
-File: string.h
+File: sstring.h
 
-Description:
+Description: SString (short string) acts as an immutable char buffer. The primary 
+             reason for creating this class was to free up the responsibility of
+             handling raw char pointers in other ADT's. When handling raw char
+             points within a class, the same methods must be written over and 
+             over to prevent memory leaks and enable comparison between strings.
+             Therefore, creating a simple string class to handle the allocation
+             deallocation and comparison of raw char pointers allows other 
+             ADT's to focus on a single responsibility.
+
+             The SString class comes equipped with random access iterators, 
+             overloaded comparison operators, exception safe copy assignment and
+             copy construction, as well as input and output stream overloads.
+
+             By default, the SString is constructed with a 50 character limit. 
+             If a string literal or char pointer contains more than 50 characters
+             then the string is truncated. Once the string is constructed it 
+             cannot be modified. However, it can be reassigned.
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #ifndef STRING_H
@@ -17,7 +33,7 @@ Date: 06/27/2018
 class SString 
 {
   public:
-    typedef SString      self_type;
+    typedef SString     self_type;
     typedef char        value_type;
     typedef char&       reference;
     typedef const char& const_reference;
@@ -62,15 +78,8 @@ class SString
     // Tests if the string is empty;
     bool empty() const;
 
-    // Compares each character in each string returning false on any inequality
-    bool compare_equal(const_pointer str) const;
-
     // Compares string length first, then compares the cstring
     bool compare_equal(const self_type& str) const;
-
-    // Compares each character in each string returning true if str has a greater
-    // character
-    bool compare_less_than(const_pointer str) const;
 
     /* Iterators */
 

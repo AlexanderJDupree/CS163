@@ -1,11 +1,11 @@
 /*
-File: database.h
+File: database.cpp
 
-Description:
+Description: Implementation file for the Database ADT.
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #include "database.h"
@@ -38,43 +38,38 @@ void Database::display_categories() const
     return;
 }
 
-bool Database::add_project(const string& name, const Project& project)
+void Database::add_project(const string& name, const Project& project)
 {
 
     Categories::iterator it = find_category(name);
-    if(it == _categories.end())
+
+    if(!it->add_project(project))
     {
-        // Category doesn't exist
-        return false;
+        throw database_error("duplicate entry");
     }
 
-    return it->add_project(project);
+    return;
 }
 
-bool Database::remove_project(const string& category, const string& project)
+void Database::remove_project(const string& category, const string& project)
 {
     Categories::iterator it = find_category(category);
-    if(it == _categories.end())
+
+    if (!it->remove_project(project))
     {
-        // Category doesn't exist
-        return false;
+        throw database_error("project does not exist");
     }
 
-    return it->remove_project(project);
+    return;
 }
 
-bool Database::display_projects(const string& category)
+void Database::display_projects(const string& category)
 {
     Categories::iterator it = find_category(category);
-    if(it == _categories.end())
-    {
-        // Category doesn't exist
-        return false;
-    }
 
-    std::cout << *it << std::endl;
+    std::cout << '\n' <<  *it << std::endl;
     it->display_projects();
-    return true;
+    return;
 }
 
 Database::Categories::iterator Database::find_category(const string& name)
@@ -87,7 +82,9 @@ Database::Categories::iterator Database::find_category(const string& name)
             return it;
         }
     }
-    return it;
+
+    // Category was not found if the loop completes
+    throw database_error("category not found");
 }
 
 Database::size_type Database::size() const
@@ -99,5 +96,4 @@ bool Database::empty()
 {
     return _categories.empty();
 }
-
 

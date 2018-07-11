@@ -9,14 +9,21 @@ Date: 06/27/2018
 */
 
 #include <iostream>
-#include "menu_options.h"
+#include "database_model.h"
 
+struct database_builder : public model_factory
+{
+    menu_model* build_model()
+    {
+        return new database_model;
+    }
+};
 
 int main()
 {
-    database_model database;
+    database_builder factory;
 
-    Interface UI(&database);
+    Interface UI(&factory);
 
     UI.build();
 

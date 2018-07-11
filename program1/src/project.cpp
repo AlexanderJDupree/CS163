@@ -1,11 +1,11 @@
 /*
 File: project.cpp
 
-Description:
+Description: Implementation file for the Project class.
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #include "project.h"

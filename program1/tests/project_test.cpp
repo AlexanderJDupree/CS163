@@ -1,7 +1,7 @@
 /*
 File: project_test.cpp
 
-Description:
+Description: Unit tests for the Project ADT
 
 Author: Alexander DuPree
 
@@ -35,3 +35,4 @@ TEST_CASE("Constructing project object", "[project], [constructors]")
         REQUIRE(assert);
     }
 }
+

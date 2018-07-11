@@ -1,11 +1,18 @@
 /*
 File: linked_list.h
 
-Description:
+Description: Category ADT is a wrapper class for data structure. Category 
+             manages the addition, removal, and inspection of Project objects.
+
+             A Category is identified and compared against its name attribute.
+             The name attribute makes use of a CUSTOM string class (SString) to
+             handle the allocation, deallocation, and modification of 
+             char pointers. This frees up the Category to manage only the 
+             Projects container.
 
 Author: Alexander DuPree
 
-Date: 06/27/2018
+Date: 07/11/2018
 */
 
 #ifndef CATEGORY_H
@@ -33,7 +40,7 @@ class Category
     // Copy constructor
     Category(const Category& origin);
 
-    // Default constructor is sued as the string and Projects structures handle
+    // Default constructor is used as the string and Projects structures handle
     // their destruction.
     ~Category() {}
 
@@ -71,12 +78,6 @@ class Category
     // Prints the category to the console
     friend std::ostream& operator << (std::ostream& os, const Category& category);
 
-    // TODO
-    bool operator = (const self_type& origin);
-
-    // TODO
-    static void swap(self_type& new_category, self_type& old_category);
-
   private:
 
     string _name; // The name of this category
@@ -93,7 +94,6 @@ class Category
             return project.name() == target;
         }
     };
-
 };
 
 #endif // CATEGORY_H
