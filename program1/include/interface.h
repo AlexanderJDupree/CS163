@@ -14,6 +14,7 @@ Date: 06/27/2018
 #include <limits>
 #include <iostream>
 
+// Abstract base class for all menu options in the interface
 class menu_item
 {
   public:
@@ -22,27 +23,66 @@ class menu_item
     virtual void action() = 0;
 };
 
+class menu_model
+{
+  public:
+    virtual ~menu_model() {}
+    virtual unsigned size() const = 0;
+    virtual void build(menu_item**& menu) = 0;
+};
+
+// exit_application is the default menu_option in the interface class
+struct exit_application : public menu_item
+{
+    bool exit;
+
+    exit_application() : exit(false) {}
+
+    bool operator()() { return exit; }
+
+    const char* option() const { return "Exit Application"; }
+
+    void action() 
+    { 
+        std::cout << "\n\tHave a nice day!\n";
+        exit = true; 
+    }
+};
+
 class Interface
 {
   public:
-    typedef menu_item** menu;
 
-    Interface(menu options, unsigned size);
+    Interface(menu_model* model = NULL);
 
-    void display_menu();
+    ~Interface();
 
+    void build();
+
+    // Loops through the options and prints the options string
+    void display_menu() const;
+
+    // Runs the action mapped to the menu's index
     void run_action(unsigned index);
 
+    // prints menu, evaluates input, runs action. loops until exit is selected
+    void run();
+
+    // Takes in an out parameter and OVERRIDES it with user input
     template <typename T>
     static T& get_input(const char* prompt, T& out_param);
 
-
   private:
 
-    menu _options;
+    menu_model* _model;
 
-    unsigned _size;
+    const unsigned OPTION_COUNT;
 
+    menu_item** _options;
+
+    exit_application _exit; // Default menu option to exit application
+
+    // Clears fail flags, flushes input buffer
     static void reset_input_stream();
 };
 
