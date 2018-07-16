@@ -8,13 +8,13 @@ Program #2's focus is in the design, implementation and manipulation of **Circul
 
 - Dequeue the features and compare them with a computer at a store. 
 
-- If The user finds the computer to be acceptable, then the computer's information, store location, and number of matched features are pushed onto the **Stack** for later evaluation.
+- Push computers with matching features onto a **Stack** for later evaluation
 
-- After the shopping cycle the user will be able to display all viable computers on the **Stack** and select the best option
+- Display all viable computers from the **Stack**.
 
 ## Design Considerations
 
-As before in the last assignment, the user of the program must not be aware that stacks and queues are being used. Therefore, a high level of abstraction must be used to hide the *container's* "implementation". An interface class will be used to act as a middleman between communicating with the user and interacting with the **Queue** and **Stack** ADT's.
+As before, in the last assignment, the user of the program must not be aware that stacks and queues are being used. Therefore, a high level of abstraction must be used to hide the *container's* "implementation". An interface class will be used to act as a middleman between communicating with the user and interacting with the **Queue** and **Stack** ADT's.
 
 ## Data Flow
 
