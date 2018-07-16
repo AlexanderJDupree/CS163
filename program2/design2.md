@@ -52,6 +52,8 @@ The *circular_linked_list* will be the underlying data structure for the *Queue*
 | back | Peeks the rear element in the list | None | A read only reference to the back of the list |
 | Equality operators | The == and != operators have been overloaded, they first compare sizes then compare each element in the list | None | True if the lists are the equal |
 
+
+
 ### *Feature_Queue*
 The *Feature_Queue* utilizes a *circular_linked_list* to manage a *Queue* of "features" for a desired computer. These features will be stored as c-strings. The *Feature_Queue* will contain the following public interface:
 
@@ -62,6 +64,8 @@ The *Feature_Queue* utilizes a *circular_linked_list* to manage a *Queue* of "fe
 | peek_front | Uses the _CLL_ front method to peek the front of the queue | None | A read only reference to the front of the queue | 
 | peek_back | Uses the _CLL_ back method to peek the back of the queue | None | A read only reference to the back of the queue |
 | display_all | Uses the _CLL_ iterator methods to loop through the queue displaying each feature | None | None |
+
+
 
 ### *linear_linked_list*
 The *linear_linked_list* will be the underlying data structure for the *Stack* ADT. In this program the _LLL_ will be specialized to hold a dynamic array of *Product* ADT's. The _LLL_ will contain the following public interface:
@@ -78,6 +82,8 @@ The *linear_linked_list* will be the underlying data structure for the *Stack* A
 | end | Returns an iterator to one past the end of the list | None | Dereferencing end iterators causes undefined behavior | 
 | Equality operators | The == and != operators have been overloaded, they first compare sizes then each element in the list | None | True if the lists are equal |
 
+
+
 ### *Product_Stack*
 The *Product_Stack* utilizes a *linear_linked_list* of arrays to manage a *Stack* of _Product_ ADT's that represent a computer with some, or all, matching features. Each node in the _LLL_ will contain a dynamic array of 5 _products_.
 When the _Product_ array is full, another node will be created with another 5 _Product_ array. This combines the fast random-access utility of an array with the dynamic growth/shrinkage of a _LLL_. The *Product_Stack* public interface will consist of the following:
@@ -87,6 +93,8 @@ When the _Product_ array is full, another node will be created with another 5 _P
 | push | Uses the _LLL_ push_front method to add a _Product_ to the top of the stack | A read only reference to the _Product_ to be pushed onto the *Stack* | True of the operation was successful |
 | pop | Uses the _LLL_ pop_front method to pop the top of the *Stack* | A _Product_ object that will be overwritten with the popped _Product_ data | True if the operation was successful | 
 | peek | Dereferences the _LLL_ begin iterator to peek the top of the *Stack* | None | A read only reference to the top element in the *Stack* |
+
+
 
 ### *Product*
 
