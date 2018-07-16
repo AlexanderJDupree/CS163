@@ -12,7 +12,6 @@ Assignment: program2
 Date: 07/08/2018
 */
 
-#include <iostream>
 #include "catch.hpp"
 #include "circular_list.h"
 
@@ -95,7 +94,12 @@ TEST_CASE("Popping elements from the front of the list", "[circular_list], [pop_
     SECTION("Pop a populated list")
     {
         REQUIRE(list.pop_front().size() == 4);
-        REQUIRE(*list.begin() == 'b');
+        REQUIRE(list.front() == 'b');
+    }
+    SECTION("Pop multiple elements")
+    {
+        REQUIRE(list.pop_front().pop_front().size() == 3);
+        REQUIRE(list.front() == 'c');
     }
     SECTION("Catch a popped variable")
     {
@@ -207,5 +211,70 @@ TEST_CASE("Using the copy assignment operator")
     SECTION("Two populated lists")
     {
         REQUIRE((list1 = list2) == list2);
+    }
+}
+
+template <class InputIterator, class Functor>
+void map(InputIterator begin, InputIterator end, Functor func)
+{
+    do {
+        
+        func(*begin);
+        ++begin;
+
+    } while (begin != end);
+    return;
+}
+
+void add_one(int& data)
+{
+    ++data;
+    return;
+}
+
+TEST_CASE("Using iterators", "[circular_list], [iterators]")
+{
+    int nums[] = { 1, 2, 3, 4, 5 };
+
+    circular_linked_list<int> mutable_list(nums, nums + 5);
+
+    circular_linked_list<int> empty;
+
+    SECTION("NULL check an iterator on an empty list")
+    {
+        REQUIRE(empty.begin().null());
+    }
+
+    SECTION("Using mutable iterators to transform the list")
+    {
+        map(mutable_list.begin(), mutable_list.end(), add_one);
+
+        int i = 1;
+        circular_linked_list<int>::const_iterator it = mutable_list.begin();
+        do
+        {
+            REQUIRE(*it == ++i);
+            ++it;
+        } while (it != mutable_list.end());
+    }
+}
+
+TEST_CASE("Accessing front and back elements", "[circular_list], [front], [back]")
+{
+    int nums[] = { 1, 2, 3, 4, 5 };
+
+    const circular_linked_list<int> list(nums, nums + 5);
+
+    circular_linked_list<int> empty;
+
+    SECTION("A populated list")
+    {
+        REQUIRE(list.front() == 1);
+        REQUIRE(list.back() == 5);
+    }
+    SECTION("An empty list")
+    {
+        REQUIRE_THROWS(empty.front());
+        REQUIRE_THROWS(empty.back());
     }
 }

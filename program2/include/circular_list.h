@@ -17,6 +17,7 @@ Date: 07/08/2018
 
 #include <cstddef> // NULL
 #include <algorithm> // std::swap
+#include <stdexcept> // std::logic_error
 
 template <typename T>
 class circular_linked_list
@@ -81,10 +82,17 @@ class circular_linked_list
     // returns a read only iterator to the first element in the list
     const_iterator begin() const;
 
+    // end iterators are equivalent to begin iterators
     iterator end();
-    // returns an iterator to one-past the last element in the list. 
-    // dereferencing end() iterators causes undefined behavior
     const_iterator end() const;
+
+    // Allows read only inspection of the front in the list
+    // throws if list is empty
+    const_reference front() const;
+
+    // Alows read only inspection of the rear of the list
+    // throws if list is empty
+    const_reference back() const;
 
     /* Operator Overloads */
     // Compares sizes, then comapres each element of the list for equality
@@ -113,25 +121,20 @@ class circular_linked_list
         typedef T           value_type; 
         typedef T&          reference;
         typedef const T&    const_reference;
-        typedef Node        self_type;
         typedef T*          pointer;
         typedef const T*    const_pointer;
+        typedef Node        self_type;
 
-        
-        // Default contructor points next to NULL and initializes data to it's 
-        // default construction
-        Node() : data(value_type()), next(NULL) {}
-
-        // Value constructor points next to NULL and initializes data to the 
-        // parameter
-        Node(const_reference value) : data(value), next(NULL) {}
+        // Default values are default constrution and NULL
+        Node(const_reference value = value_type(), Node* next = NULL) 
+            : data(value), next(next) {}
 
         value_type data;
         Node* next;
 
     };
 
-    Node* _rear;
+    Node* _rear; 
     Node* _front;
 
     size_type _size; // Keeps track of the number of elements in the list
@@ -152,6 +155,9 @@ class circular_linked_list
     template <class Predicate>
     int remove_if(Predicate pred, Node* current);
 
+    // Throws a logic error exception if the Node* is NULL
+    void throw_if_null(Node* node) const;
+
     public:
 
     /*
@@ -171,19 +177,15 @@ class circular_linked_list
       public:
 
         /* Type definitions */
-        typedef typename Node::value_type      value_type;
-        typedef typename Node::const_reference const_reference;
-        typedef typename Node::const_pointer   const_pointer;
-        typedef const_forward_iterator         self_type;
+        typedef T                       value_type;
+        typedef const T&                const_reference;
+        typedef const T*                const_pointer;
+        typedef const_forward_iterator  self_type;
 
         /* Constructors */
 
-        // default constructor points the iterator to NULL
-        const_forward_iterator() : node(NULL) {}
-
-        // Value constructor initializers the pointer to point to the passed in
-        // parameter
-        const_forward_iterator(Node* ptr) : node(ptr) {}
+        // Defaults to NULL iterator 
+        const_forward_iterator(Node* ptr = NULL) : node(ptr) {}
 
         /* Operator Overloads */
 
@@ -200,13 +202,16 @@ class circular_linked_list
         // arrow operator allows returns a READ only reference to the data member
         const_pointer operator->() const;
 
+        // Returns true if the iterator is NULL
+        bool null() const;
+
         // returns true if each iterator is pointing to the same address in
         // memory
         bool operator==(const self_type& rhs) const;
 
         // returns the logical not of the equality operator
         bool operator!=(const self_type& rhs) const;
-      
+
       protected:
 
         Node* node;
@@ -224,21 +229,18 @@ class circular_linked_list
       public:
 
         /* Type definitions */
-        typedef typename Node::value_type   value_type;
-        typedef typename Node::reference    reference;
-        typedef typename Node::pointer      pointer;
-        typedef forward_iterator            self_type;
+        typedef T                   value_type;
+        typedef T&                  reference;
+        typedef T*                  pointer;
+        typedef forward_iterator    self_type;
 
-        forward_iterator() : const_forward_iterator() {}
-
-        forward_iterator(Node* ptr) : const_forward_iterator(ptr) {}
+        forward_iterator(Node* ptr = NULL) : const_forward_iterator(ptr) {}
 
         // Dereference operator allows a read/write access to data member
         reference operator*();
 
         // Arrow operator allows a read/write reference to data member
         pointer operator->();
-
     };
 };
 

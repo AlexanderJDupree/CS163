@@ -67,8 +67,7 @@ circular_linked_list<T>& circular_linked_list<T>::push_back(const_reference data
     }
     else
     {
-        Node* temp = new Node(data);
-        temp->next = _front;
+        Node* temp = new Node(data, _front);
 
         _rear->next = temp;
         _rear = temp;
@@ -130,6 +129,7 @@ circular_linked_list<T>& circular_linked_list<T>::clear()
     // break apart the list
     _rear->next = NULL;
 
+    // recursively clear the list
     clear_list(_front);
 
     _size = 0;
@@ -248,6 +248,33 @@ circular_linked_list<T>::end() const
     return const_iterator(_front);
 }
 
+template <typename T>
+const T& circular_linked_list<T>::front() const
+{
+    throw_if_null(_front);
+
+    return _front->data;
+}
+
+template <typename T>
+const T& circular_linked_list<T>::back() const
+{
+    throw_if_null(_rear);
+
+    return _rear->data;
+}
+
+template <typename T>
+void circular_linked_list<T>::throw_if_null(Node* node) const
+{
+    if (node)
+    {
+        return;
+    }
+
+    throw std::logic_error("Element access fail, NULL pointer");
+}
+
 /* Operator Overloads */
 template <typename T>
 bool circular_linked_list<T>::operator==(const self_type& rhs) const
@@ -332,6 +359,12 @@ circular_linked_list<T>::const_iterator::operator++(int)
     self_type copy = self_type(*this);
     ++(*this);
     return copy;
+}
+
+template <typename T>
+bool circular_linked_list<T>::const_iterator::null() const
+{
+    return node == NULL;
 }
 
 template <typename T>
