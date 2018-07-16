@@ -1,7 +1,27 @@
 /*
-File: circular_list.h
+File: linked_list.h
 
-Brief:
+Description: linear_linked_list is a data structure that stores data onto a node
+             as well as the address for the next element in the container.
+
+             This implementation for the linear linked list is a fully templated
+             class. This allows the linear_linked_list to be instantiated to 
+             store any data types. 
+
+             By default the linear linked list COPIES the data onto the node. 
+             This requires that the data object have a copy constructor defined
+             or can be shallow copied with the default constructor.
+
+             This linear linked list implemented with a add_unique method that
+             will add UNIQUE elements into the container in a sorted state. 
+             This operation requires the use of the '<' and the '==' operator to
+             be defined as well. 
+
+             To access data or traverse the list, this linear linked list makes 
+             use of forward iterators. The forward iterator cannot be decremented.
+             The end iterator represents the element one-past the end of the
+             list which is a null pointer. dereferencing end iterators causes 
+             undifined behavior.
 
 Author: Alexander DuPree
 
@@ -9,18 +29,17 @@ Class: CS163
 
 Assignment: program2
 
-Date: 07/08/2018
+Date: 06/27/2018
 */
 
-#ifndef CIRCULAR_LIST_H
-#define CIRCULAR_LIST_H
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
 
 #include <cstddef> // NULL
 #include <algorithm> // std::swap
-#include <stdexcept> // std::logic_error
 
 template <typename T>
-class circular_linked_list
+class linear_linked_list
 {
   public:
 
@@ -37,32 +56,34 @@ class circular_linked_list
     typedef size_t                 size_type;
     typedef forward_iterator       iterator;
     typedef const_forward_iterator const_iterator;
-    typedef circular_linked_list<T>  self_type;
+    typedef linear_linked_list<T>  self_type;
 
     // Instantiates an EMPTY list
-    circular_linked_list();
+    linear_linked_list();
 
     // Ranged based constructor
     template <class InputIterator>
-    circular_linked_list(InputIterator begin, InputIterator end);
+    linear_linked_list(InputIterator begin, InputIterator end);
 
     // Copies each element in the original list onto this list
-    circular_linked_list(const self_type& origin);
+    linear_linked_list(const self_type& origin);
    
     // Uses clear() to delete each element in the list
-    ~circular_linked_list();
+    ~linear_linked_list();
      
+    // Adds an element to the front of the list
+    self_type& push_front(const_reference data);
+
     // Adds an element to the back of the list
     self_type& push_back(const_reference data);
 
     // Removes the element at the front of the list
     self_type& pop_front();
 
-    // Pops the front element into the out_parameter
     reference pop_front(reference out_param);
 
     // wrapper method for clear_list, if the list is empty does nothing
-    self_type& clear();
+    void clear();
 
     // returns true if the list is empty
     bool empty() const;
@@ -82,17 +103,10 @@ class circular_linked_list
     // returns a read only iterator to the first element in the list
     const_iterator begin() const;
 
-    // end iterators are equivalent to begin iterators
     iterator end();
+    // returns an iterator to one-past the last element in the list. 
+    // dereferencing end() iterators causes undefined behavior
     const_iterator end() const;
-
-    // Allows read only inspection of the front in the list
-    // throws if list is empty
-    const_reference front() const;
-
-    // Alows read only inspection of the rear of the list
-    // throws if list is empty
-    const_reference back() const;
 
     /* Operator Overloads */
     // Compares sizes, then comapres each element of the list for equality
@@ -121,11 +135,13 @@ class circular_linked_list
         typedef T           value_type; 
         typedef T&          reference;
         typedef const T&    const_reference;
+        typedef Node        self_type;
         typedef T*          pointer;
         typedef const T*    const_pointer;
-        typedef Node        self_type;
 
-        // Default values are default constrution and NULL
+        
+        // Default contructor points next to NULL and initializes data to it's 
+        // default construction
         Node(const_reference value = value_type(), Node* next = NULL) 
             : data(value), next(next) {}
 
@@ -134,8 +150,8 @@ class circular_linked_list
 
     };
 
-    Node* _rear; 
-    Node* _front;
+    Node* head;
+    Node* tail;
 
     size_type _size; // Keeps track of the number of elements in the list
 
@@ -148,10 +164,7 @@ class circular_linked_list
     // Recursively travels the list removing the first element fullfiling the
     // Predicate functor
     template <class Predicate>
-    int remove_if(Predicate pred, Node* current);
-
-    // Throws a logic error exception if the Node* is NULL
-    void throw_if_null(Node* node) const;
+    bool remove_if(Predicate pred, Node* current);
 
     public:
 
@@ -179,7 +192,7 @@ class circular_linked_list
 
         /* Constructors */
 
-        // Defaults to NULL iterator 
+        // default constructor points the iterator to NULL
         const_forward_iterator(Node* ptr = NULL) : node(ptr) {}
 
         /* Operator Overloads */
@@ -197,16 +210,13 @@ class circular_linked_list
         // arrow operator allows returns a READ only reference to the data member
         const_pointer operator->() const;
 
-        // Returns true if the iterator is NULL
-        bool null() const;
-
         // returns true if each iterator is pointing to the same address in
         // memory
         bool operator==(const self_type& rhs) const;
 
         // returns the logical not of the equality operator
         bool operator!=(const self_type& rhs) const;
-
+      
       protected:
 
         Node* node;
@@ -236,6 +246,7 @@ class circular_linked_list
 
         // Arrow operator allows a read/write reference to data member
         pointer operator->();
+
     };
 };
 
@@ -243,6 +254,6 @@ class circular_linked_list
 Because this is a templated class, we need to include the implementation in 
 the header file so the compiler can instantiate the methods with the right type 
 */
-#include "circular_list.cpp"
+#include "linked_list.cpp"
 
-#endif //CIRCULAR_LIST_H
+#endif //LINKED_LIST_H
