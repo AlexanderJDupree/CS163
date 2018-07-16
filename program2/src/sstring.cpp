@@ -137,6 +137,15 @@ SString::self_type& SString::operator=(const SString& str)
     return *this;
 }
 
+SString::self_type& SString::operator=(const_pointer str)
+{
+    validate_pointer(str);
+
+    *this = SString(str);
+
+    return *this;
+}
+
 void SString::swap(SString& new_string, SString& old_string)
 {
     using std::swap;
@@ -148,24 +157,6 @@ void SString::swap(SString& new_string, SString& old_string)
     return;
 }
 
-SString::self_type& SString::operator=(const_pointer str)
-{
-    validate_pointer(str);
-
-    // _data is initialized, we must delete it first
-    if(!catch_null_exception(_data))
-    {
-        delete [] _data;
-    }
-
-    _length = len(str);
-
-    // Create new buffer
-    _data = new char[_length];
-
-    return *this;
-}
-
 std::ostream& operator << (std::ostream& os, const SString& str)
 {
     os << str._data;
@@ -174,11 +165,9 @@ std::ostream& operator << (std::ostream& os, const SString& str)
 
 std::istream& operator >> (std::istream& is, SString& str)
 {
-    // Temporary buffer is created so that is stream extraction fails, the 
-    // strings state is not changed
-    char* buffer = new char[str._length];
+    char* buffer = new char[100];
 
-    is.get(buffer, str._length);
+    is.get(buffer, 100);
 
     // We use the assignment operator to handle the buffer copy
     str = buffer;

@@ -12,6 +12,7 @@ Assignment: program2
 Date: 07/08/2018
 */
 
+#include <sstream>
 #include "catch.hpp"
 #include "sstring.h"
 
@@ -117,9 +118,9 @@ TEST_CASE("Iterating through a shared string", "[sstring], [iterators]")
     }
 }
 
-TEST_CASE("Using copy assignment operator", "[sstring], [copy-assignment]")
+TEST_CASE("Using copy assignment operator with shared strings", "[sstring], [copy-assignment]")
 {
-    SECTION("Assignment of an unitialized string to a populated string")
+    SECTION("Assignment of an uninitialized string to a populated string")
     {   
         SString uninitialized;
 
@@ -130,7 +131,7 @@ TEST_CASE("Using copy assignment operator", "[sstring], [copy-assignment]")
         REQUIRE(origin.ref_count() == 2);
         REQUIRE(origin == uninitialized);
     }
-    SECTION("Reassignment of a popualted string")
+    SECTION("Reassignment of a populated string")
     {
         SString first("Hello");
         SString copy(first);
@@ -144,6 +145,28 @@ TEST_CASE("Using copy assignment operator", "[sstring], [copy-assignment]")
 
         REQUIRE(first == second);
         REQUIRE(second.ref_count() == 2);
+    }
+}
+
+TEST_CASE("Using copy assignment operator with cstrings", "[sstring], [copy-assignment]")
+{
+    SECTION("Assignment of an uninitialized string to a cstring")
+    {
+        SString uninitialized;
+
+        uninitialized = "Hello World";
+
+        REQUIRE(uninitialized.ref_count() == 1);
+        REQUIRE(uninitialized == "Hello World");
+    }
+    SECTION("Reassignment of a populated string")
+    {
+        SString str ("Hello");
+
+        str = "foo bar";
+
+        REQUIRE(str.ref_count() == 1);
+        REQUIRE(str == "foo bar");
     }
 }
 
@@ -207,3 +230,32 @@ TEST_CASE("Using the << operator", "[sstring], [stream extraction]")
         REQUIRE(oss.str() == "");
     }
 }
+
+TEST_CASE("Using the >> operator", "[sstring], [stream extraction]")
+{
+    SString empty;
+
+    SString origin("Hello World");
+
+    SString copy(origin);
+
+    std::istringstream iss("Hello World");
+
+    SECTION("Store input into an empty string")
+    {
+
+        iss >> empty;
+
+        REQUIRE(empty == "Hello World");
+    }
+    SECTION("Storing input into a shared string")
+    {
+        iss >> copy;
+
+        REQUIRE(copy.ref_count() == 1);
+        REQUIRE(origin.ref_count() == 1);
+
+        REQUIRE(copy == "Hello World");
+    }
+}
+
