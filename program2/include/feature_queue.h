@@ -23,6 +23,7 @@ class Feature_Queue
   public:
 
     typedef SString                      string;
+    typedef Feature_Queue                self_type;
     typedef circular_linked_list<string> queue;
 
     Feature_Queue();
@@ -30,7 +31,13 @@ class Feature_Queue
     template <class InputIterator>
     Feature_Queue(InputIterator begin, InputIterator end);
 
-    SString& dequeue(SString& out_param);
+    SString& dequeue(string& out_param);
+
+    self_type& enqueue(const SString& data);
+
+    const string& front() const;
+
+    const string& back() const;
 
     bool empty() const;
 

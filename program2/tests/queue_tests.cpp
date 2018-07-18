@@ -37,7 +37,40 @@ TEST_CASE("Constructing queue", "[queue], [constructor]")
     }
 }
 
-TEST_CASE("Adding items to the queue", "[queue], []")
+TEST_CASE("Adding items to the queue", "[queue], [enqueue]")
 {
+    Feature_Queue queue;
 
+    SECTION("enqueuing to an empty queue")
+    {
+        queue.enqueue("Hello");
+
+        REQUIRE("Hello" == queue.front());
+    }
+    SECTION("enqueueing multiple items")
+    {
+        queue.enqueue("Hello").enqueue("World").enqueue("Bye!");
+
+        REQUIRE("Hello" == queue.front());
+        REQUIRE("Bye!" == queue.back());
+    }
+}
+
+TEST_CASE("Peeking the front and back of the queue", "[queue], [front], [back]")
+{
+    SString strings[] = { "Hey", "Okay", "Vader", "Careless Whisper" };
+    Feature_Queue populated_queue(strings, strings + 4);
+
+    Feature_Queue empty;
+
+    SECTION("front and back return the correct strings")
+    {
+        REQUIRE("Hey" == populated_queue.front());
+        REQUIRE("Careless Whisper" == populated_queue.back());
+    }
+    SECTION("Front and back on an empty list throws")
+    {
+        REQUIRE_THROWS(empty.front());
+        REQUIRE_THROWS(empty.back());
+    }
 }
