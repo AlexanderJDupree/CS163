@@ -19,6 +19,8 @@ Date: 07/11/2018
 #include <iostream>
 #include "rc_manager.h"
 
+// SString inherits the functionality of the reference manager to allow for 
+// smart allocation, copy, and deallocation
 class SString : public reference_manager<char>
 {
   public:
@@ -97,14 +99,15 @@ class SString : public reference_manager<char>
 
     size_type _length; // Number of characters in the string
 
+    // Throws an exception if the pointer is NULL
     static void validate_pointer(const_pointer);
+    
+    // Returns true if a null exception was thrown
     static bool catch_null_exception(const_pointer);
     
     // copies each character from source including null character. Stops 
     // copying if the buffer is full
     void copy(const_pointer source);
-
-
 };
 
 #endif // STRING_H

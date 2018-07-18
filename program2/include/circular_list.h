@@ -42,7 +42,7 @@ class circular_linked_list
     // Instantiates an EMPTY list
     circular_linked_list();
 
-    // Ranged based constructor
+    // Ranged based constructor 
     template <class InputIterator>
     circular_linked_list(InputIterator begin, InputIterator end);
 
@@ -118,20 +118,12 @@ class circular_linked_list
     */
     struct Node
     {
-        typedef T           value_type; 
-        typedef T&          reference;
-        typedef const T&    const_reference;
-        typedef T*          pointer;
-        typedef const T*    const_pointer;
-        typedef Node        self_type;
-
         // Default values are default constrution and NULL
         Node(const_reference value = value_type(), Node* next = NULL) 
             : data(value), next(next) {}
 
         value_type data;
         Node* next;
-
     };
 
     Node* _rear; 
@@ -172,9 +164,6 @@ class circular_linked_list
       public:
 
         /* Type definitions */
-        typedef T                       value_type;
-        typedef const T&                const_reference;
-        typedef const T*                const_pointer;
         typedef const_forward_iterator  self_type;
 
         /* Constructors */
@@ -211,6 +200,7 @@ class circular_linked_list
 
         Node* node;
     };
+
     /*
     @class: forward_iterator
     

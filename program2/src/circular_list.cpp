@@ -382,28 +382,28 @@ bool circular_linked_list<T>::const_iterator::operator!=(const self_type& rhs) c
 }
 
 template <typename T>
-typename circular_linked_list<T>::const_iterator::const_reference 
+typename circular_linked_list<T>::const_reference 
 circular_linked_list<T>::const_iterator::operator*() const
 {
     return node->data;
 }
 
 template <typename T>
-typename circular_linked_list<T>::const_iterator::const_pointer
+typename circular_linked_list<T>::const_pointer
 circular_linked_list<T>::const_iterator::operator->() const
 {
     return &node->data;
 }
 
 template <typename T>
-typename circular_linked_list<T>::iterator::reference
+typename circular_linked_list<T>::reference
 circular_linked_list<T>::iterator::operator*() 
 {
     return this->node->data;
 }
 
 template <typename T>
-typename circular_linked_list<T>::iterator::pointer
+typename circular_linked_list<T>::pointer
 circular_linked_list<T>::iterator::operator->()
 {
     return &this->node->data;

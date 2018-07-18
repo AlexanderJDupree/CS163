@@ -44,10 +44,14 @@ class reference_manager
 
   protected:
 
-    size_type* _size;
-    size_type* _ref_count;
-    pointer   _data;
+    size_type* _size; // The shared size of the allocated data
+    size_type* _ref_count; // The number of references to the data
+    pointer   _data; // The shared data object
 
+  private:
+
+    // Releases the data. This will delete the data, ref count and size for ALL
+    // referenced objects
     void release();
 
 };

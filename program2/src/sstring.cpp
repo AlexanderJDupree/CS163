@@ -54,11 +54,13 @@ void SString::copy(const_pointer source)
     validate_pointer(source);
 
     size_type index = 0;
-    for(; source[index] != '\0' && index < _length; ++index)
+    for(; index < _length && source[index] != '\0' ; ++index)
     {
         _data[index] = source[index];
     }
 
+    // Ensures the last character is null-terminated. _length is not out of 
+    // bounds because we allocated enough for len(str) + 1
     _data[_length] = '\0';
 
     return;
@@ -169,6 +171,7 @@ std::istream& operator >> (std::istream& is, SString& str)
 
     is.get(buffer, 100);
 
+    // TODO look into a string builder class to prevent this extra copy
     // We use the assignment operator to handle the buffer copy
     str = buffer;
 
