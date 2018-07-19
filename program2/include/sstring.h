@@ -97,8 +97,6 @@ class SString : public reference_manager<char>
 
   private:
 
-    size_type _length; // Number of characters in the string
-
     // Throws an exception if the pointer is NULL
     static void validate_pointer(const_pointer);
     

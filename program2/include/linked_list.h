@@ -37,6 +37,7 @@ Date: 06/27/2018
 
 #include <cstddef> // NULL
 #include <algorithm> // std::swap
+#include <stdexcept> // std::logic_error
 
 template <typename T>
 class linear_linked_list
@@ -95,6 +96,16 @@ class linear_linked_list
     // returns the number of elements in the list
     size_type size() const;
 
+    /* Element Access */
+
+    // Returns a direct reference to the front element, throws if list is empty
+    reference front();
+    const_reference front() const;
+
+    // Returns a direct reference to the rear element, throws if list is empty
+    reference back();
+    const_reference back() const;
+
     /* Iterators */
 
     // returns a read/write iterator to the first element in the list
@@ -132,16 +143,7 @@ class linear_linked_list
     */
     struct Node
     {
-        typedef T           value_type; 
-        typedef T&          reference;
-        typedef const T&    const_reference;
-        typedef Node        self_type;
-        typedef T*          pointer;
-        typedef const T*    const_pointer;
-
-        
-        // Default contructor points next to NULL and initializes data to it's 
-        // default construction
+        // Default values are default constrution and NULL
         Node(const_reference value = value_type(), Node* next = NULL) 
             : data(value), next(next) {}
 
@@ -166,6 +168,9 @@ class linear_linked_list
     template <class Predicate>
     bool remove_if(Predicate pred, Node* current);
 
+    // Throws a logic error exception if the node* is NULL
+    void throw_if_null(Node* node) const;
+
     public:
 
     /*
@@ -184,10 +189,6 @@ class linear_linked_list
     {
       public:
 
-        /* Type definitions */
-        typedef T                       value_type;
-        typedef const T&                const_reference;
-        typedef const T*                const_pointer;
         typedef const_forward_iterator  self_type;
 
         /* Constructors */
@@ -234,9 +235,6 @@ class linear_linked_list
       public:
 
         /* Type definitions */
-        typedef T                   value_type;
-        typedef T&                  reference;
-        typedef T*                  pointer;
         typedef forward_iterator    self_type;
 
         forward_iterator(Node* ptr = NULL) : const_forward_iterator(ptr) {}

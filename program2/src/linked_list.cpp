@@ -302,6 +302,49 @@ void linear_linked_list<T>::swap(self_type& new_list, self_type& old_list)
     return;
 }
 
+template <typename T>
+T& linear_linked_list<T>::front() 
+{
+    throw_if_null(head);
+
+    return head->data;
+}
+
+template <typename T>
+const T& linear_linked_list<T>::front() const
+{
+    throw_if_null(head);
+
+    return head->data;
+}
+
+template <typename T>
+T& linear_linked_list<T>::back() 
+{
+    throw_if_null(tail);
+
+    return tail->data;
+}
+
+template <typename T>
+const T& linear_linked_list<T>::back() const
+{
+    throw_if_null(tail);
+
+    return tail->data;
+}
+
+template <typename T>
+void linear_linked_list<T>::throw_if_null(Node* node) const
+{
+    if(node)
+    {
+        return;
+    }
+
+    throw std::logic_error("Element access fail, NULL pointer");
+}
+
 /*******************************************************************************
 ITERATOR CLASS
 *******************************************************************************/
@@ -341,28 +384,28 @@ bool linear_linked_list<T>::const_iterator::operator!=(const self_type& rhs) con
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator::const_reference 
+typename linear_linked_list<T>::const_reference 
 linear_linked_list<T>::const_iterator::operator*() const
 {
     return node->data;
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator::const_pointer
+typename linear_linked_list<T>::const_pointer
 linear_linked_list<T>::const_iterator::operator->() const
 {
     return &node->data;
 }
 
 template <typename T>
-typename linear_linked_list<T>::iterator::reference
+typename linear_linked_list<T>::reference
 linear_linked_list<T>::iterator::operator*() 
 {
     return this->node->data;
 }
 
 template <typename T>
-typename linear_linked_list<T>::iterator::pointer
+typename linear_linked_list<T>::pointer
 linear_linked_list<T>::iterator::operator->()
 {
     return &this->node->data;

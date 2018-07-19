@@ -17,7 +17,7 @@ Date: 06/27/2018
 #include "sstring.h"
 
 SString::SString(const_pointer str) 
-    : reference_manager(len(str) + 1), _length(*_size - 1)
+    : reference_manager(len(str) + 1)
 {
     if (!catch_null_exception(str))
     {
@@ -30,7 +30,7 @@ SString::SString(const_pointer str)
 }
 
 SString::SString(const self_type& origin)
-    : reference_manager(origin), _length(origin._length) {}
+    : reference_manager(origin) {}
 
 SString::~SString() {}
 
@@ -54,37 +54,37 @@ void SString::copy(const_pointer source)
     validate_pointer(source);
 
     size_type index = 0;
-    for(; index < _length && source[index] != '\0' ; ++index)
+    for(; index < length() && source[index] != '\0' ; ++index)
     {
         _data[index] = source[index];
     }
 
     // Ensures the last character is null-terminated. _length is not out of 
     // bounds because we allocated enough for len(str) + 1
-    _data[_length] = '\0';
+    _data[length()] = '\0';
 
     return;
 }
 
 SString::size_type SString::length() const
 {
-    return _length;
+    return *_size - 1;
 }
 
 bool SString::empty() const
 {
-    return _length == 0;
+    return length() == 0;
 }
 
 bool SString::compare_equal(const self_type& str) const
 {
     // Strings are different sizes, they are not the same
-    if (_length != str._length)
+    if (length() != str.length())
     {
         return false;
     }
     // Strings are both empty, or they share the same data
-    if ((_length == 0 && str._length == 0) || _data == str._data)
+    if ((length() == 0 && str.length() == 0) || _data == str._data)
     {
         return true;
     }
@@ -100,7 +100,7 @@ SString::const_iterator SString::begin() const
 
 SString::const_iterator SString::end() const
 {
-    return &_data[_length];
+    return &_data[length()];
 }
 
 void SString::validate_pointer(const_pointer str)
@@ -153,7 +153,6 @@ void SString::swap(SString& new_string, SString& old_string)
     using std::swap;
 
     swap(new_string._data, old_string._data);
-    swap(new_string._length, old_string._length);
     swap(new_string._size, old_string._size);
     swap(new_string._ref_count, old_string._ref_count);
     return;

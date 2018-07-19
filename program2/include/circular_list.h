@@ -163,7 +163,6 @@ class circular_linked_list
     {
       public:
 
-        /* Type definitions */
         typedef const_forward_iterator  self_type;
 
         /* Constructors */
@@ -214,9 +213,6 @@ class circular_linked_list
       public:
 
         /* Type definitions */
-        typedef T                   value_type;
-        typedef T&                  reference;
-        typedef T*                  pointer;
         typedef forward_iterator    self_type;
 
         forward_iterator(Node* ptr = NULL) : const_forward_iterator(ptr) {}
