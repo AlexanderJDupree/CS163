@@ -1,7 +1,8 @@
 /*
 File: product.h
 
-Brief:
+Brief: Implementation file for the Product class. Defines methods for 
+       construction, inspection, and comparison.
 
 Author: Alexander DuPree
 

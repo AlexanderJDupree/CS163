@@ -16,6 +16,8 @@ Date: 06/27/2018
 
 #include "sstring.h"
 
+/****** CONSTRUCTORS ******/
+
 SString::SString(const_pointer str) 
     : reference_manager(len(str) + 1)
 {
@@ -32,6 +34,7 @@ SString::SString(const_pointer str)
 SString::SString(const self_type& origin)
     : reference_manager(origin) {}
 
+// Inherited virtual destructor handles deallocation
 SString::~SString() {}
 
 SString::size_type SString::len(const_pointer str)
@@ -93,6 +96,8 @@ bool SString::compare_equal(const self_type& str) const
     return *this == str._data;
 }
 
+/****** ITERATORS ******/
+
 SString::const_iterator SString::begin() const
 {
     return _data;
@@ -102,6 +107,8 @@ SString::const_iterator SString::end() const
 {
     return &_data[length()];
 }
+
+/****** SUBROUTINES ******/
 
 void SString::validate_pointer(const_pointer str)
 {
@@ -126,7 +133,7 @@ bool SString::catch_null_exception(const_pointer str)
     }
 }
 
-/* Operator Overloads */
+/****** COPY AND SWAP ******/
 SString::self_type& SString::operator=(const SString& str)
 {
     // Utilize the copy constructor to create a copy of the string
@@ -158,6 +165,7 @@ void SString::swap(SString& new_string, SString& old_string)
     return;
 }
 
+/****** STREAM OPERATORS ******/
 std::ostream& operator << (std::ostream& os, const SString& str)
 {
     os << str._data;
@@ -179,6 +187,7 @@ std::istream& operator >> (std::istream& is, SString& str)
     return is;
 }
 
+/****** COMPARISON OPERATORS ******/
 bool operator==(const SString& lhs, const char* rhs)
 {
     return std::strcmp(lhs._data, rhs) == 0;

@@ -1,12 +1,11 @@
 /*
- *
-file: queue.h
+file: queue.cpp
 
-brief:
+brief:  Implementation file for the Feature_Queue class
 
-author: alexander dupree
+author: Alexander DuPree
 
-class: cs163
+class: CS163
 
 assignment: program2
 

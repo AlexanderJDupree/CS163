@@ -19,6 +19,8 @@ Date: 07/11/2018
 
 #include "linked_list.h"
 
+/****** CONSTRUCTORS ******/
+
 // default constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list() 
@@ -55,7 +57,7 @@ linear_linked_list<T>::~linear_linked_list()
     clear();
 }
 
-/* Modifiers */
+/****** MODIFIERS ******/
 
 template <typename T>
 linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
@@ -147,17 +149,6 @@ void linear_linked_list<T>::clear_list(Node*& current)
 }
 
 template <typename T>
-bool linear_linked_list<T>::empty() const
-{
-    /*
-    Because head is only NULL when the list is empty we can return the 
-    logical NOT of head. This returns true iff head is NULL.
-    */
-
-    return !(head);
-}
-
-template <typename T>
 template <class Predicate>
 bool linear_linked_list<T>::remove_if(Predicate pred)
 {
@@ -206,13 +197,60 @@ bool linear_linked_list<T>::remove_if(Predicate pred, Node* current)
     return remove_if(pred, current->next);
 }
 
+/****** CAPACITY ******/
+
+template <typename T>
+bool linear_linked_list<T>::empty() const
+{
+    /*
+    Because head is only NULL when the list is empty we can return the 
+    logical NOT of head. This returns true iff head is NULL.
+    */
+
+    return !(head);
+}
 template <typename T>
 typename linear_linked_list<T>::size_type linear_linked_list<T>::size() const
 {
     return _size;
 }
 
-/* ITERATORS */
+/****** ELEMENT ACCESS ******/
+
+template <typename T>
+T& linear_linked_list<T>::front() 
+{
+    throw_if_null(head);
+
+    return head->data;
+}
+
+template <typename T>
+const T& linear_linked_list<T>::front() const
+{
+    throw_if_null(head);
+
+    return head->data;
+}
+
+template <typename T>
+T& linear_linked_list<T>::back() 
+{
+    throw_if_null(tail);
+
+    return tail->data;
+}
+
+template <typename T>
+const T& linear_linked_list<T>::back() const
+{
+    throw_if_null(tail);
+
+    return tail->data;
+}
+
+
+/****** ITERATORS ******/
 
 template <typename T>
 typename linear_linked_list<T>::iterator
@@ -242,7 +280,8 @@ linear_linked_list<T>::end() const
     return const_iterator(NULL);
 }
 
-/* Operator Overloads */
+/****** COMPARISON OPERATORS ******/
+
 template <typename T>
 bool linear_linked_list<T>::operator==(const self_type& rhs) const
 {
@@ -300,38 +339,6 @@ void linear_linked_list<T>::swap(self_type& new_list, self_type& old_list)
     swap(new_list.tail, old_list.tail);
     swap(new_list._size, old_list._size);
     return;
-}
-
-template <typename T>
-T& linear_linked_list<T>::front() 
-{
-    throw_if_null(head);
-
-    return head->data;
-}
-
-template <typename T>
-const T& linear_linked_list<T>::front() const
-{
-    throw_if_null(head);
-
-    return head->data;
-}
-
-template <typename T>
-T& linear_linked_list<T>::back() 
-{
-    throw_if_null(tail);
-
-    return tail->data;
-}
-
-template <typename T>
-const T& linear_linked_list<T>::back() const
-{
-    throw_if_null(tail);
-
-    return tail->data;
 }
 
 template <typename T>

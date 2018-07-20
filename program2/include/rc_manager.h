@@ -1,7 +1,11 @@
 /*
 File: rc_manager.h
 
-Brief:
+Brief: The Reference Count Manager is an idea I have been playing around with 
+       for adding garbage collection to C++ programs. This is my first attempt 
+       in implementing garbage collection and as such, the reference_manager is 
+       only in its first stages of development. However, it has been working 
+       great for negating the copy costs of strings. 
 
 Author: Alexander DuPree
 
@@ -30,10 +34,14 @@ class reference_manager
     typedef reference_manager   self_type;
     typedef unsigned            size_type;
 
+    // Allocates a T array of a defined size
     reference_manager(size_type size = 0);
 
+    // Points this object to the origin data, increments reference count
     reference_manager(const self_type& origin);
 
+    // Decrements the reference count, if the reference count is zero, releases
+    // the data
     virtual ~reference_manager();
 
     // Returns the number of elements in the array

@@ -19,6 +19,8 @@ Date: 07/11/2018
 
 #include "circular_list.h"
 
+/****** CONSTRUCTORS ******/
+
 // default constructor
 template <typename T>
 circular_linked_list<T>::circular_linked_list() 
@@ -55,7 +57,8 @@ circular_linked_list<T>::~circular_linked_list()
     clear();
 }
 
-/* Modifiers */
+/****** MODIFIERS ******/
+
 template <typename T>
 circular_linked_list<T>& circular_linked_list<T>::push_back(const_reference data)
 {
@@ -155,17 +158,6 @@ void circular_linked_list<T>::clear_list(Node*& current)
 }
 
 template <typename T>
-bool circular_linked_list<T>::empty() const
-{
-    /*
-    Because head is only NULL when the list is empty we can return the 
-    logical NOT of head. This returns true iff head is NULL.
-    */
-
-    return !(_rear);
-}
-
-template <typename T>
 template <class Predicate>
 bool circular_linked_list<T>::remove_if(Predicate pred)
 {
@@ -212,13 +204,25 @@ int circular_linked_list<T>::remove_if(Predicate pred, Node* current)
     return recursive_signal;
 }
 
+/****** CAPACITY ******/
+
+template <typename T>
+bool circular_linked_list<T>::empty() const
+{
+    /*
+    Because head is only NULL when the list is empty we can return the 
+    logical NOT of head. This returns true iff head is NULL.
+    */
+
+    return !(_rear);
+}
 template <typename T>
 typename circular_linked_list<T>::size_type circular_linked_list<T>::size() const
 {
     return _size;
 }
 
-/* ITERATORS */
+/****** ITERATORS ******/
 
 template <typename T>
 typename circular_linked_list<T>::iterator
@@ -248,6 +252,8 @@ circular_linked_list<T>::end() const
     return const_iterator(_front);
 }
 
+/****** ELEMENT ACCESS ******/
+
 template <typename T>
 const T& circular_linked_list<T>::front() const
 {
@@ -275,7 +281,8 @@ void circular_linked_list<T>::throw_if_null(Node* node) const
     throw std::logic_error("Element access fail, NULL pointer");
 }
 
-/* Operator Overloads */
+/****** COMPARISON OPERATORS ******/
+
 template <typename T>
 bool circular_linked_list<T>::operator==(const self_type& rhs) const
 {
@@ -309,6 +316,8 @@ bool circular_linked_list<T>::operator!=(const self_type& rhs) const
 {
     return !(*this == rhs);
 }
+
+/****** COPY-ASSIGNMENT AND SWAP ******/
 
 template <typename T>
 typename circular_linked_list<T>::self_type& 

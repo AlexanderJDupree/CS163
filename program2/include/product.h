@@ -1,7 +1,10 @@
 /*
 File: product.h
 
-Brief:
+Brief: Product is a utility class that stores information related to a computer
+       for later evaluation. Product class comes equipped with inspectors for
+       each attribute, default and value constructors, and out stream operator
+       overloads.
 
 Author: Alexander DuPree
 
@@ -29,13 +32,16 @@ class Product
     // Default construction
     Product(const string& store="", const string& model="", unsigned price=0);
 
+    // Inspectors
     const string& store() const;
     const string& model() const;
     unsigned price() const;
     unsigned matches() const;
 
+    // Adds a matched feature to the feature list
     self_type& add_match(const string& feature);
 
+    // Comparison operators use the _model attribute for comparison
     bool operator == (const self_type& rhs) const;
     bool operator != (const self_type& rhs) const;
 
@@ -43,13 +49,12 @@ class Product
 
   private:
 
-    string _store;
-    string _model;
+    string _store; // The store this computer is located at
+    string _model; // The model of the computer, used for comparison
 
-    unsigned _price;
+    unsigned _price; // The price of the computer
 
-    Features _features;
-
+    Features _features; // A list of matched features
 };
 
 #endif // PRODUCT_H

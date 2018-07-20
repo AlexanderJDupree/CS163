@@ -10,12 +10,7 @@ Description: linear_linked_list is a data structure that stores data onto a node
 
              By default the linear linked list COPIES the data onto the node. 
              This requires that the data object have a copy constructor defined
-             or can be shallow copied with the default constructor.
-
-             This linear linked list implemented with a add_unique method that
-             will add UNIQUE elements into the container in a sorted state. 
-             This operation requires the use of the '<' and the '==' operator to
-             be defined as well. 
+             or can be shallow copied with the default copy constructor.
 
              To access data or traverse the list, this linear linked list makes 
              use of forward iterators. The forward iterator cannot be decremented.
@@ -59,6 +54,8 @@ class linear_linked_list
     typedef const_forward_iterator const_iterator;
     typedef linear_linked_list<T>  self_type;
 
+    /****** CONSTRUCTORS ******/
+
     // Instantiates an EMPTY list
     linear_linked_list();
 
@@ -72,6 +69,8 @@ class linear_linked_list
     // Uses clear() to delete each element in the list
     ~linear_linked_list();
      
+    /****** MODIFIERS ******/
+
     // Adds an element to the front of the list
     self_type& push_front(const_reference data);
 
@@ -86,17 +85,19 @@ class linear_linked_list
     // wrapper method for clear_list, if the list is empty does nothing
     void clear();
 
-    // returns true if the list is empty
-    bool empty() const;
-
     // Removes the first item fullfilling the predicate functor
     template <class Predicate>
     bool remove_if(Predicate pred);
 
+    /****** CAPACITY ******/
+
+    // returns true if the list is empty
+    bool empty() const;
+
     // returns the number of elements in the list
     size_type size() const;
 
-    /* Element Access */
+    /****** ELEMENT ACCESS ******/
 
     // Returns a direct reference to the front element, throws if list is empty
     reference front();
@@ -106,7 +107,7 @@ class linear_linked_list
     reference back();
     const_reference back() const;
 
-    /* Iterators */
+    /****** ITERATORS ******/
 
     // returns a read/write iterator to the first element in the list
     iterator begin();
@@ -119,12 +120,15 @@ class linear_linked_list
     // dereferencing end() iterators causes undefined behavior
     const_iterator end() const;
 
-    /* Operator Overloads */
+    /****** COMPARISON OPERATORS ******/
+
     // Compares sizes, then comapres each element of the list for equality
     bool operator==(const self_type& rhs) const;
 
     // returns the logical NOT of the equality comparison
     bool operator!=(const self_type& rhs) const;
+
+    /****** COPY-ASSIGNMENT AND SWAP ******/
 
     // creates a copy of the origin, then swaps ownership with the copy
     self_type& operator=(const self_type& origin);

@@ -1,7 +1,23 @@
 /*
 File: circular_list.h
 
-Brief:
+Brief: circular_linked_list is a data structure that stores data onto a node as 
+       well as the address for the next element in the container. This last node
+       of the list will point to the first, this gives the container a cyclic
+       or circular trait. 
+
+       This implementation of the circular linked list is a fully templated 
+       class. This allows the circular_linked_list to instantiated to store any
+       data types. 
+
+       By default circular linked list copies the data onto the node. This 
+       requires that the data object to be copied has a copy constructor defined
+       otherwise it will be shallow copied with the default copy constructor
+
+       This circular_linked_list comes equipped with iterator functionality.
+       Due to the nature of circular lists, the begin iterator is equivalent to
+       the end iterator. Therefore, to properly traverse the list in a loop a 
+       do-while loop must be used. 
 
 Author: Alexander DuPree
 
@@ -39,6 +55,8 @@ class circular_linked_list
     typedef const_forward_iterator const_iterator;
     typedef circular_linked_list<T>  self_type;
 
+    /****** CONSTRUCTORS ******/
+
     // Instantiates an EMPTY list
     circular_linked_list();
 
@@ -46,12 +64,14 @@ class circular_linked_list
     template <class InputIterator>
     circular_linked_list(InputIterator begin, InputIterator end);
 
-    // Copies each element in the original list onto this list
+    // Copy Constructor
     circular_linked_list(const self_type& origin);
    
     // Uses clear() to delete each element in the list
     ~circular_linked_list();
      
+    /****** MODIFIERS ******/
+
     // Adds an element to the back of the list
     self_type& push_back(const_reference data);
 
@@ -64,17 +84,19 @@ class circular_linked_list
     // wrapper method for clear_list, if the list is empty does nothing
     self_type& clear();
 
-    // returns true if the list is empty
-    bool empty() const;
-
     // Removes the first item fullfilling the predicate functor
     template <class Predicate>
     bool remove_if(Predicate pred);
 
+    /****** CAPACITY ******/
+
+    // returns true if the list is empty
+    bool empty() const;
+
     // returns the number of elements in the list
     size_type size() const;
 
-    /* Iterators */
+    /****** ITERATORS ******/
 
     // returns a read/write iterator to the first element in the list
     iterator begin();
@@ -86,6 +108,8 @@ class circular_linked_list
     iterator end();
     const_iterator end() const;
 
+    /****** ELEMENT ACCESS ******/
+
     // Allows read only inspection of the front in the list
     // throws if list is empty
     const_reference front() const;
@@ -94,12 +118,15 @@ class circular_linked_list
     // throws if list is empty
     const_reference back() const;
 
-    /* Operator Overloads */
+    /****** COMPARISON OPERATORS ******/
+
     // Compares sizes, then comapres each element of the list for equality
     bool operator==(const self_type& rhs) const;
 
     // returns the logical NOT of the equality comparison
     bool operator!=(const self_type& rhs) const;
+
+    /****** COPY-ASSIGNMENT AND SWAP ******/
 
     // creates a copy of the origin, then swaps ownership with the copy
     self_type& operator=(const self_type& origin);
@@ -131,7 +158,7 @@ class circular_linked_list
 
     size_type _size; // Keeps track of the number of elements in the list
 
-    /* Private Functions */
+    /****** RECURSIVE FUNCTIONS ******/
 
     // Recursive function that calls itself until it reaches the end of the list
     // then while the stack unwinds it deletes each node
@@ -141,6 +168,8 @@ class circular_linked_list
     // Predicate functor
     template <class Predicate>
     int remove_if(Predicate pred, Node* current);
+
+    /****** SUBROUTINES ******/
 
     // Throws a logic error exception if the Node* is NULL
     void throw_if_null(Node* node) const;
