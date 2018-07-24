@@ -28,6 +28,16 @@ Feature_Queue& Feature_Queue::enqueue(const string& data)
     return *this;
 }
 
+bool Feature_Queue::clear_queue()
+{
+    if(empty())
+    {
+        return false;
+    }
+
+    return features.clear().empty();
+}
+
 const SString& Feature_Queue::front() const
 {
     return features.front();
@@ -38,7 +48,32 @@ const SString& Feature_Queue::back() const
     return features.back();
 }
 
+void Feature_Queue::display() const
+{
+    std::cout << "    FEATURE WISHLIST\n===================================\n";
+
+    if (features.empty())
+    {
+        std::cout << "Your wishlist is empty\n";
+        return;
+    }
+    
+    queue::const_iterator it = features.begin();
+    do {
+        std::cout << *it << std::endl;
+        ++it;
+    } while (it != features.end());
+    std::cout << "===================================\n";
+    return;
+}
+
 bool Feature_Queue::empty() const
 {
     return features.empty();
 }
+
+unsigned Feature_Queue::size() const
+{
+    return features.size();
+}
+

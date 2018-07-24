@@ -47,15 +47,21 @@ class Feature_Queue
 
     self_type& enqueue(const SString& data);
 
+    bool clear_queue();
+
     /****** ELEMENT ACCESS ******/
 
     const string& front() const;
 
     const string& back() const;
 
+    void display() const;
+
     /****** CAPACITY ******/
 
     bool empty() const;
+
+    unsigned size() const;
 
   private:
 
