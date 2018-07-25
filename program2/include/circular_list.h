@@ -8,15 +8,15 @@ Brief: circular_linked_list is a data structure that stores data onto a node as
 
        This implementation of the circular linked list is a fully templated 
        class. This allows the circular_linked_list to instantiated to store any
-       data types. 
+       data type.
 
        By default circular linked list copies the data onto the node. This 
        requires that the data object to be copied has a copy constructor defined
-       otherwise it will be shallow copied with the default copy constructor
+       or it will be shallow copied with the default copy constructor
 
        This circular_linked_list comes equipped with iterator functionality.
        Due to the nature of circular lists, the begin iterator is equivalent to
-       the end iterator. Therefore, to properly traverse the list in a loop a 
+       the end iterator. Therefore, to properly traverse the list a 
        do-while loop must be used. 
 
 Author: Alexander DuPree
@@ -25,7 +25,7 @@ Class: CS163
 
 Assignment: program2
 
-Date: 07/08/2018
+Date: 07/24/2018
 */
 
 #ifndef CIRCULAR_LIST_H
@@ -120,7 +120,7 @@ class circular_linked_list
 
     /****** COMPARISON OPERATORS ******/
 
-    // Compares sizes, then comapres each element of the list for equality
+    // Compares sizes, then compares each element of the list for equality
     bool operator==(const self_type& rhs) const;
 
     // returns the logical NOT of the equality comparison
@@ -140,8 +140,8 @@ class circular_linked_list
     /* 
     @struct: Node
 
-    @brief: Node is the atomic member for the linked list class. It stores
-            the desired data and contains a pointer to the next node in the list.
+    @brief: Node is the atomic member for the linked list. It stores the desired 
+            data and contains a pointer to the next node in the list.
     */
     struct Node
     {

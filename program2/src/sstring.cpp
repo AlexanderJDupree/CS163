@@ -178,7 +178,7 @@ std::istream& operator >> (std::istream& is, SString& str)
 
     is.get(buffer, 100);
 
-    // TODO look into a string builder class to prevent this extra copy
+    // TODO look into writing string builder class to prevent this extra copy
     // We use the assignment operator to handle the buffer copy
     str = buffer;
 

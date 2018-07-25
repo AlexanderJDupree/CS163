@@ -9,7 +9,7 @@ Class: CS163
 
 Assignment: program2
 
-Date: 07/08/2018
+Date: 07/24/2018
 */
 
 #ifndef RC_MANAGER_CPP

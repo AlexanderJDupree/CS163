@@ -5,7 +5,7 @@ Brief: The Reference Count Manager is an idea I have been playing around with
        for adding garbage collection to C++ programs. This is my first attempt 
        in implementing garbage collection and as such, the reference_manager is 
        only in its first stages of development. However, it has been working 
-       great for negating the copy costs of strings. 
+       great for negating the copy costs of cstrings. 
 
 Author: Alexander DuPree
 
@@ -13,7 +13,7 @@ Class: CS163
 
 Assignment: program2
 
-Date: 07/08/2018
+Date: 07/24/2018
 */
 
 #ifndef RC_MANAGER_H

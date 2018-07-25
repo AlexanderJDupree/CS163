@@ -1,7 +1,7 @@
 /*
 File: product_tests.cpp
 
-Brief:
+Brief: Unit tests for the Product class
 
 Author: Alexander DuPree
 

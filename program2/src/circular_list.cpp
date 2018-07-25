@@ -209,11 +209,6 @@ int circular_linked_list<T>::remove_if(Predicate pred, Node* current)
 template <typename T>
 bool circular_linked_list<T>::empty() const
 {
-    /*
-    Because head is only NULL when the list is empty we can return the 
-    logical NOT of head. This returns true iff head is NULL.
-    */
-
     return !(_rear);
 }
 template <typename T>

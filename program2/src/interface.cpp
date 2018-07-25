@@ -60,7 +60,7 @@ void Interface::run_action(unsigned index)
     {
         _model->option(--index)->action();
     }
-    catch (const std::logic_error& err)
+    catch (const std::out_of_range& err)
     {
         display_error("\n\tInvalid selection, try again.\n");
         pause_console();

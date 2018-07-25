@@ -1,3 +1,19 @@
+/*
+File: shopping_menu.cpp
+
+Description: shopping_menu holds all the menu_item concrete implementations as 
+             well as the model for Interface class. 
+
+Author: Alexander DuPree
+
+Class: CS163
+
+Assignment: program1
+
+Date: 07/11/2018
+*/
+
+
 #include "interface.h"
 #include "product_stack.h"
 #include "feature_queue.h"

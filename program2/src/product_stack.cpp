@@ -102,7 +102,7 @@ const Product& Product_Stack::top() const
     {
         // If the top pointer is at the first element of the front node that 
         // means the last element pushed is the last element of the next node.
-        // So this line here is to dereference the last element of the next node.
+        // So the below line  is to dereference the last element of the next node.
         return *(*(++_products.begin()) + (MAX_PRODUCTS - 1));
         //         ^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^
         //         increment iterator      get address of last element
@@ -153,7 +153,7 @@ void Product_Stack::display() const
     std::cout << "\n\t\t\tCOMPUTERS\n"
                  "==========================================================\n"
                  "Saved Computers: " << size() << '\n';
-    if(!_top)
+    if(!_top) // Stack is empty
     {
         return;
     }
@@ -161,10 +161,13 @@ void Product_Stack::display() const
     Product* temp = _top;
     stack::const_iterator node = _products.begin();
 
+    // While we haven't visited the first element pushed onto the stack
     while(temp != _products.back())
     {
+        // temp has reached the first item in the current array
         if (temp == *node)
         {
+            // Advance to the next array, assign temp to the last element
             temp = *(++node) + MAX_PRODUCTS;
         }
 

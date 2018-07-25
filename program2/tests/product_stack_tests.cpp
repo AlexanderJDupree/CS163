@@ -1,7 +1,7 @@
 /*
 File: product_stack.h
 
-Brief:
+Brief: Unit tests for the product_stack ADT
 
 Author: Alexander DuPree
 

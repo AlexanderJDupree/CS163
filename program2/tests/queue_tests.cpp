@@ -1,7 +1,7 @@
 /*
 File: queue_tests.cpp
 
-Brief:
+Brief: unit tests for the feature_queue ADT
 
 Author: Alexander DuPree
 

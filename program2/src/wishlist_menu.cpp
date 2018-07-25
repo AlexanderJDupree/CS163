@@ -1,3 +1,19 @@
+/*
+File: wishlist_menu.cpp
+
+Description: wishlist_menu holds all the menu_item concrete implementations as 
+             well as the model for the Interface class
+
+Author: Alexander DuPree
+
+Class: CS163
+
+Assignment: program1
+
+Date: 07/11/2018
+*/
+
+
 #include "interface.h"
 #include "feature_queue.h"
 

@@ -1,7 +1,7 @@
 /*
 File: circular_list_tests.cpp
 
-Brief:
+Brief: Unit tests for the circular_linked_list data structure
 
 Author: Alexander DuPree
 

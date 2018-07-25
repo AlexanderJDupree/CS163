@@ -1,7 +1,7 @@
 /*
 File: rc_manager_tests.h
 
-Brief:
+Brief: Unit tests for the Reference Counting Manager class
 
 Author: Alexander DuPree
 

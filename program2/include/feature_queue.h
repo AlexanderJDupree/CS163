@@ -1,5 +1,5 @@
 /*
-File: queue.h
+File: feature_queue.h
 
 Brief: Feature Queue is the implementation of a Queue ADT utilizing the 
        circular_linked_list as the underlying data structure. The Feature queue
@@ -14,7 +14,7 @@ Class: CS163
 
 Assignment: program2
 
-Date: 07/08/2018
+Date: 07/24/2018
 */
 
 #ifndef QUEUE_H
@@ -34,8 +34,10 @@ class Feature_Queue
 
     /****** CONSTRUCTORS ******/
 
+    // Default instantiates an empty queue
     Feature_Queue();
 
+    // Ranged based construction
     template <class InputIterator>
     Feature_Queue(InputIterator begin, InputIterator end);
 
@@ -44,8 +46,10 @@ class Feature_Queue
 
     /****** MODIFIERS ******/
 
+    // Pops the front of the queue
     SString& dequeue(string& out_param);
 
+    // Pushes to the back of the queue
     self_type& enqueue(const SString& data);
 
     bool clear_queue();

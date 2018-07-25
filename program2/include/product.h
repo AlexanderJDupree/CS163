@@ -31,6 +31,9 @@ class Product
 
     // Default construction
     Product(const string& store="", const string& model="", unsigned price=0);
+
+    /* Since the Product class does not manage any resources, there is no need
+     * to specialize a copy constructor, destructor, and assignment operator */
     
     // Inspectors
     const string& store() const;
@@ -45,6 +48,8 @@ class Product
 
     // Adds a matched feature to the feature list
     self_type& add_match(const string& feature);
+
+    // Clears the matched features
     void clear_matches();
 
     // Comparison operators use the _model attribute for comparison

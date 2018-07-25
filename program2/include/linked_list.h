@@ -259,3 +259,4 @@ the header file so the compiler can instantiate the methods with the right type
 #include "linked_list.cpp"
 
 #endif //LINKED_LIST_H
+

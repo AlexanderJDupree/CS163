@@ -1,15 +1,15 @@
 /*
-file: queue.cpp
+File: feature_queue.cpp
 
-brief:  Implementation file for the Feature_Queue class
+Brief:  Implementation file for the Feature_Queue class
 
-author: Alexander DuPree
+Author: Alexander DuPree
 
-class: CS163
+Class: CS163
 
-assignment: program2
+Assignment: program2
 
-date: 07/08/2018
+Date: 07/24/2018
 */
 
 #include "feature_queue.h"

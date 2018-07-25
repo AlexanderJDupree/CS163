@@ -1,7 +1,7 @@
 /*
 File: sstring_tests.cpp
 
-Brief:
+Brief: Unit tests for the shared string class
 
 Author: Alexander DuPree
 
