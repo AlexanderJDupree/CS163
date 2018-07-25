@@ -69,7 +69,7 @@ TEST_CASE("Displaying products", "[product], [display]")
         oss << product;
 
         REQUIRE(oss.str() ==
-                "\nSTORE:\tBest Buy\nMODEL:\tAcer Aspire\nPRICE:\t150\n"
+                "\nMODEL:\tAcer Aspire\nSTORE:\tBest Buy\nPRICE:\t150\n"
                 "\nMatched Features: 3\n============================\n"
                 "16GB RAM\n1TB SSD\nGTX1080TI\n============================\n");
     }
@@ -79,7 +79,7 @@ TEST_CASE("Displaying products", "[product], [display]")
 
         oss << product;
         REQUIRE(oss.str() ==
-                "\nSTORE:\tBest Buy\nMODEL:\tAcer Aspire\nPRICE:\t150\n"
+                "\nMODEL:\tAcer Aspire\nSTORE:\tBest Buy\nPRICE:\t150\n"
                 "\nMatched Features: 0\n============================\n"
                 "============================\n");
     }

@@ -17,11 +17,20 @@ date: 07/08/2018
 
 int main()
 {
-    wishlist_menu_model model;
+    wishlist_menu_model wishlist;
+    shopping_menu_model shopping(wishlist.get_wishlist());
 
-    Interface UI(&model);
+    // Phase 1: Queue Desired Features onto the wishlist
+    Interface UI(&wishlist);
 
     UI.run();
+
+    // Phase 2: Evaluate Products against the wishlist
+    UI.build(&shopping);
+
+    UI.run();
+
+    // Phase 3: Summary
 
     return 0;
 }

@@ -48,6 +48,7 @@ void Interface::build(menu_model* model)
 
 void Interface::display_menu() const
 {
+    clear_screen();
     _view->draw(_model);
 
     return;

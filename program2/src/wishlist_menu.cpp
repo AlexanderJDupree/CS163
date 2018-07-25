@@ -164,11 +164,17 @@ class wishlist_menu_model : public basic_model
 {
   public:
 
-    wishlist_menu_model() : basic_model() {}
+    wishlist_menu_model() 
+        : basic_model(), queue(Feature_Queue()) {}
 
     ~wishlist_menu_model()
     {
         clear_menu();
+    }
+
+    const Feature_Queue* get_wishlist() const
+    {
+        return &queue;
     }
 
   private:

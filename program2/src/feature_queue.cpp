@@ -67,6 +67,16 @@ void Feature_Queue::display() const
     return;
 }
 
+Feature_Queue::const_iterator Feature_Queue::begin() const
+{
+    return features.begin();
+}
+
+Feature_Queue::const_iterator Feature_Queue::end() const
+{
+    return features.end();
+}
+
 bool Feature_Queue::empty() const
 {
     return features.empty();

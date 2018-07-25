@@ -39,10 +39,34 @@ unsigned Product::matches() const
     return _features.size();
 }
 
+Product& Product::store(const string& store)
+{
+    _store = store;
+    return *this;
+}
+
+Product& Product::model(const string& model)
+{
+    _model = model;
+    return *this;
+}
+
+Product& Product::price(const unsigned& price)
+{
+    _price = price;
+    return *this;
+}
+
 Product& Product::add_match(const string& feature)
 {
     _features.push_back(feature);
     return *this;
+}
+
+void Product::clear_matches()
+{
+    _features.clear();
+    return;
 }
 
 bool Product::operator==(const self_type& rhs) const
@@ -57,7 +81,7 @@ bool Product::operator!=(const self_type& rhs) const
 
 std::ostream& operator << (std::ostream& os, const Product& product)
 {
-    os << "\nSTORE:\t" << product._store << "\nMODEL:\t" << product._model 
+    os << "\nMODEL:\t" << product._model << "\nSTORE:\t" << product._store
        << "\nPRICE:\t" << product._price << "\n\nMatched Features: " 
        << product.matches() << "\n============================\n";
     Product::Features::const_iterator it;

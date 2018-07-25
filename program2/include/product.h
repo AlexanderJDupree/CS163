@@ -31,15 +31,21 @@ class Product
 
     // Default construction
     Product(const string& store="", const string& model="", unsigned price=0);
-
+    
     // Inspectors
     const string& store() const;
     const string& model() const;
     unsigned price() const;
     unsigned matches() const;
 
+    // Mutators
+    self_type& store(const string& store);
+    self_type& model(const string& model);
+    self_type& price(const unsigned& price);
+
     // Adds a matched feature to the feature list
     self_type& add_match(const string& feature);
+    void clear_matches();
 
     // Comparison operators use the _model attribute for comparison
     bool operator == (const self_type& rhs) const;

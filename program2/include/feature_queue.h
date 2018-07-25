@@ -30,6 +30,7 @@ class Feature_Queue
     typedef SString                      string;
     typedef Feature_Queue                self_type;
     typedef circular_linked_list<string> queue;
+    typedef queue::const_iterator        const_iterator;
 
     /****** CONSTRUCTORS ******/
 
@@ -56,6 +57,11 @@ class Feature_Queue
     const string& back() const;
 
     void display() const;
+
+    /****** ITERATORS ******/
+
+    const_iterator begin() const;
+    const_iterator end() const;
 
     /****** CAPACITY ******/
 
