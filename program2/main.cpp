@@ -1,7 +1,8 @@
 /*
 file: main.cpp
 
-brief:
+brief: main is the entry point for the program2 application, it builds the
+       required menu models and interface then runs the program
 
 author: alexander dupree
 
