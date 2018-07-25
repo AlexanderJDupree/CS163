@@ -182,8 +182,8 @@ class exit_shopping_menu : public exit_item
         {
             exit = true;
 
-            std::cout << "\n\tGreat! Heres all the computers that matched some "
-                         "or all of the features on your wishlist!";
+            std::cout << "\nGreat! Heres all the computers that matched some "
+                         "or all of the features on your wishlist!\n";
 
             stack->display();
 

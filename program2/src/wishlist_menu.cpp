@@ -89,7 +89,7 @@ struct queue_features : public menu_item
         SString feature;
         do
         {
-            Interface::get_input(feature, "\nEnter a feature to your wishlist: ");
+            Interface::get_input(feature, "\nEnter the feature to add your wishlist: ");
 
             queue->enqueue(feature); 
             std::cout << "\n\t'" << feature << "' feature added!" << std::endl;
