@@ -31,8 +31,6 @@ int main()
 
     UI.run();
 
-    // Phase 3: Summary
-
     return 0;
 }
 
