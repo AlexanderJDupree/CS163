@@ -118,6 +118,10 @@ class SString : public reference_manager<char>
     friend bool operator> (const_pointer lhs, const self_type& rhs);
     friend bool operator> (const self_type& lhs, const self_type& rhs);
 
+    /****** TYPE CASTS ******/
+    operator const char*() const { return _data; }
+    operator const unsigned long*() const { return (const unsigned long*)_data; }
+
   private:
     /****** SUBROUTINES ******/
 
