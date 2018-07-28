@@ -102,3 +102,26 @@ TEST_CASE("Constructing Hash Tables", "[hash_table], [constructors]")
         REQUIRE(table.buckets() == 7);
     }
 }
+
+TEST_CASE("Inserting elements into the hash table", "[hash_table], [modifiers], [insert]")
+{
+    SECTION("An empty hash table")
+    {
+        hash_table<SString, int> table;
+
+        REQUIRE(table.insert("Hello", 7).size() == 1);
+        REQUIRE_FALSE(table.empty());
+    }
+
+}
+
+TEST_CASE("Clearing the contents of the hash table", "[hash_table], [modifiers], [clear]")
+{
+    SECTION("An empty hash table")
+    {
+        hash_table<float, int> table;
+
+        REQUIRE(table.clear().empty());
+    }
+
+}

@@ -38,10 +38,10 @@ struct hash<const char *>
 
 };
 
-//        KEY      VALUE    HASH FUNCTION
 template <class K, class V, class F = hash<K> > 
 class hash_table
 {
+  // Forward Declaration
   class hash_node;
 
   public:
@@ -52,9 +52,19 @@ class hash_table
     typedef F           hasher;
     typedef unsigned    size_type;
     typedef hash_node*  bucket;
+    typedef hash_table  self_type;
 
+    /****** CONSTRUCTORS ******/
     hash_table(unsigned buckets = 11);
 
+
+    /****** MODIFIERS ******/
+    self_type& insert(const K& key, const V& value);
+
+    self_type& clear();
+
+
+    /****** CAPACITY ******/
     bool empty();
     size_type size();
     size_type buckets();
@@ -65,19 +75,35 @@ class hash_table
     {
       public:
 
-        hash_node(const K& key = K(), const V& value = V(), hash_node* next = NULL)
-            : K(key), V(value), next(next) {}
+        typedef hash_node self_type;
+
+        // Default constructor
+        hash_node(const K& key = K(), const V& value = V(), hash_node* next = NULL);
+        
+        // Mutators
+        self_type& key(const K& key);
+        self_type& value(const V& value);
+        self_type& next(const hash_node* next);
+
+        // Inspectors
+        const K& key() const;
+        const V& value() const;
+        const hash_node* next() const;
 
       private:
 
         K _key; 
         V _value;
-
-        hash_node* next;
+        hash_node* _next;
     };
 
+    unsigned _size;
     unsigned _bucket_count;
     bucket* _buckets;
+    hasher _hash;
+
+    /****** SUBROUTINES ******/
+    void push_front(bucket& head, const K& key, const V& value);
 
 };
 
