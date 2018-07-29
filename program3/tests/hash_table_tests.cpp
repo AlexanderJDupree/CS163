@@ -101,6 +101,23 @@ TEST_CASE("Constructing Hash Tables", "[hash_table], [constructors]")
         REQUIRE(table.empty());
         REQUIRE(table.buckets() == 7);
     }
+    SECTION("Range based construction")
+    {
+        SString keys[] = { "Bob", "Alice", "Jack", "Jill" };
+        int values[] = { 1, 2, 3, 4 };
+        
+        hash_table<SString, int> table(keys, keys + 4, values, values +4);
+
+        REQUIRE(table.size() == 4);
+    }
+    SECTION("Ranged based construction on mismatched arrays")
+    {
+        SString keys[] = { "Bob", "Alice" };
+        int values[] = { 1, 2, 3, 4 };
+
+        hash_table<SString, int> table(keys, keys + 2, values, values +4);
+        REQUIRE(table.size() == 2);
+    }
 }
 
 TEST_CASE("Inserting elements into the hash table", "[hash_table], [modifiers], [insert]")
@@ -112,8 +129,62 @@ TEST_CASE("Inserting elements into the hash table", "[hash_table], [modifiers], 
         REQUIRE(table.insert("Hello", 7).size() == 1);
         REQUIRE_FALSE(table.empty());
     }
+    SECTION("Inserting multiple elements into a hash table")
+    {
+        hash_table<SString, int> table;
 
+        table.insert("Bob", 1).insert("Alice", 2).insert("John", 3);
+        REQUIRE(table.size() == 3);
+    }
 }
+
+TEST_CASE("Iterating through a hash table", "[hash_table], [iterators]")
+{
+    SECTION("An empty hash table")
+    {
+        const hash_table<SString, int> table;
+
+        REQUIRE(table.begin() == table.end());
+    }
+    SECTION("Dereferencing an empty iterator throws")
+    {
+        const hash_table<SString, int> table;
+
+        REQUIRE_THROWS(*table.begin());
+    }
+    SECTION("A populated hash table")
+    {
+        SString keys[] = { "Bob", "Bob", "Bob", "Bob" };
+        int values[] = { 1, 1, 1, 1 };
+        
+        const hash_table<SString, int> table(keys, keys + 4, values, values +4);
+
+        int i = 0;
+        hash_table<SString, int>::const_iterator it;
+        for(it = table.begin(); it != table.end(); ++it)
+        {
+            REQUIRE(it.key() == keys[i]);
+            REQUIRE(it.value() == values[i++]);
+        }
+        REQUIRE(i == 4);
+    }
+    SECTION("Modifying the value of each element in a hash table")
+    {
+        SString keys[] = { "Bob", "Bob", "Bob", "Bob" };
+        int values[] = { 1, 1, 1, 1 };
+        
+        hash_table<SString, int> table(keys, keys + 4, values, values +4);
+
+        int i = 0;
+        hash_table<SString, int>::iterator it;
+        for(it = table.begin(); it != table.end(); ++it)
+        {
+            REQUIRE(it.key() == keys[i++]);
+            REQUIRE(++it.value() == 2);
+        }
+    }
+}
+
 
 TEST_CASE("Clearing the contents of the hash table", "[hash_table], [modifiers], [clear]")
 {
@@ -123,5 +194,13 @@ TEST_CASE("Clearing the contents of the hash table", "[hash_table], [modifiers],
 
         REQUIRE(table.clear().empty());
     }
+    SECTION("A populated hash table")
+    {
+        SString keys[] = { "Bob", "Alice", "Jack", "Jill" };
+        int values[] = { 1, 2, 3, 4 };
+        
+        hash_table<SString, int> table(keys, keys + 4, values, values +4);
 
+        REQUIRE(table.clear().empty());
+    }
 }
