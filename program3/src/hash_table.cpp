@@ -44,6 +44,18 @@ hash_table<K, V, F>::hash_table(key_iterator key_begin, key_iterator key_end,
 }
 
 template <class K, class V, class F>
+hash_table<K, V, F>::hash_table(const self_type& origin)
+    : _size(0), _bucket_count(origin._bucket_count), _buckets(NULL),
+      _hash(origin._hash), _default_object(origin._default_object)
+{
+    initialize_buckets();
+    for (const_iterator it = origin.begin(); it != origin.end(); ++it)
+    {
+        insert(it.key(), it.value());
+    }
+}
+
+template <class K, class V, class F>
 hash_table<K, V, F>::~hash_table()
 {
     clear();
@@ -128,6 +140,69 @@ void hash_table<K, V, F>::clear_bucket(bucket& current)
 }
 
 template <class K, class V, class F>
+hash_table<K, V, F>& hash_table<K, V, F>::default_object(const value_type& obj)
+{
+    _default_object = obj;
+    return *this;
+}
+
+template <class K, class V, class F>
+const typename hash_table<K, V, F>::value_type&
+hash_table<K, V, F>::default_object() const
+{
+    return _default_object;
+}
+
+template <class K, class V, class F>
+typename hash_table<K, V, F>::value_type&
+hash_table<K, V, F>::default_object()
+{
+    return _default_object;
+}
+
+template <class K, class V, class F>
+typename hash_table<K, V, F>::value_type&
+hash_table<K, V, F>::find(const key_type& key)
+{
+    hash_node* target = _buckets[_hash(key) % _bucket_count];
+    if (target)
+    {
+        while(target != NULL && target->key() != key)
+        {
+            target = target->next();
+        }
+
+        if(target)
+        {
+            return target->value();
+        }
+    }
+
+    return _default_object;
+}
+
+template <class K, class V, class F>
+const typename hash_table<K, V, F>::value_type&
+hash_table<K, V, F>::find(const key_type& key) const
+{
+    hash_node* target = _buckets[_hash(key) % _bucket_count];
+    if (target)
+    {
+        while(target != NULL && target->key() != key)
+        {
+            target = target->next();
+        }
+
+        if(target)
+        {
+            return target->value();
+        }
+    }
+
+    return _default_object;
+}
+
+template <class K, class V, class F>
 bool hash_table<K, V, F>::empty() const
 {
     return _size == 0;
@@ -183,10 +258,78 @@ hash_table<K, V, F>::end() const
     return const_iterator(NULL);
 }
 
+template <class K, class V, class F>
+typename hash_table<K, V, F>::value_type& 
+hash_table<K, V, F>::operator[](const key_type& key)
+{
+    return find(key);
+}
+
+template <class K, class V, class F>
+const typename hash_table<K, V, F>::value_type& 
+hash_table<K, V, F>::operator[](const key_type& key) const
+{
+    return find(key);
+}
+
+template <class K, class V, class F>
+bool hash_table<K, V, F>::operator==(const self_type& rhs) const
+{
+    const_iterator left = begin();
+    const_iterator right = rhs.begin();
+
+    while (left != end() && right != rhs.end())
+    {
+        if (left.key() != right.key() || left.value() != right.value())
+        {
+            return false;
+        }
+        ++left;
+        ++right;
+    }
+
+    return left == end() && right == rhs.end();
+}
+
+template <class K, class V, class F>
+bool hash_table<K, V, F>::operator!=(const self_type& rhs) const
+{
+    return !(*this == rhs);
+}
+
+template <class K, class V, class F>
+hash_table<K, V, F>& hash_table<K, V, F>::operator=(const self_type& origin)
+{
+    // Utilize the copy constructor to copy origins data
+    self_type copy(origin);
+
+    // Swap ownership with the copy
+    swap(*this, copy);
+
+    // As the copy goes out of scope, it destructs with the old data
+    return *this;
+}
+
+template <class K, class V, class F>
+void hash_table<K, V, F>::swap(self_type& new_table, self_type& old_table)
+{
+    using std::swap;
+
+    // Swap resources, reassign ownership
+    swap(new_table._size, old_table._size);
+    swap(new_table._hash, old_table._hash);
+    swap(new_table._buckets, old_table._buckets);
+    swap(new_table._bucket_count, old_table._bucket_count);
+    swap(new_table._default_object, old_table._default_object);
+
+    return;
+}
+
 /****** HASH NODE CLASS ******/
 
 template <class K, class V, class F>
-hash_table<K, V, F>::hash_node::hash_node(const K& key, const V& value, hash_node* next)
+hash_table<K, V, F>::hash_node::hash_node(const K& key, const V& value, 
+                                          hash_node* next)
     : _key(key), _value(value), _next(next) {}
 
 template <class K, class V, class F>
@@ -259,8 +402,10 @@ hash_table<K, V, F>::const_iterator::operator++()
         _ptr = _ptr->next();
     }
 
+    // If the next node is null move iterator to the next bucket
     if(!_ptr)
     {
+        // If next bucket failed, the iterator has reached end of table
         if(!next_bucket())
         {
             _bucket = NULL;

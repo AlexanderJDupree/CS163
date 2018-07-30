@@ -118,6 +118,16 @@ TEST_CASE("Constructing Hash Tables", "[hash_table], [constructors]")
         hash_table<SString, int> table(keys, keys + 2, values, values +4);
         REQUIRE(table.size() == 2);
     }
+    SECTION("Copy construction")
+    {
+        SString keys[] = { "Bob", "Alice" };
+        int values[] = { 1, 2, 3, 4 };
+
+        hash_table<SString, int> table(keys, keys + 2, values, values +4);  
+        hash_table<SString, int> copy(table);
+
+        REQUIRE(copy == table);
+    }
 }
 
 TEST_CASE("Inserting elements into the hash table", "[hash_table], [modifiers], [insert]")
@@ -185,7 +195,6 @@ TEST_CASE("Iterating through a hash table", "[hash_table], [iterators]")
     }
 }
 
-
 TEST_CASE("Clearing the contents of the hash table", "[hash_table], [modifiers], [clear]")
 {
     SECTION("An empty hash table")
@@ -204,3 +213,40 @@ TEST_CASE("Clearing the contents of the hash table", "[hash_table], [modifiers],
         REQUIRE(table.clear().empty());
     }
 }
+
+TEST_CASE("Finding elements from the hash table", "[hash_table], [modifiers], [find]")
+{
+        SString keys[] = { "Bob", "Jack", "Jill", "Jane" };
+        int values[] = { 1, 2, 3, 4 };
+        
+        hash_table<SString, int> table(keys, keys + 4, values, values +4, 1);
+        hash_table<float, char> empty;
+
+        SECTION("Retrieving an element with a valid key")
+        {
+            REQUIRE(table.find("Jill") == 3);
+        }
+        SECTION("Retrieving an element with an invalid key")
+        {
+            table.default_object(-1);
+
+            REQUIRE(table.find("bogus") == -1);
+        }
+        SECTION("Retrieving an element from an empty table")
+        {
+            empty.default_object('\0');
+
+            REQUIRE(empty.find(3.14) == '\0');
+        }
+        SECTION("Finding elements with the [] operator")
+        {
+            REQUIRE(table["Jane"] == 4);
+        }
+        SECTION("Modify a found value")
+        {
+            table["Jill"] = 7;
+
+            REQUIRE(table.find("Jill") == 7);
+        }
+}
+

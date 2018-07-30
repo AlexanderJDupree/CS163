@@ -17,6 +17,7 @@ Date: 07/24/2018
 
 #include <cstddef> // NULL
 #include <exception> // std::exception
+#include <algorithm> // std::swap
 
 template <class K>
 struct hash
@@ -70,17 +71,30 @@ class hash_table
                val_iterator val_begin, val_iterator val_end, 
                unsigned buckets = 11);
 
+    // Copy Constructor
+    hash_table(const self_type& origin);
+
     // Clears bucket, deletes the hash table
     ~hash_table();
 
     /****** MODIFIERS ******/
     
     // Hashes the key, inserts the value to the front of the indexed bucket
-    self_type& insert(const K& key, const V& value);
+    self_type& insert(const key_type& key, const value_type& value);
 
     // Clears each bucket, deletes the hash table
     self_type& clear();
 
+    // Getters and setters for the default object
+    self_type& default_object(const value_type& obj);
+    const value_type& default_object() const;
+    value_type& default_object();
+
+    /****** OPERATIONS ******/
+
+    // Returns the value for the matching key, or a null object
+    value_type& find(const key_type& key);
+    const value_type& find(const key_type& key) const;
 
     /****** CAPACITY ******/
 
@@ -101,6 +115,23 @@ class hash_table
     iterator end();
     const_iterator end() const;
 
+    /****** OPERATORS ******/
+
+    // Element Access Operator
+    value_type& operator[](const key_type& key);
+    const value_type& operator[](const key_type& key) const;
+
+    // Equality/Comparison operators
+    bool operator==(const self_type& rhs) const;
+    bool operator!=(const self_type& rhs) const;
+
+    /****** COPY ASSIGNMENT AND SWAP ******/
+
+    // Creates a copy of the origin, swaps ownership with the copy
+    self_type& operator=(const self_type& origin);
+
+    // Swaps pointers to each other's resources, reassigning ownership.
+    static void swap(self_type& new_table, self_type& old_table);
 
   private:
 
@@ -135,7 +166,7 @@ class hash_table
     unsigned _bucket_count; // The max number of buckets the table can hold
     bucket* _buckets; // Dynamic array of buckets, this is the table
     hasher _hash; // Hash function object
-    value_type _null_object; // null object pattern, returned on failed searches
+    value_type _default_object; // null object pattern, returned on failed searches
 
     /****** SUBROUTINES ******/
 
