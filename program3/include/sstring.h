@@ -36,6 +36,7 @@ Date: 07/11/2018
 
 #include <cstring>
 #include <iostream>
+#include <stdexcept> 
 #include "rc_manager.h"
 
 // SString inherits the functionality of the reference manager to allow for 
@@ -56,6 +57,12 @@ class SString : public reference_manager<char>
     // c-string constructor
     SString(const_pointer str = NULL);
 
+    // Sub-string constructor
+    SString(pointer begin, pointer end);
+
+    // Fill constructor
+    SString(unsigned n, char fill);
+
     // Copy Constructor increments reference count
     SString(const self_type& origin);
 
@@ -71,6 +78,14 @@ class SString : public reference_manager<char>
 
     // len counts the number of characters in a cstring before null character
     static size_type len(const_pointer str);
+
+    /****** OPERATIONS ******/
+    
+    // Returns a copy of the string from [begin:end]
+    self_type substring(unsigned begin=0, unsigned end=0) const;
+
+    // Returns a substring of the string from (0, width)
+    self_type truncate(unsigned width = 8) const;
 
     /****** ITERATORS ******/
 
@@ -88,6 +103,11 @@ class SString : public reference_manager<char>
     // Swaps ownership of resources
     static void swap(SString& new_string, SString& old_string);
 
+    /****** CONCATENATION ******/
+
+    friend self_type operator+(const self_type& lhs, const_pointer rhs);
+    friend self_type operator+(const_pointer lhs, const self_type& rhs);
+    friend self_type operator+(const self_type& lhs, const self_type& rhs);
 
     /****** STREAM OPERATORS ******/
 
@@ -136,5 +156,17 @@ class SString : public reference_manager<char>
     void copy(const_pointer source);
 };
 
+struct invalid_substring : public std::exception
+{
+    const char * _error;
+
+    invalid_substring(const char* err)
+        : _error(err) {}
+
+    const char* what() const throw()
+    {
+        return _error;
+    }
+};
 #endif // STRING_H
 

@@ -31,6 +31,28 @@ SString::SString(const_pointer str)
     }
 }
 
+SString::SString(pointer begin, pointer end)
+    : reference_manager(end - begin)
+{
+    for(unsigned i = 0; begin != end; ++begin)
+    {
+        _data[i++] = *begin;
+    }
+
+    _data[*_size] = '\0';
+}
+
+SString::SString(unsigned n, char fill)
+    : reference_manager(n)
+{
+    for (unsigned i = 0; i < n; ++i)
+    {
+        _data[i] = fill;
+    }
+
+    _data[*_size] = '\0';
+}
+
 SString::SString(const self_type& origin)
     : reference_manager(origin) {}
 
@@ -71,6 +93,7 @@ void SString::copy(const_pointer source)
 
 SString::size_type SString::length() const
 {
+    // TODO, this assumes the string was not a string of null characters
     return *_size - 1;
 }
 
@@ -94,6 +117,28 @@ bool SString::compare_equal(const self_type& str) const
 
     // Iterate through each string and compare characters
     return *this == str._data;
+}
+
+/****** OPERATIONS ******/
+
+SString SString::substring(unsigned begin, unsigned end) const
+{
+    if (begin > end || begin > length() || end > length())
+    {
+        throw invalid_substring("Error, substring bounds do not exist");
+    }
+
+    return SString(_data + begin, _data + end + 1);
+}
+
+SString SString::truncate(unsigned width) const
+{
+    if (width > length())
+    {
+        return *this + SString(width - length(), ' ');
+    }
+    
+    return substring(0, width - 1);
 }
 
 /****** ITERATORS ******/
@@ -163,6 +208,29 @@ void SString::swap(SString& new_string, SString& old_string)
     swap(new_string._size, old_string._size);
     swap(new_string._ref_count, old_string._ref_count);
     return;
+}
+
+/****** CONCATENATION ******/
+
+SString operator+(const SString& lhs, const char* rhs)
+{
+    char* buffer = new char[lhs.length() + std::strlen(rhs)];
+    std::strcpy(buffer, lhs._data);
+    std::strcat(buffer, rhs);
+
+    SString result(buffer);
+    delete [] buffer;
+    return result;
+}
+
+SString operator+(const char* lhs, const SString& rhs)
+{
+    return SString(lhs) + rhs;
+}
+
+SString operator+(const SString& lhs, const SString& rhs)
+{
+    return lhs + rhs._data;
 }
 
 /****** STREAM OPERATORS ******/

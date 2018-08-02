@@ -49,6 +49,7 @@ class hash_table
   public:
     
     class const_forward_iterator;
+    class const_bucket_iterator;
     class forward_iterator;
 
     typedef K                      key_type;
@@ -74,25 +75,26 @@ class hash_table
     // Copy Constructor
     hash_table(const self_type& origin);
 
-    // Clears bucket, deletes the hash table
+    // Clears buckets, deletes the hash table
     ~hash_table();
 
     /****** MODIFIERS ******/
     
-    // Hashes the key, inserts the value to the front of the indexed bucket
+    // Hashes the key, inserts the value to the front of a bucket
     self_type& insert(const key_type& key, const value_type& value);
 
     // Clears each bucket, deletes the hash table
     self_type& clear();
 
-    // Getters and setters for the default object
+    // Getters and setters for the default object, default object reference is
+    // returned on failed searches.
     self_type& default_object(const value_type& obj);
     const value_type& default_object() const;
     value_type& default_object();
 
     /****** OPERATIONS ******/
 
-    // Returns the value for the matching key, or a null object
+    // Returns the value for the matching key, or the default object
     value_type& find(const key_type& key);
     const value_type& find(const key_type& key) const;
 
@@ -106,6 +108,25 @@ class hash_table
 
     // Returns the number of buckets the table can hold
     size_type buckets() const;
+
+    /****** DIAGNOSTICS ******/
+
+    // Load factor is size / buckets
+    float load_factor() const;
+
+    // Spread is the number of buckets in use / number of buckets
+    float spread() const;
+
+    // Counts the number of buckets in use
+    unsigned buckets_in_use() const;
+
+    // Returns the length of the longest chain
+    unsigned largest_bucket() const;
+
+    // Higher order function that will increment a counter when a predicate is 
+    // fulfilled
+    template <class InputIterator, class Predicate>
+    unsigned count_if(InputIterator begin, InputIterator end, Predicate pred) const;
 
     /****** ITERATOR ACCESS ******/
 
@@ -179,18 +200,34 @@ class hash_table
     // Clears each element in a buckets chain
     void clear_bucket(bucket& current);
 
+    /****** Functors ******/
+    struct null_bucket
+    {
+        bool operator()(bucket* head) const
+        {
+            return *head != NULL;
+        }
+    };
+
+    struct count_nodes
+    {
+        bool operator()(const const_bucket_iterator it) const
+        {
+            return !it.null();
+        }
+    };
+
   public:
 
     /****** ITERATORS ******/
-
-    class const_forward_iterator
+    class const_bucket_iterator
     {
-      public: 
+      public:
+        typedef const_bucket_iterator self_type;
 
-        typedef const_forward_iterator self_type;
-
-        // Default Constructor
-        const_forward_iterator(bucket* begin = NULL, bucket* end = NULL);
+        // Default constructor
+        const_bucket_iterator(hash_node* ptr = NULL)
+            : _ptr(ptr) {}
 
         // Increment Operators
         self_type& operator++();
@@ -209,7 +246,27 @@ class hash_table
 
         // Equality operators
         bool operator==(const self_type& rhs) const;
-        bool operator !=(const self_type& rhs) const;
+        bool operator!=(const self_type& rhs) const;
+
+      protected:
+
+        void throw_if_null() const; 
+
+        hash_node* _ptr;
+    };
+
+    class const_forward_iterator : public const_bucket_iterator
+    {
+      public: 
+
+        typedef const_forward_iterator self_type;
+
+        // Default Constructor
+        const_forward_iterator(bucket* begin = NULL, bucket* end = NULL);
+
+        // Increment Operators
+        self_type& operator++();
+        self_type& operator++(int);
 
       protected:
 
@@ -218,8 +275,6 @@ class hash_table
 
         bucket* _bucket;
         bucket* _end_bucket;
-        hash_node* _ptr;
-
     };
 
     class forward_iterator : public const_forward_iterator
@@ -255,9 +310,7 @@ class hash_table
         {
             return _error;
         }
-
     };
-
 };
 
 #include "hash_table.cpp"

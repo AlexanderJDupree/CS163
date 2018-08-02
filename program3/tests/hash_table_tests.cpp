@@ -118,7 +118,7 @@ TEST_CASE("Constructing Hash Tables", "[hash_table], [constructors]")
         hash_table<SString, int> table(keys, keys + 2, values, values +4);
         REQUIRE(table.size() == 2);
     }
-    SECTION("Copy construction")
+/*    SECTION("Copy construction")
     {
         SString keys[] = { "Bob", "Alice" };
         int values[] = { 1, 2, 3, 4 };
@@ -127,7 +127,7 @@ TEST_CASE("Constructing Hash Tables", "[hash_table], [constructors]")
         hash_table<SString, int> copy(table);
 
         REQUIRE(copy == table);
-    }
+    }*/
 }
 
 TEST_CASE("Inserting elements into the hash table", "[hash_table], [modifiers], [insert]")
@@ -219,7 +219,7 @@ TEST_CASE("Finding elements from the hash table", "[hash_table], [modifiers], [f
         SString keys[] = { "Bob", "Jack", "Jill", "Jane" };
         int values[] = { 1, 2, 3, 4 };
         
-        hash_table<SString, int> table(keys, keys + 4, values, values +4, 1);
+        const hash_table<SString, int> table(keys, keys + 4, values, values +4, 1);
         hash_table<float, char> empty;
 
         SECTION("Retrieving an element with a valid key")
@@ -228,9 +228,11 @@ TEST_CASE("Finding elements from the hash table", "[hash_table], [modifiers], [f
         }
         SECTION("Retrieving an element with an invalid key")
         {
-            table.default_object(-1);
+            hash_table<SString, int> copy(table);
 
-            REQUIRE(table.find("bogus") == -1);
+            copy.default_object(-1);
+
+            REQUIRE(copy.find("bogus") == -1);
         }
         SECTION("Retrieving an element from an empty table")
         {
@@ -244,9 +246,37 @@ TEST_CASE("Finding elements from the hash table", "[hash_table], [modifiers], [f
         }
         SECTION("Modify a found value")
         {
-            table["Jill"] = 7;
+            hash_table<SString, int> copy(table);
 
-            REQUIRE(table.find("Jill") == 7);
+            copy["Jill"] = 7;
+
+            REQUIRE(copy.find("Jill") == 7);
         }
+}
+
+TEST_CASE("Performing diagnostics on the hash table", "[hash_table], [diagnostics]")
+{
+    SString keys[] = { "Bob", "Jack", "Jill", "Jane" };
+    int values[] = { 1, 2, 3, 4 };
+    
+    hash_table<SString, int> table(keys, keys + 4, values, values +4);
+    hash_table<float, char> empty;
+
+    SECTION("Determining the load factor")
+    {
+        // Load factor is the number of items in the table / max number of buckets
+        float load = static_cast<float>(4) / 11;
+        REQUIRE(table.load_factor() == load);
+    }
+
+    SECTION("Determine bucket spread")
+    {
+        // Bucket spread is the number of buckets in use / max number of buckets
+        CHECK(table.spread() > 0);
+    }
+    SECTION("Determine largest bucket")
+    {
+        CHECK(table.largest_bucket() > 0);
+    }
 }
 
