@@ -21,7 +21,7 @@ TEST_CASE("Constructing csv reader objects", "[csv], [constructor]")
 {
     SECTION("Default Construction")
     {
-        CSV::Reader reader("Shopping.csv");
+        CSV::Reader reader("Shopping.txt");
 
         REQUIRE(!reader.eof());
     }
@@ -33,7 +33,7 @@ TEST_CASE("Constructing csv reader objects", "[csv], [constructor]")
 
 TEST_CASE("Determining columns and rows", "[csv], [columns], [rows]")
 {
-    CSV::Reader reader("Shopping.csv", '|');
+    CSV::Reader reader("Shopping.txt", '|');
 
     SECTION("Determine columns")
     {
@@ -47,7 +47,7 @@ TEST_CASE("Determining columns and rows", "[csv], [columns], [rows]")
 
 TEST_CASE("Reading file lines", "[csv], [readline]")
 {
-    CSV::Reader reader("Shopping.csv", '|');
+    CSV::Reader reader("Shopping.txt", '|');
 
     SECTION("Storing each attribute into an array")
     {

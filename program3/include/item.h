@@ -35,6 +35,12 @@ class Item
     const string& color() const;
     const string& website() const;
 
+    // Mutators
+    self_type& name(const string& name);
+    self_type& description(const string& description);
+    self_type& color(const string& color);
+    self_type& website(const string& website);
+
     // Operator Overloads
     friend std::ostream& operator<<(std::ostream& os, const Item& item);
 

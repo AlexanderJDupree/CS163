@@ -60,7 +60,7 @@ hash_table<K, V, F>::~hash_table()
 {
     clear();
 
-    delete _buckets;
+    delete [] _buckets;
     _buckets = NULL;
 }
 
@@ -120,6 +120,9 @@ bool hash_table<K, V, F>::erase(hash_node*& current, const key_type& key)
 
         delete current;
         current = temp;
+
+        --_size;
+
         return true;
     }
 
@@ -216,7 +219,8 @@ template <class K, class V, class F>
 const typename hash_table<K, V, F>::value_type&
 hash_table<K, V, F>::find(const key_type& key) const
 {
-    hash_node* target = _buckets[_hash(key) % _bucket_count];
+    int index = _hash(key) % _bucket_count;
+    hash_node* target = _buckets[index];
     if (target)
     {
         // Loop until we find a node with a matching key
@@ -286,6 +290,24 @@ unsigned hash_table<K, V, F>::largest_bucket() const
         }
     }
     return largest;
+}
+
+template <class K, class V, class F>
+unsigned hash_table<K, V, F>::average_bucket() const
+{
+    if (empty())
+    {
+        return 0;
+    }
+
+    unsigned node_count = 0;
+    for(bucket* i = _buckets; i != _buckets + _bucket_count; ++i)
+    {
+        const_bucket_iterator it(*i);
+        node_count += count_if(it, const_bucket_iterator(), count_nodes());
+    }
+
+    return node_count / buckets_in_use();
 }
 
 template <class K, class V, class F>

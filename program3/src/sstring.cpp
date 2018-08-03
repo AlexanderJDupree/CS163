@@ -18,6 +18,12 @@ Date: 06/27/2018
 
 /****** CONSTRUCTORS ******/
 
+SString::SString()
+    : reference_manager(1)
+{
+    _data[0] = '\0';
+}
+
 SString::SString(const_pointer str) 
     : reference_manager(len(str) + 1)
 {
@@ -50,7 +56,7 @@ SString::SString(unsigned n, char fill)
         _data[i] = fill;
     }
 
-    _data[*_size] = '\0';
+    _data[*_size - 1] = '\0';
 }
 
 SString::SString(const self_type& origin)
@@ -135,7 +141,7 @@ SString SString::truncate(unsigned width) const
 {
     if (width > length())
     {
-        return *this + SString(width - length(), ' ');
+        return *this + SString(width - length() + 1, ' ');
     }
     
     return substring(0, width - 1);

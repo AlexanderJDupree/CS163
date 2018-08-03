@@ -72,7 +72,7 @@ TEST_CASE("Constructing fill strings", "[sstring], [constructors], [fill]")
 {
     SECTION("Fill blank characters into a string")
     {
-        REQUIRE(SString(4, ' ') + "Hey" == "    Hey");
+        REQUIRE(SString(4, ' ') + "Hey" == "   Hey");
     }
 }
 

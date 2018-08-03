@@ -22,6 +22,7 @@ Date: 07/24/2018
 template <class K>
 struct hash
 {
+    // Temporary hash function
     unsigned long operator()(const K& key) const
     {
         return (key * 7109) * 9743;
@@ -31,13 +32,19 @@ struct hash
 template <>
 struct hash<const char *> 
 {
+    // String specialization of the hash function
     unsigned long operator()(const char* key) const
     {
-        unsigned long hash = (*(const unsigned long*)key) << 2;
-        
-        return (hash *= 7109) + 9743;
-    }
+        // 1202nd prime number. This was selected arbitrarly.
+        unsigned long hash = 9743;
+        for(unsigned i = 0; key[i] != '\0'; ++i)
+        {
+            // Bit shift left the key's representation and xor it
+            hash *= hash ^ (*(const unsigned long*)key + i) << 5;
+        }
 
+        return hash;
+    }
 };
 
 template <class K, class V, class F = hash<K> > 
@@ -125,6 +132,9 @@ class hash_table
 
     // Returns the length of the longest chain
     unsigned largest_bucket() const;
+
+    // Returns the average chaing length
+    unsigned average_bucket() const;
 
     // Higher order function that will increment a counter when a predicate is 
     // fulfilled

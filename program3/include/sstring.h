@@ -54,8 +54,11 @@ class SString : public reference_manager<char>
 
     /****** CONSTRUCTORS ******/
 
+    // Default construction
+    SString();
+
     // c-string constructor
-    SString(const_pointer str = NULL);
+    SString(const_pointer str);
 
     // Sub-string constructor
     SString(pointer begin, pointer end);

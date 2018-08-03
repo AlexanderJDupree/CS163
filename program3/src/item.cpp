@@ -37,11 +37,35 @@ const Item::string& Item::website() const
     return _website;
 }
 
+Item& Item::name(const string& name)
+{
+    _name = name;
+    return *this;
+}
+
+Item& Item::description(const string& description)
+{
+    _description = description;
+    return *this;
+}
+
+Item& Item::color(const string& color)
+{
+    _color = color;
+    return *this;
+}
+
+Item& Item::website(const string& website)
+{
+    _website = website;
+    return *this;
+}
+
 std::ostream& operator<<(std::ostream& os, const Item& item)
 {
-    os << "NAME\t\tCOLOR\t\tWEBSITE\n" << SString(40, '-') << '\n'
+    os << "NAME\t\tCOLOR\t\tWEBSITE\n" << SString(50, '-') << '\n'
        << item._name.truncate(16) << item._color.truncate(16) << item._website
-       << '\n' << SString(40, '=') << "\nDESCRIPTION: \n'" << item._description 
+       << '\n' << SString(50, '=') << "\nDESCRIPTION: \n'" << item._description 
        << "'\n";
 
     return os;
