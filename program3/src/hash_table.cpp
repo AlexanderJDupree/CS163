@@ -89,6 +89,44 @@ hash_table<K, V, F>& hash_table<K, V, F>::insert(const K& key, const V& value)
 }
 
 template <class K, class V, class F>
+bool hash_table<K, V, F>::erase(const key_type& key)
+{
+    hash_node* target = _buckets[_hash(key) % _bucket_count];
+    if (target)
+    {
+       return erase(target, key);
+    }
+
+    return false;
+}
+
+template <class K, class V, class F>
+bool hash_table<K, V, F>::erase(hash_node*& current, const key_type& key)
+{
+    if(!current)
+    {
+        return false;
+    }
+
+    if(current->key() == key)
+    {
+        hash_node* temp = current->next();
+
+        unsigned index = _hash(key) % _bucket_count;
+        if(current == _buckets[index])
+        {
+            _buckets[index] = NULL;
+        }
+
+        delete current;
+        current = temp;
+        return true;
+    }
+
+    return erase(current->next(), key);
+}
+
+template <class K, class V, class F>
 void hash_table<K, V, F>::push_front(bucket& head, const K& key, const V& value)
 {
     if(head)

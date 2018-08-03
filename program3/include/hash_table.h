@@ -83,6 +83,9 @@ class hash_table
     // Hashes the key, inserts the value to the front of a bucket
     self_type& insert(const key_type& key, const value_type& value);
 
+    // Hashes the key, removes element with the matching key
+    bool erase(const key_type& key);
+
     // Clears each bucket, deletes the hash table
     self_type& clear();
 
@@ -199,6 +202,9 @@ class hash_table
 
     // Clears each element in a buckets chain
     void clear_bucket(bucket& current);
+
+    // Deletes the node matching the search key
+    bool erase(hash_node*& current, const key_type& key);
 
     /****** Functors ******/
     struct null_bucket

@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& os, const Item& item)
     os << "NAME\t\tCOLOR\t\tWEBSITE\n" << SString(40, '-') << '\n'
        << item._name.truncate(16) << item._color.truncate(16) << item._website
        << '\n' << SString(40, '=') << "\nDESCRIPTION: \n'" << item._description 
-       << '\n';
+       << "'\n";
 
     return os;
 }

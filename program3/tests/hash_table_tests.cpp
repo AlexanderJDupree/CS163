@@ -148,6 +148,33 @@ TEST_CASE("Inserting elements into the hash table", "[hash_table], [modifiers], 
     }
 }
 
+TEST_CASE("Erasing elements form a hash table", "[hash_table], [erase]")
+{
+    int keys[] = {1, 1, 1, 7, 1, 1};
+    SString values[] = { "Bob", "Bob", "Bob", "Not Bob", "Bob", "Bob" };
+
+    hash_table<int, SString> table(keys, keys + 4, values, values +4);
+    table.default_object("Not Found");
+
+    hash_table<int, int> empty;
+
+    SECTION("A populated hash table")
+    {
+        REQUIRE(table.erase(7));
+        REQUIRE(table.find(7) == "Not Found");
+    }
+    
+    SECTION("A populated hash table and an unmatched key")
+    {
+        REQUIRE_FALSE(table.erase(12333));
+    }
+    SECTION("An empty hash table")
+    {
+        REQUIRE_FALSE(empty.erase(123));
+    }
+    
+}
+
 TEST_CASE("Iterating through a hash table", "[hash_table], [iterators]")
 {
     SECTION("An empty hash table")
