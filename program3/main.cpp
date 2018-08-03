@@ -1,15 +1,15 @@
 /*
-File: 
+File: main.cpp
 
-Brief:
+Brief: main is the entry point for the program 3 application.
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #include "program_menu.h"

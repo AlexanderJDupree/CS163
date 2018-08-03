@@ -1,15 +1,17 @@
 /*
 File: item.h
 
-Brief:
+Brief: Item class is a basic utility class to store information related to a 
+       specific item or product. The Item class contains four fields directly
+       related to the fields corresponding in the 'Shopping.txt'.
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #ifndef ITEM_H

@@ -14,9 +14,9 @@ Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program1
+Assignment: program 3
 
-Date: 07/11/2018
+Date: 08/03/2018
 */
 
 #ifndef INTERFACE_H

@@ -1,15 +1,16 @@
 /*
 File: item_table.cpp
 
-Brief:
+Brief: Implementation file for teh Item_Table ADT defines methods for adding, 
+       removal, and retrieval of Item objects.
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #include <iomanip>

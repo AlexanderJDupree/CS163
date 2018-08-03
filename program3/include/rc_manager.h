@@ -11,9 +11,9 @@ Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #ifndef RC_MANAGER_H

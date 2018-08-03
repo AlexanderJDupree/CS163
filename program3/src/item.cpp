@@ -1,15 +1,16 @@
 /*
 File: item.h
 
-Brief:
+Brief: Implementation file for the Item class, defines basic methods for 
+       inspection, mutation, and construction of the Item object.
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #include "item.h"

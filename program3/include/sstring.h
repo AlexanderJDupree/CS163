@@ -26,7 +26,7 @@ Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program1
+Assignment: program 3
 
 Date: 07/11/2018
 */

@@ -1,15 +1,16 @@
 /*
 File: hash_table.cpp
 
-Brief:
+Brief: Implementation file for the hash_table data structure and associated 
+       utility classes. 
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #ifndef HASH_TABLE_CPP

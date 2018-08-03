@@ -1,15 +1,15 @@
 /*
 File: csv_reader.cpp
 
-Brief:
+Brief: Implementation file for the CSV Reader object
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #include "csv.h"
@@ -164,8 +164,10 @@ void Reader::read_next_attribute(char* buffer, unsigned n)
 
     buffer[i] = '\0';
 
+    // Buffer is full but the delimiter was not reached
     if(temp != _delim && temp != '\n')
     {
+        // Scan till the next delimiter
         while(_fin.get(temp) && temp != _delim && temp != '\n');
     }
 

@@ -1,15 +1,30 @@
 /*
 File: hash_table.h
 
-Brief:
+Brief: This implementation of the hash table data structure is fully templated
+       and can be instantiated with specialized hash functions. For the best 
+       runtime efficiency of this structure it is recommended to specialize a
+       hash functor object for your data set, as well as instantiate this hash
+       table with a large prime number to decrease the load factor and reduce
+       the chance of collision
+
+       This hash table utilizes seperate chaining to handle collisions. As the
+       load factor grows, the chains will grow larger, reducing runtime 
+       efficiency.
+
+       This hash table is implemented with functions to insert, remove, erase, 
+       find, and iterate over elements stored onto the table. It also comes with
+       functions to display diagnostic data, such as the load factor, 
+       the largest bucket, and average chain length.
+
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program3
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #ifndef HASH_TABLE_H
@@ -236,6 +251,8 @@ class hash_table
   public:
 
     /****** ITERATORS ******/
+    // Buckets iterator iterates through the LLL contained in a bucket. Does
+    // not find the next bucket when it reaches NULL
     class const_bucket_iterator
     {
       public:
@@ -271,6 +288,8 @@ class hash_table
         hash_node* _ptr;
     };
 
+    // Forward Iterator iterates through the entire container, and will find the
+    // next valid bucket to iterate when it reaches the end of a chain
     class const_forward_iterator : public const_bucket_iterator
     {
       public: 

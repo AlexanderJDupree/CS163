@@ -1,7 +1,7 @@
 /*
 File: csv_reader.h
 
-Brief:
+Brief: Unit tests for the CSV Reader object
 
 Author: Alexander DuPree
 
@@ -41,7 +41,7 @@ TEST_CASE("Determining columns and rows", "[csv], [columns], [rows]")
     }
     SECTION("Determine rows")
     {
-        REQUIRE(reader.rows() == 959);
+        REQUIRE(reader.rows() == 1001);
     }
 }
 

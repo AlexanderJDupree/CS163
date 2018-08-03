@@ -1,7 +1,10 @@
 /*
 File: item_table.h
 
-Brief:
+Brief: Item_Table ADT is the abstraction of the hash_table data structure. The
+       Item_Table provides methods for adding, removing, and retrieving Item 
+       objects. This file also contains a specialiazation of the hash function
+       to accompany SString objects.
 
 Author: Alexander DuPree
 
@@ -9,7 +12,7 @@ Class: CS163
 
 Assignment: program2
 
-Date: 07/24/2018
+Date: 08/03/2018
 */
 
 #ifndef ITEM_TABLE_H
@@ -24,12 +27,15 @@ struct hash<SString>
 {
     unsigned long operator()(const SString& key) const
     {
-        // 1202nd prime number. This was selected arbitrarly.
+        // Arbitrary prime number
         unsigned long hash = 9743;
+
         for(SString::const_iterator it = key.begin(); it != key.end(); ++it)
         {
-            // Bit shift left the key's representation and xor it
+            // Multiply the hash with the product of the keys ascii value
             hash *= *it * 7109;
+
+            // XOR the hash
             hash = hash ^ 17321;
         }
 
