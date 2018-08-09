@@ -6,24 +6,11 @@ Brief: circular_linked_list is a data structure that stores data onto a node as
        of the list will point to the first, this gives the container a cyclic
        or circular trait. 
 
-       This implementation of the circular linked list is a fully templated 
-       class. This allows the circular_linked_list to instantiated to store any
-       data type.
-
-       By default circular linked list copies the data onto the node. This 
-       requires that the data object to be copied has a copy constructor defined
-       or it will be shallow copied with the default copy constructor
-
-       This circular_linked_list comes equipped with iterator functionality.
-       Due to the nature of circular lists, the begin iterator is equivalent to
-       the end iterator. Therefore, to properly traverse the list a 
-       do-while loop must be used. 
-
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 2
 
 Date: 07/24/2018
 */

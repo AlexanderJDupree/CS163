@@ -1,7 +1,8 @@
 /*
 File: binary_search_tree.cpp
 
-Brief: 
+Brief: Implementation file for binary search tree, b_node class and the forward
+       iterator. 
 
 Author: Alexander DuPree
 
@@ -17,10 +18,12 @@ Date: 07/24/2018
 
 #include "binary_search_tree.h"
 
+// Default
 template <class K, class V>
 binary_tree<K, V>::binary_tree()
     : _size(0), _root(NULL) {}
 
+// Ranged Based
 template <class K, class V>
 template <class key_iterator, class val_iterator>
 binary_tree<K, V>::binary_tree(key_iterator key_begin, key_iterator key_end,
@@ -33,6 +36,7 @@ binary_tree<K, V>::binary_tree(key_iterator key_begin, key_iterator key_end,
     }
 }
 
+// Copy Constructor
 template <class K, class V>
 binary_tree<K, V>::binary_tree(const self_type& origin)
     : _size(0), _root(NULL)
@@ -40,6 +44,7 @@ binary_tree<K, V>::binary_tree(const self_type& origin)
     _size = copy_tree(_root, origin._root);
 }
 
+// Destructor
 template <class K, class V>
 binary_tree<K, V>::~binary_tree()
 {
@@ -74,12 +79,13 @@ template <class K, class V>
 void binary_tree<K, V>::insert(const key_type& key, const value_type& val, 
                                b_node*& root)
 {
-    if(!root)
+    if(!root) // Insert at leaf
     {
         root = new b_node(key, val);
         return;
     }
 
+    // Recursive call to find the correct position
     if(key < root->key())
     {
         return insert(key, val, root->left());
@@ -89,9 +95,21 @@ void binary_tree<K, V>::insert(const key_type& key, const value_type& val,
 }
 
 template <class K, class V>
+binary_tree<K, V>& binary_tree<K, V>::clear()
+{
+    delete_leaf functor;
+
+    // Conduct postorder_traversal with a delete leaf functor
+    postorder_traversal(_root, functor);
+
+    _size = 0;
+    return *this;
+}
+
+template <class K, class V>
 bool binary_tree<K, V>::erase(const key_type& key)
 {
-    if(!_root)
+    if(!_root) // Tree is empty
     {
         return false;
     }
@@ -102,7 +120,7 @@ bool binary_tree<K, V>::erase(const key_type& key)
 template <class K, class V>
 bool binary_tree<K, V>::erase(b_node*& root)
 {
-    if(!_root)
+    if(!root) // Key did not match a valid node
     {
         return false;
     }
@@ -128,19 +146,43 @@ bool binary_tree<K, V>::erase(b_node*& root)
         delete temp;
     }
     // The node has two children
+    else
+    {
+        remove_internal_node(root, inorder_successor(root->right()));
+    }
 
     --_size;
     return true;
 }
 
 template <class K, class V>
-binary_tree<K, V>& binary_tree<K, V>::clear()
+void binary_tree<K, V>::remove_internal_node(b_node*& root, b_node*& successor)
 {
-    delete_leaf functor;
-    postorder_traversal(_root, functor);
+    // Copy successor
+    root->key() = successor->key();
+    root->value() = successor->value();
 
-    _size = 0;
-    return *this;
+
+    // Adopt children
+    b_node* temp = successor;
+    successor = successor->right();
+
+    // Delete successor
+    delete temp;
+
+    return;
+}
+
+template <class K, class V>
+typename binary_tree<K, V>::b_node*& 
+binary_tree<K, V>::inorder_successor(b_node*& node)
+{
+    if(!node->left())
+    {
+        return node;
+    }
+
+    return inorder_successor(node->left());
 }
 
 template <class K, class V>
@@ -165,6 +207,8 @@ template <class K, class V>
 unsigned binary_tree<K, V>::leaves()
 {
     count_leaf functor;
+    
+    // Traverse the tree counting each leaf
     preorder_traversal(_root, functor);
 
     return functor.leaves;
@@ -195,6 +239,8 @@ template <class K, class V>
 V& binary_tree<K, V>::find(const key_type& key)
 {
     b_node* target = find(key, _root);
+
+    // Find returned a valid b_node pointer
     if(target)
     {
         return target->value();
@@ -453,6 +499,12 @@ binary_tree<K, V>::b_node::b_node(const K& key, const V& val,
 
 template <class K, class V>
 const K& binary_tree<K, V>::b_node::key() const
+{
+    return _key;
+}
+
+template <class K, class V>
+K& binary_tree<K, V>::b_node::key()
 {
     return _key;
 }

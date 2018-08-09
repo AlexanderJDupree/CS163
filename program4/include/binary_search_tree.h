@@ -1,7 +1,11 @@
 /*
 File: binary_search_tree.h
 
-Brief: 
+Brief: Binary search tree is a tree based data strucutre. This implementation of 
+       the BST provides methods for insertion, erasure, search, and mutation of
+       key/value pairs. This BST is a fully templated class that contains 
+       iterator functionality as well as diagnostic methods such as calculating
+       the tree's height and leaves.
 
 Author: Alexander DuPree
 
@@ -119,8 +123,10 @@ class binary_tree
 
     /****** OEPRATORS ******/
 
+    // Returns an object with the matching key
     const value_type& operator[](const key_type& key) const;
 
+    // Equality operators return the result of compare_equal
     bool operator == (const self_type& rhs) const;
     bool operator != (const self_type& rhs) const;
 
@@ -133,8 +139,8 @@ class binary_tree
         b_node(const K& key = K(), const V& val = V(), 
                b_node* left = NULL, b_node* right = NULL);
 
-        // Key cannot be modified
         const key_type& key() const;
+        key_type& key();
 
         const value_type& value() const;
         value_type& value();
@@ -154,11 +160,16 @@ class binary_tree
     unsigned _size; // The number of elements in the tree
     b_node* _root; // Root node
     value_type _default_object; // Default object is return on failed searches
-    queue _traversal_queue;
+
+    queue _traversal_queue; // Stores the inorder traversal state into a queue, 
+                            // The iteratros utilize the queue to traverse to the
+                            // correct node
 
     /****** SUBROUTINES ******/
 
     void throw_if_null(b_node* node, const char* msg="b_node* points to null") const;
+
+    void remove_internal_node(b_node*& root, b_node*& successor);
 
     /****** RECURSIVE HELPERS ******/
 
@@ -171,13 +182,18 @@ class binary_tree
     // Returns the data matching the key, or the default object
     b_node*& find(const key_type& key, b_node*& root);
 
+    // Finds the inorder successor, initial call with node->right()
+    b_node*& inorder_successor(b_node*& root);
+
+    // Deletes the node pointed to by root
     bool erase(b_node*& root);
 
-    bool compare_equal(b_node* lhs, b_node* rhs) const;
-
+    // Returns the height of the tree 
     unsigned height(b_node* root) const;
 
     /****** TRAVERSAL ALGORITHMS ******/
+
+    // Traversal functions traverse the tree applying the functor to each node
 
     template <class Functor>
     void preorder_traversal(b_node*& root, Functor& funct);

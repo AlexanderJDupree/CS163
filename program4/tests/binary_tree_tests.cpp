@@ -173,6 +173,16 @@ TEST_CASE("Erasing elements from a tree", "[bst], [erase]")
         REQUIRE_FALSE(empty.erase(10));
 
     }
+
+    SECTION("Removing an item that doesn't exit")
+    {
+        int keys[] = { 50, 25, 75, 12, 40, 33, 45, 35, 10, 16, 60, 90, 94 };
+        int vals[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+        binary_tree<int, int> tree(keys, keys + 13, vals, vals + 13);
+
+
+        REQUIRE_FALSE(tree.erase(-1));
+    }
     SECTION("Removing a leaf")
     {
         int keys[] = { 50, 25, 75, 12, 40, 33, 45, 35, 10, 16, 60, 90, 94 };
@@ -202,7 +212,23 @@ TEST_CASE("Erasing elements from a tree", "[bst], [erase]")
         REQUIRE(tree.leaves() == 6);
         REQUIRE((++tree.smallest()).key() == 12);
 
-
     }
+    SECTION("Removing a node with two childs and a right child with no children")
+    {
+        int keys[] = { 50, 25, 75, 12, 40, 33, 45, 35, 10, 16, 60, 90 };
+        int vals[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+        binary_tree<int, int> tree(keys, keys + 12, vals, vals + 12);
+
+        // Inorder succesor has no children
+        REQUIRE(tree.erase(40));
+        REQUIRE(tree.leaves() == 5);
+
+        // Inorder succesor has a right child
+        REQUIRE(tree.erase(25));
+
+        // Erase root
+        REQUIRE(tree.erase(50));
+
+     }
 }
 

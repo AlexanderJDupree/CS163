@@ -1,13 +1,13 @@
 /*
 File: main.cpp
 
-Brief: main is the entry point for the program 3 application.
+Brief: main is the entry point for the program 4 application.
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program 3
+Assignment: program 4
 
 Date: 08/03/2018
 */
@@ -20,14 +20,7 @@ int main()
 {
     intro();
 
-    int table_size = Interface::get_input<int>();
-
-    if(table_size <= 0)
-    {
-        table_size = 1223;
-    }
-
-    program_menu_model model(table_size);
+    program_menu_model model;
 
     Interface UI(&model);
 
@@ -56,9 +49,6 @@ void intro()
     Interface::pause_console();
     Interface::clear_screen();
 
-    std::cout << 
-        "Enter the table size, (Note that a large prime number like"
-        " 1223 or 1811 will yield the best storage results):";
     return;
 }
 

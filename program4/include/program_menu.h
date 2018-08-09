@@ -1,15 +1,16 @@
 /*
-File: item_table.h
+File: program_menu.h
 
-Brief:
+Brief: This file outlines the options and actions for each menu item as well as
+       defines the model for the interface class
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program2
+Assignment: program 4
 
-Date: 07/24/2018
+Date: 08/09/2018
 */
 
 #include "csv.h"
@@ -253,8 +254,8 @@ class program_menu_model : public basic_model
 {
   public:
 
-    program_menu_model(unsigned size = 1811)
-        : basic_model(), table(Item_Table(size)) {}
+    program_menu_model()
+        : basic_model(), table() {}
 
     ~program_menu_model()
     {
@@ -296,12 +297,40 @@ class program_menu_model : public basic_model
 
         SString attributes[reader.columns()];
 
-        while(reader.readline(attributes))
+        Item* items = new Item[reader.rows()];
+
+        unsigned i = 0;
+        while(i < reader.rows() && reader.readline(attributes))
         {
-            table.add(Item(attributes));
+            items[i++] = Item(attributes);
         }
 
+        std::sort(items, items + reader.rows());
+
+        binary_insert(items, 0, i - 1);
+
+        delete [] items;
+
         return;
+    }
+
+    void binary_insert(Item* items, int min, int max)
+    {
+        if(min >= max)
+        {
+            if(min == max)
+            {
+                table.add(items[min]);
+            }
+            return;
+        }
+
+        int mid = min + (max - min) / 2;
+
+        table.add(items[mid]);
+
+        binary_insert(items, min, mid - 1);
+        binary_insert(items, mid + 1, max);
     }
 
     static const int SIZE = 8;
