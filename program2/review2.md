@@ -3,7 +3,6 @@
 
 ## Data Structure Performance
 Program #2 utilized two data structures. First, a circular linked list was used for a queue ADT; and second, a linear linked list of Arrays (Flex Array) was used to implement a stack ADT. For this program both structures worked sufficiently. As we were not performing any search or remove operations, we could add items to top of the stack, or push items to the back of the queue in constant time. The largest benefits of these data structures was the ability to grow and shrink our containers as needed. Whether the client pushed 1 item on the stack, or 20, the Flex Array could grow to meet the demand. 
-
 ## Data Structure Recommendation
 For this assignment, both the circular linked list and Flex arrays worked great. However, if we decided to expand the application to sort products based on a criteria, or to search for a specific feature, then these structures would fall apart. As the circular linked list searches items sequentially, and sorting a stack would change the order of the stack. If these features were required, a binary search tree would have been an appropriate structure. 
 
