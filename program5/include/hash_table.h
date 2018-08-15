@@ -37,10 +37,14 @@ Date: 08/03/2018
 template <class K>
 struct hash
 {
-    // Temporary hash function
     unsigned long operator()(const K& key) const
     {
-        return (key * 7109) * 9743;
+        unsigned long hash = (unsigned long)key;
+        for (unsigned i = 0; i < hash % 11; ++i)
+        {
+            hash = (hash * 9743) << i;
+        }
+        return hash;
     }
 };
 

@@ -35,6 +35,12 @@ Graph<V, E>::Graph(InputIterator begin, InputIterator end, unsigned size)
 }
 
 template <class V, class E>
+Graph<V,E>::~Graph()
+{
+    delete [] _vertices;
+}
+
+template <class V, class E>
 Graph<V, E>& Graph<V, E>::add_vertex(const vertex_type& vertice)
 {
     if(_vertex_count >= _size)
@@ -48,50 +54,43 @@ Graph<V, E>& Graph<V, E>::add_vertex(const vertex_type& vertice)
 }
 
 template <class V, class E>
-bool Graph<V, E>::add_edge(const V& from, const V& to, const E& label, bool directed)
+bool Graph<V, E>::add_edge(const V& start, const V& end, const E& label, bool directed)
 {
-    vertex* _from = find(from);
-    vertex* _to = find(to);
+    vertex* _start = find(start);
+    vertex* _end = find(end);
 
-    if(!_from || !_to)
+    if(!_start || !_end)
     {
         return false;
     }
 
-    _from->add_edge(_to, label);
+    _start->add_edge(_end, label);
     
     if(!directed)
     {
-        _to->add_edge(_from, label);
+        _end->add_edge(_start, label);
     }
+
     ++_edge_count;
     return true;
 }
 
 template <class V, class E>
-bool Graph<V,E>::is_connected(const V& from, const V& to) const
+Graph<V,E>& Graph<V,E>::clear()
 {
-    vertex* _from = find(from);
-    vertex* _to = find(to);
-
-    if(!_from || !_to)
-    {
-        return false;
-    }
-
-    typename vertex::adjacency_iterator it;
-    for(it = _from->begin(); it != _from->end(); ++it)
-    {
-        if (_to == it->to())
-        {
-            return true;
-        }
-    }
-    
-    return false;
+    delete [] _vertices;
+    _vertices = new vertex[_size];
+    _vertex_count = 0;
+    _edge_count = 0;
+    return *this;
 }
 
-// TODO Refactor utilizing a hash table
+template <class V, class E>
+bool Graph<V,E>::is_connected(const V& start, const V& end)
+{
+    return depth_first(start, end, is_null());
+}
+
 template <class V, class E>
 typename Graph<V, E>::vertex* Graph<V,E>::find(const vertex_type& key) const
 {
@@ -123,7 +122,7 @@ void Graph<V, E>::resize()
 template <class V, class E>
 bool Graph<V,E>::empty() const
 {
-    return true;
+    return _vertex_count == 0;
 }
 
 template <class V, class E>
@@ -166,6 +165,58 @@ template <class V, class E>
 typename Graph<V, E>::const_vertex_iterator Graph<V, E>::end() const
 {
     return const_vertex_iterator(_vertices + _vertex_count);
+}
+
+template <class V, class E>
+template <class Functor>
+int Graph<V, E>::depth_first(const V& start, const V& end, Functor func)
+{
+    vertex* _start = find(start);
+    vertex* _end = find(end);
+
+    if(!_start || !_end)
+    {
+        return 0;
+    }
+
+    // Keeps track of what nodes have been visited
+    history visited;
+    visited.default_object(false);
+
+    return depth_first(_start, _end, func, visited);
+}
+
+template <class V, class E>
+template <class Functor>
+int Graph<V, E>::depth_first(vertex* start, vertex* end, Functor func, 
+                                                         history& visited)
+{
+    if (visited[start])
+    {
+        return 0;
+    }
+
+    visited[start] = true;
+
+    // Destination Reached
+    if(start == end)
+    {
+        func(start);
+        return 1;
+    }
+
+    int path = 0;
+    typename vertex::adjacency_iterator it;
+    for (it = start->begin(); it != start->end(); ++it)
+    {
+        path += depth_first(it->to(), end, func, visited);
+        if(path)
+        {
+            func(start);
+            return path;
+        }
+    }
+    return 0;
 }
 
 /****** VERTEX CLASS ******/
@@ -282,6 +333,20 @@ V* Graph<V, E>::vertex_iterator::operator->()
     throw_if_null();
 
     return &_ptr->data();
+}
+
+template <class V, class E>
+typename Graph<V,E>::vertex_iterator::adjacency_iterator
+Graph<V,E>::vertex_iterator::begin() const
+{
+    return _ptr->begin();
+}
+
+template <class V, class E>
+typename Graph<V,E>::vertex_iterator::adjacency_iterator
+Graph<V,E>::vertex_iterator::end() const
+{
+    return _ptr->end();
 }
 
 template <class V, class E>

@@ -1,13 +1,13 @@
 /*
-File: graph.cpp
+File: graph.h
 
-Description: Implementation file for the graph class
+Description: 
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program 4
+Assignment: program 5
 
 Date: 08/10/2018
 */
@@ -16,6 +16,7 @@ Date: 08/10/2018
 #define GRAPH_H
 
 #include "linked_list.h"
+#include "hash_table.h"
 
 template <class V, class E>
 class Graph
@@ -38,21 +39,35 @@ class Graph
     template <class InputIterator>
     Graph(InputIterator begin, InputIterator end, unsigned size=5);
     
+    ~Graph();
+
     /****** MODIFIERS ******/
 
+    // Adds a vertex node to the graph
     self_type& add_vertex(const vertex_type& vertice);
 
-    bool add_edge(const V& from, const V& to, const E& label, bool directed=false);
+    // Returns true if the vertices were successfully connected
+    bool add_edge(const V& start, const V& end, const E& label, bool directed=false);
+
+    // Clears all vertices from the graph
+    self_type& clear();
     
     /****** OPERATIONS ******/
    
-    bool is_connected(const vertex_type& from, const vertex_type& to) const;
+    // Returns true if there is a path from start to end
+    bool is_connected(const vertex_type& start, const vertex_type& end);
 
     /****** CAPACITY ******/
 
     bool empty() const;
+    
+    // Returns the current maximum number of vertices
     unsigned max_size() const;
+
+    // Returns the number of vertices
     unsigned vertices() const;
+
+    // Returns the number of edges
     unsigned edges() const;
 
     /****** ITERATORS ******/
@@ -62,6 +77,11 @@ class Graph
 
     vertex_iterator end();
     const_vertex_iterator end() const;
+
+    /****** TRAVERSAL ******/
+
+    template <class Functor>
+    int depth_first(const V& start, const V& end, Functor func);
 
   private:
 
@@ -75,11 +95,13 @@ class Graph
         typedef linear_linked_list<edge>                adjacency_list;
         typedef typename adjacency_list::const_iterator adjacency_iterator;
 
+        // Default constructor
         vertex(const vertex_type& vertice = V());
 
         vertex_type& data();
         const vertex_type& data() const;
 
+        // Adds an edge to the adjacency list
         void add_edge(vertex* dest, const E& label);
 
         adjacency_iterator begin() const;
@@ -96,7 +118,7 @@ class Graph
     {
       public:
 
-          edge(vertex* from, vertex* to, const edge_type& data=E());
+          edge(vertex* start, vertex* end, const edge_type& data=E());
 
           edge_type& data();
           const edge_type& data() const;
@@ -115,15 +137,30 @@ class Graph
           edge_type _data;
     };
 
-    unsigned _size;
-    unsigned _vertex_count;
-    unsigned _edge_count;
-    vertex* _vertices;
+    typedef hash_table<vertex*, bool> history;
+
+    unsigned _size; // Maximum number of vertices the graph can store
+    unsigned _vertex_count; // The number of vertices on the graph
+    unsigned _edge_count; // The number of edges on the graph
+    vertex* _vertices; // Table of vertices
+
+    /****** FUNCTORS ******/
+    struct is_null
+    {
+        bool operator()(vertex* vertice) { return !vertice; }
+    };
 
     /****** SUBROUTINES ******/
+
+    // Triggered when vertex_count is equal to the _size, copies and doubles table
     void resize();
 
+    // Returns a pointer to the matching vertex
     vertex* find(const vertex_type& key) const;
+
+    /****** TRAVERSAL ******/
+    template <class Functor>
+    int depth_first(vertex* from, vertex* to, Functor func, history&);
 
   public:
     
@@ -133,6 +170,7 @@ class Graph
       public:
 
         typedef vertex_iterator self_type;
+        typedef typename vertex::adjacency_iterator adjacency_iterator;
 
         // Default Constructor
         vertex_iterator(vertex* ptr=NULL)
@@ -145,6 +183,10 @@ class Graph
         // Dereference Operators
         vertex_type& operator*();
         vertex_type* operator->();
+
+        // Adjacency_iterators
+        adjacency_iterator begin() const;
+        adjacency_iterator end() const;
 
         // Null check
         bool null() const;

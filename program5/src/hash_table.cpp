@@ -366,14 +366,34 @@ template <class K, class V, class F>
 typename hash_table<K, V, F>::value_type& 
 hash_table<K, V, F>::operator[](const key_type& key)
 {
-    return find(key);
+    int index = _hash(key) % _bucket_count;
+    hash_node* target = _buckets[index];
+    if (target)
+    {
+        // Loop until we find a node with a matching key
+        while(target != NULL && target->key() != key)
+        {
+            target = target->next();
+        }
+
+        // A match was found
+        if(target)
+        {
+            return target->value();
+        }
+    }
+
+    insert(key, _default_object);
+
+    // Search key failed
+    return _default_object;
 }
 
 template <class K, class V, class F>
 const typename hash_table<K, V, F>::value_type& 
 hash_table<K, V, F>::operator[](const key_type& key) const
 {
-    return find(key);
+    return const_cast<self_type>(*this)[key];
 }
 
 template <class K, class V, class F>

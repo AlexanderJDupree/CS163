@@ -57,7 +57,7 @@ TEST_CASE("Adding vertices to a graph", "[graph], [add_vertex]")
     }
 }
 
-TEST_CASE("Adding edges to vertices")
+TEST_CASE("Adding edges to vertices", "[graph], [add_edge]")
 {
     SECTION("Adding a non-directed edge")
     {
@@ -81,7 +81,32 @@ TEST_CASE("Adding edges to vertices")
     }
 }
 
-TEST_CASE("Iterating through all vertices")
+TEST_CASE("Determining if two vertices are connected", "[graph], [connected], [dfs]")
+{
+    SECTION("A direct connection")
+    {
+        SString airports[] = { "PDX", "LAX", "PHX", "CHI", "CLV" };
+
+        Graph<SString, int> graph(airports, airports + 5);
+
+        REQUIRE(graph.add_edge("PDX", "LAX", 7));
+        REQUIRE(graph.is_connected("LAX", "PDX"));
+    }
+    SECTION("An indirect connection")
+    {
+        SString airports[] = { "PDX", "LAX", "PHX", "CHI", "CLV" };
+
+        Graph<SString, int> graph(airports, airports + 5);
+
+        REQUIRE(graph.add_edge("PDX", "LAX", 7));
+        REQUIRE(graph.add_edge("LAX", "CHI", 9));
+        REQUIRE(graph.add_edge("CHI", "PHX", 6));
+        REQUIRE(graph.is_connected("PDX", "PHX"));
+        REQUIRE_FALSE(graph.is_connected("PDX", "CLV"));
+    }
+}
+
+TEST_CASE("Iterating through all vertices", "[graph], [iterators]")
 {
     SECTION("A populated graph")
     {
@@ -117,3 +142,33 @@ TEST_CASE("Iterating through all vertices")
     }
 }
 
+TEST_CASE("Iterating through adjacencies")
+{
+        SString airports[] = { "PDX", "LAX", "PHX", "CHI", "CLV" };
+
+        Graph<SString, int> graph(airports, airports + 5);
+
+        graph.add_edge("PDX", "LAX", 1);
+        graph.add_edge("PDX", "PHX", 2);
+        graph.add_edge("PDX", "CHI", 3);
+
+        int i = 0;
+        Graph<SString, int>::vertex_iterator::adjacency_iterator it;
+        for(it = graph.begin().begin(); it != graph.begin().end(); ++it)
+        {
+            REQUIRE(it->data() == ++i);
+        }
+}
+
+TEST_CASE("Clearing a graph", "[graph], [clear]")
+{
+    SECTION("A populated graph")
+    {
+        SString airports[] = { "PDX", "LAX", "PHX", "CHI", "CLV" };
+
+        Graph<SString, int> graph(airports, airports + 5);
+
+        REQUIRE(graph.clear().vertices() == 0);
+        REQUIRE(graph.edges() == 0);
+    }
+}
