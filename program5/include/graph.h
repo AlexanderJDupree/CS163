@@ -1,7 +1,13 @@
 /*
 File: graph.h
 
-Description: 
+Description: This Fully templated Graph implementation utilizes an adjacency list
+             structure to store information on vertices and edges. This Graph 
+             class provides methods for adding vertices and connecting two 
+             vertices with either a directed or undirected edge. 
+
+             Graph also comes equipped with vertex and adjacency iteratros as 
+             well as a higher order depth first traversal function. 
 
 Author: Alexander DuPree
 
@@ -9,7 +15,7 @@ Class: CS163
 
 Assignment: program 5
 
-Date: 08/10/2018
+Date: 08/15/2018
 */
 
 #ifndef GRAPH_H
@@ -80,6 +86,7 @@ class Graph
 
     /****** TRAVERSAL ******/
 
+    // Traverses graph, executing the function on each node
     template <class Functor>
     int depth_first(const V& start, const V& end, Functor func);
 

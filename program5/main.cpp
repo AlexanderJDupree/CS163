@@ -1,19 +1,18 @@
 /*
 File: main.cpp
 
-Brief: main is the entry point for the program 4 application.
+Brief: main is the entry point for the program 5 application.
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program 4
+Assignment: program 5
 
-Date: 08/03/2018
+Date: 08/15/2018
 */
 
-#include "interface.h"
-#include "city_graph.h"
+#include "program5_menu.h"
 
 void intro();
 
@@ -21,16 +20,11 @@ int main()
 {
     intro();
 
-    City_Graph graph;
+    roadtrip_menu_model model;
 
-    graph.add_city("Portland").add_city("Gresham").add_city("Hillsboro")
-         .add_city("Troutdale").add_city("Vancouver");
+    Interface UI(&model);
 
-    graph.add_road("Portland", "Gresham", Road("I84", 20));
-    graph.add_road("Portland", "Vancouver", Road("I205", 15));
-    graph.add_road("Gresham", "Troutdale", Road("Halsey", 5));
-
-    graph.display_cities();
+    UI.run();
 
     return 0;
 }
@@ -43,7 +37,7 @@ void intro()
         "\n"
         "\n"
         "\n"
-        "\n                         Program 4"
+        "\n                         Program 5"
         "\n"
         "\n"
         "\n                 Author: Alexander DuPree"

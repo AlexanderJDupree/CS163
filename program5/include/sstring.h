@@ -1,15 +1,7 @@
 /*
 File: sstring.h
 
-Brief: SString (Shared String) is a complete rework of the short string class
-       I wrote for the last assignment. The short string class I wrote for 
-       program 1 was a clunky mess that allocated too much memory as a buffer
-       despite the length of the string. Worse yet, it made a lot of copies of 
-       the same data. The purpose behind it was to relieve any class that 
-       required a string of the extra responsibilities behind allocating, 
-       deallocating, and comparing cstrings. 
-       
-       The Shared String is an immutable reference counted string. These
+Brief: The Shared String is an immutable reference counted string. These
        characteristics provides many benefits. Namely, this class negates 
        the costs of copies, as any object requiring the strings data can just 
        reference the string and have that data accessible; And because the data 
@@ -146,6 +138,7 @@ class SString : public reference_manager<char>
     operator const unsigned long*() const { return (const unsigned long*)_data; }
 
   private:
+
     /****** SUBROUTINES ******/
 
     // Throws an exception if the pointer is NULL

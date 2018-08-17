@@ -4,13 +4,12 @@ File: graph.cpp
 Description: Implementation file for the graph class
 
 Author: Alexander DuPree
-Class
 
 Class: CS163
 
-Assignment: program 4
+Assignment: program 5
 
-Date: 08/10/2018
+Date: 08/15/2018
 */
 
 #ifndef GRAPH_CPP
@@ -59,7 +58,7 @@ bool Graph<V, E>::add_edge(const V& start, const V& end, const E& label, bool di
     vertex* _start = find(start);
     vertex* _end = find(end);
 
-    if(!_start || !_end)
+    if(!_start || !_end) // Checks if the vertices exist on the graph
     {
         return false;
     }
@@ -406,6 +405,4 @@ void Graph<V,E>::const_vertex_iterator::throw_if_null() const
 }
 
 #endif // GRAPH_CPP
-
-
 

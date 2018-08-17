@@ -1,15 +1,16 @@
 /*
-File: city_graph.h
+File: city_graph.cpp
 
-Description: 
+Description: Implementation file for the city_graph ADT. Operates as a wrapper 
+             class for the underlying Graph data structure
 
 Author: Alexander DuPree
 
 Class: CS163
 
-Assignment: program 4
+Assignment: program 5
 
-Date: 08/10/2018
+Date: 08/15/2018
 */
 
 #include "city_graph.h"
@@ -57,3 +58,19 @@ void City_Graph::display_cities(Graph<SString, Road>::vertex_iterator it)
 
     display_cities(++it);
 }
+
+void City_Graph::display_roadtrip(const string& from, const string& to)
+{
+    std::cout << "\n\tRoadtrip from " << from << " to " << to << '\n' 
+              << SString(57, '-') << '\n';
+
+    roadtrip functor(to);
+
+    if(!_graph.depth_first(to, from, functor))
+    {
+        std::cout << "\nSorry, looks like those cities aren't connected\n";
+    }
+
+    return;
+}
+

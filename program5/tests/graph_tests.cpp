@@ -1,7 +1,7 @@
 /*
 File: graph_tests.cpp
 
-Description: Unit tests
+Description: Unit tests for the graph data structure
 
 Author: Alexander DuPree
 
